@@ -8,6 +8,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/izghua/go-blog/router/console"
 	"github.com/izghua/zgh/gin/api"
 	"github.com/izghua/zgh/gin/middleware"
 	"github.com/izghua/zgh/gin/util"
@@ -22,10 +23,25 @@ func RoutersInit() *gin.Engine{
 	r.Use(ginmiddleware.RequestID(ginmiddleware.RequestIDOptions{AllowSetting: false}))
 	r.Use(ginutil.Recovery(recoverHandler))
 
-	console := r.Group("console/")
-	console.Use()
+	c := r.Group("console/")
+	c.Use()
 	{
-		console.GET("/")
+		p := c.Group("/post")
+		consolePost := console.NewPost()
+		p.Use()
+		{
+			p.GET("/",consolePost.Index)
+			p.GET("/create",consolePost.Create)
+			p.POST("/",consolePost.Store)
+			p.GET("/edit/:id",consolePost.Edit)
+			p.PUT("/:id",consolePost.Update)
+			p.DELETE("/:id",consolePost.Destroy)
+		}
+		//cate := c.Group("/cate")
+		//p.Use()
+		//{
+		//
+		//}
 	}
 	index := r.Group("/index")
 	index.Use()

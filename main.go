@@ -14,7 +14,6 @@ import (
 func main() {
 	conf.DefaultInit()
 	//csrf
-	//建表
 
 	r := router.RoutersInit()
 	_ = r.Run(":8081")
