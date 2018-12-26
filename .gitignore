@@ -1,0 +1,11 @@
+.*
+.idea/vcs.xml
+
+backup/*
+!backup/.gitkeep
+
+log/*
+!log/.gitkeep
+
+zip/*
+!zip/.gitkeep

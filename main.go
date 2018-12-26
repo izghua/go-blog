@@ -7,8 +7,8 @@
 package main
 
 import (
-	"github.com/izghua/zghua/conf"
-	"github.com/izghua/zghua/router"
+	"github.com/izghua/go-blog/conf"
+	"github.com/izghua/go-blog/router"
 )
 
 func main() {
