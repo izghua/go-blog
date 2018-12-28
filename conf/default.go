@@ -39,7 +39,7 @@ func DefaultInit() {
 	RedisInit()
 	JwtInit()
 	QCaptchaInit()
-	BackUpInit()
+	//BackUpInit()
 }
 
 func ZLogInit() {
