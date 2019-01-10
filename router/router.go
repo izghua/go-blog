@@ -20,21 +20,18 @@ func RoutersInit() *gin.Engine{
 	gin.SetMode(gin.DebugMode)
 	r := gin.New()
 	r.Use(m.CORS(m.CORSOptions{Origin: ""}))
-	r.Use(m.RequestID(m.RequestIDOptions{AllowSetting: false}))
+	r.Use(m.RequestID(m.RequestIDOptions{AllowSetting: true}))
 	r.Use(ginutil.Recovery(recoverHandler))
 	consolePost := console.NewPost()
 
 	c := r.Group("/console")
-	c.Use()
 	{
 		p := c.Group("/post")
 		{
-			p.Use(m.Permission("console.post.index")).GET("/",consolePost.Index)
-			p.Use(m.Permission("console.post.create")).GET("/create",consolePost.Create)
-			p.Use(m.Permission("console.post.store")).POST("/",consolePost.Store)
-			p.Use(m.Permission("console.post.edit")).GET("/edit/:id",consolePost.Edit)
-			p.Use(m.Permission("console.post.update")).PUT("/:id",consolePost.Update)
-			p.Use(m.Permission("console.post.destroy")).DELETE("/:id",consolePost.Destroy)
+			p.GET("/",m.Permission("console.post.index"),consolePost.Index)
+			p.POST("/",m.Permission("console.post.store"),consolePost.Store)
+			p.PUT("/:id",m.Permission("console.post.update"),consolePost.Update)
+			p.DELETE("/:id",m.Permission("console.post.destroy"),consolePost.Destroy)
 		}
 		//cate := c.Group("/cate")
 		//p.Use()
