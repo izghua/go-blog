@@ -44,7 +44,7 @@ func DefaultInit() {
 
 func ZLogInit() {
 	zog := new(zgh.ZLogParam)
-	fileName := zog.SetFileName("zghua")
+	fileName := zog.SetFileName("go-blog")
 	err := zog.ZLogInit(fileName)
 	if err != nil {
 		zgh.ZLog().Error(err.Error())

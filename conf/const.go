@@ -37,5 +37,7 @@ const (
 	BackUpFilePath = "./backup/"
 	BackUpDuration = time.Hour * 24
 	BackUpSentTo = "xzghua@gmail.com"
+
+	DataCacheTimeDuration = 720
 )
 

@@ -29,6 +29,7 @@ func RoutersInit() *gin.Engine{
 		p := c.Group("/post")
 		{
 			p.GET("/",m.Permission("console.post.index"),consolePost.Index)
+			p.GET("/create",m.Permission("console.post.create"),consolePost.Create)
 			p.POST("/",m.Permission("console.post.store"),consolePost.Store)
 			p.PUT("/:id",m.Permission("console.post.update"),consolePost.Update)
 			p.DELETE("/:id",m.Permission("console.post.destroy"),consolePost.Destroy)
