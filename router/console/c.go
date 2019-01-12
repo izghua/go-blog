@@ -17,3 +17,7 @@ type Console interface {
 	Destroy(*gin.Context)
 }
 
+type Img interface {
+	ImgUpload(*gin.Context)
+}
+

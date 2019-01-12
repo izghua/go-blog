@@ -10,6 +10,7 @@ import (
 	"github.com/go-redis/redis"
 	"github.com/go-xorm/xorm"
 	"github.com/izghua/zgh"
+	"github.com/izghua/zgh/conf"
 	"github.com/izghua/zgh/conn"
 	"github.com/izghua/zgh/jwt"
 	"github.com/izghua/zgh/utils/alarm"
@@ -39,6 +40,8 @@ func DefaultInit() {
 	RedisInit()
 	JwtInit()
 	QCaptchaInit()
+	// the customer error code init
+	conf.SetMsg(Msg)
 	//BackUpInit()
 }
 

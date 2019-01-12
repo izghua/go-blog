@@ -7,17 +7,25 @@
 package console
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/izghua/go-blog/common"
+	"github.com/izghua/go-blog/conf"
 	"github.com/izghua/go-blog/service"
 	"github.com/izghua/zgh"
 	"github.com/izghua/zgh/gin/api"
 	"net/http"
+	"path/filepath"
 )
 
 type Post struct {
 }
 
 func NewPost() Console {
+	return &Post{}
+}
+
+func NewPostImg() Img {
 	return &Post{}
 }
 
@@ -47,12 +55,29 @@ func (p *Post)Create(c *gin.Context) {
 	data := make(map[string]interface{})
 	data["cates"] = cates
 	data["tags"] = tags
+	data["imgUploadUrl"] = conf.ImgUploadUrl
 	appG.Response(http.StatusOK,0,data)
 	return
 }
 
 func (p *Post)Store(c *gin.Context) {
-
+	appG := api.Gin{C: c}
+	requestJson,exists := c.Get("json")
+	if !exists {
+		zgh.ZLog().Error("message","post.Store","error","get request_params from context fail")
+		appG.Response(http.StatusOK,401000004,nil)
+		return
+	}
+	var ps common.PostStore
+	ps,ok := requestJson.(common.PostStore)
+	if !ok {
+		zgh.ZLog().Error("message","post.Store","error","request_params turn to error")
+		appG.Response(http.StatusOK,400001001,nil)
+		return
+	}
+	fmt.Println(ps)
+	appG.Response(http.StatusOK,0,nil)
+	return
 }
 
 func (p *Post)Edit(c *gin.Context) {
@@ -65,4 +90,33 @@ func (p *Post)Update(c *gin.Context) {
 
 func (p *Post)Destroy(c *gin.Context) {
 
+}
+
+func (p *Post)ImgUpload(c *gin.Context) {
+	appG := api.Gin{C: c}
+
+	file, err := c.FormFile("file")
+	if err != nil {
+		zgh.ZLog().Info("message","post.ImgUpload","err",err.Error())
+		appG.Response(http.StatusOK,401000004,nil)
+		return
+	}
+
+	filename := filepath.Base(file.Filename)
+	dst := conf.ImgUploadDst + filename
+	if err := c.SaveUploadedFile(file, dst); err != nil {
+		zgh.ZLog().Info("message","post.ImgUpload","error",err.Error())
+		appG.Response(http.StatusOK,401000005,nil)
+		return
+	}
+	data := make(map[string]interface{})
+	if conf.QiNiuUploadImg {
+		go service.Qiniu(dst,filename)
+		data["path"] = conf.QiNiuHostName + filename
+	} else {
+		data["path"] = conf.AppUrl + filename
+	}
+
+	appG.Response(http.StatusOK,0,data)
+	return
 }

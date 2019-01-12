@@ -6,9 +6,15 @@
  */
 package conf
 
-import "time"
+import (
+	"time"
+)
 
 const (
+
+	AppUrl = "http://localhost:8081/static/images/uploads"
+
+
 	DbUser = "root"
 	DbPassword = "Passw0rd"
 	DbPort = "3306"
@@ -39,5 +45,15 @@ const (
 	BackUpSentTo = "xzghua@gmail.com"
 
 	DataCacheTimeDuration = 720
+	ImgUploadUrl = "http://localhost:8081/console/post/imgUpload"
+	ImgUploadDst = "./static/images/uploads/"
+
+	//qiniu
+	QiNiuUploadImg = false
+	QiNiuHostName = "http://pl89sz86l.bkt.clouddn.com"
+	QiNiuAccessKey = "Mk80G9bd_VcsLvMamVXhqxrWiChc76Vz3UGlbJqA"
+	QiNiuSecretKey = "us0URcelzGY-mcoSY1Lw3mkZrTP1QCsegRxArTvZ"
+	QiNiuBucket = "go-blog"
+	QiNiuZone = "HUABEI" //you can use "HUADONG","HUABEI","BEIMEI","HUANAN","XINJIAPO"
 )
 

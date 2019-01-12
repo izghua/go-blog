@@ -9,3 +9,6 @@ log/*
 
 zip/*
 !zip/.gitkeep
+
+
+static/images/uploads/*

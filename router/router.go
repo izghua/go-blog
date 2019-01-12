@@ -9,6 +9,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/izghua/go-blog/router/console"
+	"github.com/izghua/go-blog/validate"
 	"github.com/izghua/zgh"
 	"github.com/izghua/zgh/gin/api"
 	m "github.com/izghua/zgh/gin/middleware"
@@ -23,16 +24,18 @@ func RoutersInit() *gin.Engine{
 	r.Use(m.RequestID(m.RequestIDOptions{AllowSetting: true}))
 	r.Use(ginutil.Recovery(recoverHandler))
 	consolePost := console.NewPost()
-
+	postImg := console.NewPostImg()
 	c := r.Group("/console")
 	{
 		p := c.Group("/post")
 		{
+			postV := validate.NewValidate().NewPostV.MyValidate()
 			p.GET("/",m.Permission("console.post.index"),consolePost.Index)
 			p.GET("/create",m.Permission("console.post.create"),consolePost.Create)
-			p.POST("/",m.Permission("console.post.store"),consolePost.Store)
+			p.POST("/",m.Permission("console.post.store"),postV,consolePost.Store)
 			p.PUT("/:id",m.Permission("console.post.update"),consolePost.Update)
 			p.DELETE("/:id",m.Permission("console.post.destroy"),consolePost.Destroy)
+			p.POST("/imgUpload",m.Permission("console.post.imgUpload"),postImg.ImgUpload)
 		}
 		//cate := c.Group("/cate")
 		//p.Use()
