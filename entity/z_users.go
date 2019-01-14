@@ -12,6 +12,6 @@ type ZUsers struct {
 	EmailVerifiedAt time.Time `xorm:"TIMESTAMP"`
 	Password        string    `xorm:"not null comment('密码') VARCHAR(255)"`
 	RememberToken   string    `xorm:"VARCHAR(100)"`
-	CreatedAt       time.Time `xorm:"created not null default 'CURRENT_TIMESTAMP' TIMESTAMP"`
-	UpdatedAt       time.Time `xorm:"updated not null default 'CURRENT_TIMESTAMP' TIMESTAMP"`
+	CreatedAt       time.Time `xorm:"created not null default 'CURRENT_TIMESTAMP' TIMESTAMP";json:"created_at,omitempty"`
+	UpdatedAt       time.Time `xorm:"updated not null default 'CURRENT_TIMESTAMP' TIMESTAMP";json:"updated_at,omitempty"`
 }

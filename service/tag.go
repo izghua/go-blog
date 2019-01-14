@@ -12,8 +12,41 @@ import (
 	"github.com/izghua/go-blog/conf"
 	"github.com/izghua/go-blog/entity"
 	"github.com/izghua/zgh"
+	"gitlab.yixinonline.org/pkg/yrdLog"
 	"time"
 )
+
+
+func GetPostTagsByPostId(postId int) (tagsArr []int,err error) {
+	postTag := new(entity.ZPostTag)
+	rows,err := conf.SqlServer.Where("post_id = ?",postId).Cols("tag_id").Rows(postTag)
+	if err != nil {
+		zgh.ZLog().Error("message","service.GetPostTagsByPostId","error",err.Error())
+		return nil,nil
+	}
+	defer rows.Close()
+	for rows.Next() {
+		postTag := new(entity.ZPostTag)
+		err = rows.Scan(postTag)
+		if err != nil {
+			yrdLog.GetLogger().Error("Method","service.GetPostTagsByPostId","err",err.Error())
+			return nil,err
+		}
+		tagsArr = append(tagsArr,postTag.TagId)
+	}
+	return
+}
+
+func GetTagsByIds(tagIds []int) ([]*entity.ZTags, error) {
+	tags := make([]*entity.ZTags,0)
+	err := conf.SqlServer.In("id",tagIds).Cols("id","name","display_name","seo_desc","num").Find(&tags)
+	if err != nil {
+		yrdLog.GetLogger().Error("Method","service.GetTagsByIds","err",err.Error())
+		return nil,err
+	}
+	return tags,nil
+}
+
 
 func AllTags() ([]entity.ZTags,error) {
 	cacheKey := "all:tag"

@@ -17,6 +17,35 @@ import (
 	"time"
 )
 
+
+func GetPostCateByPostId(postId int) ( cates *entity.ZCategories,err error) {
+	postCate := new(entity.ZPostCate)
+	has,err := conf.SqlServer.Cols("cate_id").Where("post_id = ?",postId).Get(postCate)
+	if err != nil {
+		zgh.ZLog().Error("message","service.GetPostCateByPostId",err,err.Error())
+		return cates,err
+	}
+	if has {
+		cates = new(entity.ZCategories)
+		has,err =  conf.SqlServer.Where("id = ?",postId).Cols("id","name","display_name","seo_desc").Get(cates)
+		if err != nil {
+			zgh.ZLog().Error("message","service.GetPostCateByPostId",err,err.Error())
+			return cates,err
+		}
+		if !has {
+			zgh.ZLog().Error("message","service.GetPostCateByPostId","err","there has not data")
+			return cates,errors.New("can not get the post cate")
+		}
+	} else {
+		zgh.ZLog().Error("message","service.GetPostCateByPostId","err","there has not data")
+		return cates,errors.New("can not get the post cate")
+	}
+
+	return cates,nil
+
+}
+
+
 // Get the cate list what by parent sort
 func CateListBySort() ([]common.Category, error) {
 	cacheKey := "all:cate:sort"

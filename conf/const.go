@@ -14,6 +14,7 @@ const (
 
 	AppUrl = "http://localhost:8081/static/images/uploads"
 
+	DefaultLimit = "20"
 
 	DbUser = "root"
 	DbPassword = "Passw0rd"
@@ -49,8 +50,8 @@ const (
 	ImgUploadDst = "./static/images/uploads/"
 
 	//qiniu
-	QiNiuUploadImg = false
-	QiNiuHostName = "http://pl89sz86l.bkt.clouddn.com"
+	QiNiuUploadImg = true
+	QiNiuHostName = "http://pl89sz86l.bkt.clouddn.com/"
 	QiNiuAccessKey = "Mk80G9bd_VcsLvMamVXhqxrWiChc76Vz3UGlbJqA"
 	QiNiuSecretKey = "us0URcelzGY-mcoSY1Lw3mkZrTP1QCsegRxArTvZ"
 	QiNiuBucket = "go-blog"

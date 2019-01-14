@@ -6,6 +6,21 @@
  */
 package common
 
+import "strconv"
+
+func Offset(page string,limit string) (limitInt int,offset int) {
+	pageInt,err := strconv.Atoi(page)
+	if err != nil {
+		pageInt = 1
+	}
+	limitInt,err = strconv.Atoi(limit)
+	if err != nil {
+		limitInt = 20
+	}
+
+	return limitInt,(pageInt - 1) * limitInt
+}
+
 
 func GoMerge(arr1 []interface{},arr2 []interface{}) []interface{} {
 	for _,val := range arr2 {

@@ -30,10 +30,20 @@ func NewPostImg() Img {
 }
 
 func (p *Post)Index(c *gin.Context) {
-	data := make(map[string]string)
-	data["res"] = "11122"
-	data["res2"] = "12341122"
 	appG := api.Gin{C: c}
+
+	queryPage := c.DefaultQuery("page", "1")
+	queryLimit := c.DefaultQuery("limit", conf.DefaultLimit)
+
+	limit,offset := common.Offset(queryPage,queryLimit)
+	postList,err := service.ConsolePostIndex(limit,offset)
+	if err != nil {
+		zgh.ZLog().Error("message","console.Index",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	data := make(map[string]interface{})
+	data["postList"] = postList
 	appG.Response(http.StatusOK,0,data)
 	return
 }
@@ -76,6 +86,7 @@ func (p *Post)Store(c *gin.Context) {
 		return
 	}
 	fmt.Println(ps)
+	service.PostStore(ps)
 	appG.Response(http.StatusOK,0,nil)
 	return
 }
