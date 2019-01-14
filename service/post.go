@@ -15,16 +15,10 @@ import (
 	"gopkg.in/russross/blackfriday.v2"
 )
 
-type ConsolePostList struct {
-	Post *entity.ZPosts `json:"post,omitempty"`
-	Tags []*entity.ZTags `json:"tags,omitempty"`
-	Category *entity.ZCategories `json:"category,omitempty"`
-	View *entity.ZPostViews `json:"view,omitempty"`
-	Author *entity.ZUsers `json:"author,omitempty"`
-}
 
 
-func ConsolePostIndex(limit int,offset int) (postListArr []*ConsolePostList,err error) {
+
+func ConsolePostIndex(limit int,offset int) (postListArr []*common.ConsolePostList,err error) {
 	post := new(entity.ZPosts)
 	rows,err := conf.SqlServer.Limit(limit,offset).Rows(post)
 
@@ -42,11 +36,30 @@ func ConsolePostIndex(limit int,offset int) (postListArr []*ConsolePostList,err 
 			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
 			return nil,err
 		}
+
+		consolePost := common.ConsolePost{
+			Id: post.Id,
+			Uid: post.Uid,
+			Title: post.Title,
+			Summary: post.Summary,
+			Original: post.Original,
+			Content: post.Content,
+			Password: post.Password,
+			CreatedAt: post.CreatedAt,
+			UpdatedAt: post.UpdatedAt,
+		}
+
 		//category
-		cates,err :=GetPostCateByPostId(post.Id)
+		cates,err := GetPostCateByPostId(post.Id)
 		if err != nil {
 			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
 			return nil,err
+		}
+		consoleCate := common.ConsoleCate{
+			Id: cates.Id,
+			Name: cates.Name,
+			DisplayName: cates.DisplayName,
+			SeoDesc: cates.SeoDesc,
 		}
 
 		//tag
@@ -60,12 +73,27 @@ func ConsolePostIndex(limit int,offset int) (postListArr []*ConsolePostList,err 
 			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
 			return nil,err
 		}
+		var consoleTags []common.ConsoleTag
+		for _,v := range tags {
+			consoleTag := common.ConsoleTag{
+				Id: v.Id,
+				Name: v.Name,
+				DisplayName: v.DisplayName,
+				SeoDesc: v.SeoDesc,
+				Num: v.Num,
+			}
+			consoleTags = append(consoleTags,consoleTag)
+		}
+
 
 		//view
 		view,err := PostView(post.Id)
 		if err != nil {
 			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
 			return nil,err
+		}
+		consoleView := common.ConsoleView{
+			Num: view.Num,
 		}
 
 		//user
@@ -74,13 +102,19 @@ func ConsolePostIndex(limit int,offset int) (postListArr []*ConsolePostList,err 
 			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
 			return nil,err
 		}
+		consoleUser := common.ConsoleUser{
+			Id: user.Id,
+			Name: user.Name,
+			Email: user.Email,
+			Status: user.Status,
+		}
 
-		postList := ConsolePostList{
-			Post: post,
-			Category: cates,
-			Tags: tags,
-			View: view,
-			Author: user,
+		postList := common.ConsolePostList{
+			Post: consolePost,
+			Category: consoleCate,
+			Tags: consoleTags,
+			View: consoleView,
+			Author: consoleUser,
 		}
 		postListArr = append(postListArr,&postList)
 	}
