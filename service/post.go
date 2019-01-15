@@ -124,7 +124,7 @@ func ConsolePostIndex(limit int,offset int) (postListArr []*common.ConsolePostLi
 
 func PostView(postId int) (*entity.ZPostViews,error) {
 	postV := new(entity.ZPostViews)
-	_,err := conf.SqlServer.Cols("Num").Cols("num").Get(postV)
+	_,err := conf.SqlServer.Where("post_id = ?",postId).Cols("num").Get(postV)
 	if err != nil {
 		zgh.ZLog().Error("message","service.PostView",err,err.Error())
 	}

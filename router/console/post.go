@@ -42,9 +42,9 @@ func (p *Post)Index(c *gin.Context) {
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
-	data := make(map[string]interface{})
-	data["postList"] = postList
-	appG.Response(http.StatusOK,0,data)
+	//data := make(map[string]interface{})
+	//data["postList"] = postList
+	appG.Response(http.StatusOK,0,postList)
 	return
 }
 
