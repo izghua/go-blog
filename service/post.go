@@ -15,15 +15,23 @@ import (
 	"gopkg.in/russross/blackfriday.v2"
 )
 
-
+func ConsolePostCount(limit int,offset int) (count int64,err error) {
+	post := new(entity.ZPosts)
+	count,err = conf.SqlServer.Desc("id").Limit(limit,offset).Count(post)
+	if err != nil {
+		zgh.ZLog().Error("message","service.ConsolePostCount",err,err.Error())
+		return 0,err
+	}
+	return count,nil
+}
 
 
 func ConsolePostIndex(limit int,offset int) (postListArr []*common.ConsolePostList,err error) {
 	post := new(entity.ZPosts)
-	rows,err := conf.SqlServer.Limit(limit,offset).Rows(post)
+	rows,err := conf.SqlServer.Desc("id").Limit(limit,offset).Rows(post)
 
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
+		zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
 		return nil,err
 	}
 
@@ -33,7 +41,7 @@ func ConsolePostIndex(limit int,offset int) (postListArr []*common.ConsolePostLi
 		post := new(entity.ZPosts)
 		err = rows.Scan(post)
 		if err != nil {
-			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
 			return nil,err
 		}
 
@@ -52,7 +60,7 @@ func ConsolePostIndex(limit int,offset int) (postListArr []*common.ConsolePostLi
 		//category
 		cates,err := GetPostCateByPostId(post.Id)
 		if err != nil {
-			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
 			return nil,err
 		}
 		consoleCate := common.ConsoleCate{
@@ -65,12 +73,12 @@ func ConsolePostIndex(limit int,offset int) (postListArr []*common.ConsolePostLi
 		//tag
 		tagIds,err := GetPostTagsByPostId(post.Id)
 		if err != nil {
-			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
 			return nil,err
 		}
 		tags,err := GetTagsByIds(tagIds)
 		if err != nil {
-			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
 			return nil,err
 		}
 		var consoleTags []common.ConsoleTag
@@ -89,7 +97,7 @@ func ConsolePostIndex(limit int,offset int) (postListArr []*common.ConsolePostLi
 		//view
 		view,err := PostView(post.Id)
 		if err != nil {
-			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
 			return nil,err
 		}
 		consoleView := common.ConsoleView{
@@ -99,7 +107,7 @@ func ConsolePostIndex(limit int,offset int) (postListArr []*common.ConsolePostLi
 		//user
 		user,err := GetUserById(post.UserId)
 		if err != nil {
-			zgh.ZLog().Error("message","service.PostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
 			return nil,err
 		}
 		consoleUser := common.ConsoleUser{

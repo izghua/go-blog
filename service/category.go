@@ -27,7 +27,7 @@ func GetPostCateByPostId(postId int) ( cates *entity.ZCategories,err error) {
 	}
 	if has {
 		cates = new(entity.ZCategories)
-		has,err =  conf.SqlServer.Where("id = ?",postId).Cols("id","name","display_name","seo_desc").Get(cates)
+		has,err =  conf.SqlServer.Where("id = ?",postCate.CateId).Cols("id","name","display_name","seo_desc").Get(cates)
 		if err != nil {
 			zgh.ZLog().Error("message","service.GetPostCateByPostId",err,err.Error())
 			return cates,err

@@ -68,3 +68,12 @@ type ConsoleView struct {
 }
 
 
+type Paginate struct {
+	Limit int `json:"limit"`
+	Count int `json:"count"`
+	Total int `json:"total"`
+	Last int `json:"last"`
+	Current int `json:"current"`
+	Next int `json:"next"`
+}
+

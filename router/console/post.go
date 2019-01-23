@@ -16,6 +16,7 @@ import (
 	"github.com/izghua/zgh/gin/api"
 	"net/http"
 	"path/filepath"
+	"strconv"
 )
 
 type Post struct {
@@ -42,9 +43,19 @@ func (p *Post)Index(c *gin.Context) {
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
-	//data := make(map[string]interface{})
-	//data["postList"] = postList
-	appG.Response(http.StatusOK,0,postList)
+	queryPageInt,err := strconv.Atoi(queryPage)
+	if err != nil {
+		zgh.ZLog().Error("message","console.Index",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	postCount,err := service.ConsolePostCount(limit,offset)
+
+	data := make(map[string]interface{})
+	data["list"] = postList
+	data["page"] = common.MyPaginate(postCount,limit,queryPageInt)
+
+	appG.Response(http.StatusOK,0,data)
 	return
 }
 
