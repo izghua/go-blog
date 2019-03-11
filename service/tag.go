@@ -12,7 +12,6 @@ import (
 	"github.com/izghua/go-blog/conf"
 	"github.com/izghua/go-blog/entity"
 	"github.com/izghua/zgh"
-	"gitlab.yixinonline.org/pkg/yrdLog"
 	"time"
 )
 
@@ -29,7 +28,6 @@ func GetPostTagsByPostId(postId int) (tagsArr []int,err error) {
 		postTag := new(entity.ZPostTag)
 		err = rows.Scan(postTag)
 		if err != nil {
-			yrdLog.GetLogger().Error("Method","service.GetPostTagsByPostId","err",err.Error())
 			return nil,err
 		}
 		tagsArr = append(tagsArr,postTag.TagId)
@@ -41,7 +39,6 @@ func GetTagsByIds(tagIds []int) ([]*entity.ZTags, error) {
 	tags := make([]*entity.ZTags,0)
 	err := conf.SqlServer.In("id",tagIds).Cols("id","name","display_name","seo_desc","num").Find(&tags)
 	if err != nil {
-		yrdLog.GetLogger().Error("Method","service.GetTagsByIds","err",err.Error())
 		return nil,err
 	}
 	return tags,nil

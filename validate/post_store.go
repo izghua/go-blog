@@ -10,7 +10,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/izghua/go-blog/common"
 	"github.com/izghua/zgh/gin/api"
-	"gitlab.yixinonline.org/pkg/yrdLog"
 	"net/http"
 )
 
@@ -24,7 +23,6 @@ func (pv *PostStoreV)MyValidate() gin.HandlerFunc {
 		var json common.PostStore
 		//接收各种参数
 		if err := c.ShouldBindJSON(&json); err != nil {
-			yrdLog.GetLogger().Error("message", "PostStoreValidate -- should bind json err", "error", err.Error())
 			appG.Response(http.StatusOK, 400001000, nil)
 			return
 		}
