@@ -7,7 +7,6 @@
 package console
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
@@ -96,18 +95,92 @@ func (p *Post)Store(c *gin.Context) {
 		appG.Response(http.StatusOK,400001001,nil)
 		return
 	}
-	fmt.Println(ps)
+
 	service.PostStore(ps)
 	appG.Response(http.StatusOK,0,nil)
 	return
 }
 
 func (p *Post)Edit(c *gin.Context) {
+	postIdStr := c.Param("id")
+	postIdInt,err := strconv.Atoi(postIdStr)
+	appG := api.Gin{C: c}
 
+	if err != nil {
+		zgh.ZLog().Error("message","console.Edit",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	post,err := service.PostDetail(postIdInt)
+	if err != nil {
+		zgh.ZLog().Error("message","console.Edit",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	postTags,err := service.PostIdTag(postIdInt)
+	if err != nil {
+		zgh.ZLog().Error("message","console.Edit",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	postCate,err := service.PostCate(postIdInt)
+	if err != nil {
+		zgh.ZLog().Error("message","console.Edit",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	data := make(map[string]interface{})
+	posts := make(map[string]interface{})
+	posts["post"] = post
+	posts["postCate"] = postCate
+	posts["postTag"] = postTags
+	data["post"] = posts
+	cates,err := service.CateListBySort()
+	if err != nil {
+		zgh.ZLog().Error("message","console.Create",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	tags,err := service.AllTags()
+	if err != nil {
+		zgh.ZLog().Error("message","console.Create",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	data["cates"] = cates
+	data["tags"] = tags
+	data["imgUploadUrl"] = conf.ImgUploadUrl
+	appG.Response(http.StatusOK,0,data)
+	return
 }
 
 func (p *Post)Update(c *gin.Context) {
+	postIdStr := c.Param("id")
+	postIdInt,err := strconv.Atoi(postIdStr)
+	appG := api.Gin{C: c}
 
+	if err != nil {
+		zgh.ZLog().Error("message","console.Update",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+
+	requestJson,exists := c.Get("json")
+	if !exists {
+		zgh.ZLog().Error("message","post.Store","error","get request_params from context fail")
+		appG.Response(http.StatusOK,401000004,nil)
+		return
+	}
+	var ps common.PostStore
+	ps,ok := requestJson.(common.PostStore)
+	if !ok {
+		zgh.ZLog().Error("message","post.Store","error","request_params turn to error")
+		appG.Response(http.StatusOK,400001001,nil)
+		return
+	}
+	service.PostUpdate(postIdInt,ps)
+	appG.Response(http.StatusOK,0,nil)
+	return
 }
 
 func (p *Post)Destroy(c *gin.Context) {
