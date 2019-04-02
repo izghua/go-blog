@@ -13,7 +13,7 @@ type ZPosts struct {
 	Original  string    `xorm:"not null comment('原文章内容') TEXT"`
 	Content   string    `xorm:"not null comment('文章内容') TEXT"`
 	Password  string    `xorm:"not null comment('文章密码') VARCHAR(255)"`
-	DeletedAt time.Time `xorm:"TIMESTAMP"`
+	DeletedAt *time.Time `xorm:" TIMESTAMP"`
 	CreatedAt time.Time `xorm:"created not null default 'CURRENT_TIMESTAMP' TIMESTAMP"`
 	UpdatedAt time.Time `xorm:"updated not null default 'CURRENT_TIMESTAMP' TIMESTAMP"`
 }

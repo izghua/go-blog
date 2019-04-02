@@ -29,6 +29,10 @@ func NewPostImg() Img {
 	return &Post{}
 }
 
+func NewTrash() Trash {
+	return &Post{}
+}
+
 func (p *Post)Index(c *gin.Context) {
 	appG := api.Gin{C: c}
 
@@ -36,7 +40,7 @@ func (p *Post)Index(c *gin.Context) {
 	queryLimit := c.DefaultQuery("limit", conf.DefaultLimit)
 
 	limit,offset := common.Offset(queryPage,queryLimit)
-	postList,err := service.ConsolePostIndex(limit,offset)
+	postList,err := service.ConsolePostIndex(limit,offset,false)
 	if err != nil {
 		zgh.ZLog().Error("message","console.Index",err,err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
@@ -48,7 +52,7 @@ func (p *Post)Index(c *gin.Context) {
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
-	postCount,err := service.ConsolePostCount(limit,offset)
+	postCount,err := service.ConsolePostCount(limit,offset,false)
 
 	data := make(map[string]interface{})
 	data["list"] = postList
@@ -184,8 +188,75 @@ func (p *Post)Update(c *gin.Context) {
 }
 
 func (p *Post)Destroy(c *gin.Context) {
+	postIdStr := c.Param("id")
+	postIdInt,err := strconv.Atoi(postIdStr)
+	appG := api.Gin{C: c}
 
+	if err != nil {
+		zgh.ZLog().Error("message","console.Destroy",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+
+	_,err = service.PostDestroy(postIdInt)
+	if err != nil {
+		zgh.ZLog().Error("message","console.Destroy",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	appG.Response(http.StatusOK,0,nil)
+	return
 }
+
+func (p *Post)TrashIndex(c *gin.Context) {
+	appG := api.Gin{C: c}
+
+	queryPage := c.DefaultQuery("page", "1")
+	queryLimit := c.DefaultQuery("limit", conf.DefaultLimit)
+
+	limit,offset := common.Offset(queryPage,queryLimit)
+	postList,err := service.ConsolePostIndex(limit,offset,true)
+	if err != nil {
+		zgh.ZLog().Error("message","console.TrashIndex",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	queryPageInt,err := strconv.Atoi(queryPage)
+	if err != nil {
+		zgh.ZLog().Error("message","console.TrashIndex",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	postCount,err := service.ConsolePostCount(limit,offset,true)
+
+	data := make(map[string]interface{})
+	data["list"] = postList
+	data["page"] = common.MyPaginate(postCount,limit,queryPageInt)
+
+	appG.Response(http.StatusOK,0,data)
+	return
+}
+
+func (p *Post)UnTrash(c *gin.Context) {
+	postIdStr := c.Param("id")
+	postIdInt,err := strconv.Atoi(postIdStr)
+	appG := api.Gin{C: c}
+
+	if err != nil {
+		zgh.ZLog().Error("message","console.Destroy",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	_,err = service.PostUnTrash(postIdInt)
+	if err != nil {
+		zgh.ZLog().Error("message","console.UnTrash",err,err.Error())
+		appG.Response(http.StatusOK,500000000,nil)
+		return
+	}
+	appG.Response(http.StatusOK,0,nil)
+	return
+}
+
 
 func (p *Post)ImgUpload(c *gin.Context) {
 	appG := api.Gin{C: c}

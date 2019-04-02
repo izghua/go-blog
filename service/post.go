@@ -7,17 +7,23 @@
 package service
 
 import (
+	"github.com/go-xorm/xorm"
 	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
 	"github.com/izghua/go-blog/entity"
 	"github.com/izghua/zgh"
 	"github.com/microcosm-cc/bluemonday"
 	"gopkg.in/russross/blackfriday.v2"
+	"time"
 )
 
-func ConsolePostCount(limit int,offset int) (count int64,err error) {
+func ConsolePostCount(limit int,offset int,isTrash bool) (count int64,err error) {
 	post := new(entity.ZPosts)
-	count,err = conf.SqlServer.Desc("id").Limit(limit,offset).Count(post)
+	if isTrash {
+		count,err = conf.SqlServer.Unscoped().Where("`deleted_at` IS NOT NULL OR `deleted_at`=?","0001-01-01 00:00:00").Desc("id").Limit(limit,offset).Count(post)
+	} else {
+		count,err = conf.SqlServer.Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Desc("id").Limit(limit,offset).Count(post)
+	}
 	if err != nil {
 		zgh.ZLog().Error("message","service.ConsolePostCount",err,err.Error())
 		return 0,err
@@ -26,9 +32,14 @@ func ConsolePostCount(limit int,offset int) (count int64,err error) {
 }
 
 
-func ConsolePostIndex(limit int,offset int) (postListArr []*common.ConsolePostList,err error) {
+func ConsolePostIndex(limit int,offset int,isTrash bool) (postListArr []*common.ConsolePostList,err error) {
 	post := new(entity.ZPosts)
-	rows,err := conf.SqlServer.Desc("id").Limit(limit,offset).Rows(post)
+	var rows *xorm.Rows
+	if isTrash {
+		rows,err = conf.SqlServer.Unscoped().Where("`deleted_at` IS NOT NULL OR `deleted_at`=?","0001-01-01 00:00:00").Desc("id").Limit(limit,offset).Rows(post)
+	} else {
+		rows,err = conf.SqlServer.Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Desc("id").Limit(limit,offset).Rows(post)
+	}
 
 	if err != nil {
 		zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
@@ -372,4 +383,31 @@ func PostUpdate(postId int,ps common.PostStore) {
 	_ = session.Commit()
 
 	return
+}
+
+func PostDestroy(postId int) (bool,error) {
+	post := new(entity.ZPosts)
+	toBeCharge := time.Now().Format(time.RFC3339)
+	timeLayout := time.RFC3339
+	loc, _ := time.LoadLocation("Local")
+	theTime, err := time.ParseInLocation(timeLayout, toBeCharge, loc)
+	post.DeletedAt = &theTime
+	_,err = conf.SqlServer.Id(postId).Update(post)
+	if err != nil {
+		zgh.ZLog().Error("message","service.PostDestroy",err,err.Error())
+		return false,err
+	}
+	return true,nil
+}
+
+func PostUnTrash(postId int) (bool,error) {
+	post := new(entity.ZPosts)
+	theTime, _ := time.Parse("2006-01-02 15:04:05",  "")
+	post.DeletedAt = &theTime
+	_,err := conf.SqlServer.Id(postId).Update(post)
+	if err != nil {
+		zgh.ZLog().Error("message","service.PostUnTrash",err,err.Error())
+		return false,err
+	}
+	return true,nil
 }

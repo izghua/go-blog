@@ -17,6 +17,11 @@ type Console interface {
 	Destroy(*gin.Context)
 }
 
+type Trash interface {
+	TrashIndex(*gin.Context)
+	UnTrash(*gin.Context)
+}
+
 type Img interface {
 	ImgUpload(*gin.Context)
 }

@@ -25,6 +25,7 @@ func RoutersInit() *gin.Engine{
 	r.Use(ginutil.Recovery(recoverHandler))
 	consolePost := console.NewPost()
 	postImg := console.NewPostImg()
+	trash := console.NewTrash()
 	c := r.Group("/console")
 	{
 		p := c.Group("/post")
@@ -36,6 +37,9 @@ func RoutersInit() *gin.Engine{
 			p.GET("/edit/:id",m.Permission("console.post.edit"),consolePost.Edit)
 			p.PUT("/:id",m.Permission("console.post.update"),postV,consolePost.Update)
 			p.DELETE("/:id",m.Permission("console.post.destroy"),consolePost.Destroy)
+			p.GET("/trash",m.Permission("console.post.trash"),trash.TrashIndex)
+			p.PUT("/:id/trash",m.Permission("console.post.unTrash"),trash.UnTrash)
+
 			p.POST("/imgUpload",m.Permission("console.post.imgUpload"),postImg.ImgUpload)
 		}
 		//cate := c.Group("/cate")
