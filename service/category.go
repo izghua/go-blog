@@ -18,6 +18,39 @@ import (
 )
 
 
+func GetCateById(cateId int) (cate *entity.ZCategories,err error) {
+	cate = new(entity.ZCategories)
+	_,err = conf.SqlServer.Id(cateId).Get(cate)
+	return
+}
+
+func CateUpdate(cateId int,cs common.CateStore) (bool,error) {
+	cate := new(entity.ZCategories)
+	if cs.ParentId != 0 {
+		res,err := conf.SqlServer.Id(cs.ParentId).Get(cate)
+		if err != nil {
+			zgh.ZLog().Error("message","service.CateUpdate",err,err.Error())
+			return false,err
+		}
+		if !res || cate.Id < 1 {
+			zgh.ZLog().Error("message","service.CateUpdate",err,"the parent id is not exists ")
+			return false,errors.New("the parent id is not exists ")
+		}
+	}
+	cateUpdate := &entity.ZCategories{
+		Name: cs.Name,
+		DisplayName: cs.DisplayName,
+		SeoDesc: cs.SeoDesc,
+		ParentId: cs.ParentId,
+	}
+	_,err := conf.SqlServer.Id(cateId).Update(cateUpdate)
+	if err != nil {
+		zgh.ZLog().Error("message","service.CateUpdate",err,err.Error())
+		return false,err
+	}
+	return true,nil
+}
+
 func GetPostCateByPostId(postId int) ( cates *entity.ZCategories,err error) {
 	postCate := new(entity.ZPostCate)
 	has,err := conf.SqlServer.Cols("cate_id").Where("post_id = ?",postId).Get(postCate)

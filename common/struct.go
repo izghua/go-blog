@@ -18,6 +18,13 @@ type PostStore struct {
 	Content string `json:"content"`
 }
 
+type CateStore struct {
+	Name string `json:"name"`
+	DisplayName string `json:"displayName"`
+	ParentId int `json:"parentId"`
+	SeoDesc string `json:"seoDesc"`
+}
+
 type ConsolePostList struct {
 	Post ConsolePost `json:"post,omitempty"`
 	Tags []ConsoleTag `json:"tags,omitempty"`

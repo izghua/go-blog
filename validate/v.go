@@ -14,11 +14,12 @@ type V interface {
 
 type SomeValidate struct {
 	NewPostV V
-
+	NewCateV V
 }
 
 func NewValidate() *SomeValidate {
 	return &SomeValidate{
 		NewPostV: &PostStoreV{},
+		NewCateV: &CateStoreV{},
 	}
 }

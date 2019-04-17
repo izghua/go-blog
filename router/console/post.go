@@ -172,7 +172,7 @@ func (p *Post)Update(c *gin.Context) {
 	requestJson,exists := c.Get("json")
 	if !exists {
 		zgh.ZLog().Error("message","post.Store","error","get request_params from context fail")
-		appG.Response(http.StatusOK,401000004,nil)
+		appG.Response(http.StatusOK,400001003,nil)
 		return
 	}
 	var ps common.PostStore
