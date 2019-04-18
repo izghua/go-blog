@@ -69,7 +69,7 @@ func Qiniu(localFile string,fileName string) {
 	}
 	err := formUploader.PutFile(context.Background(), &ret, upToken, key, localFile, &putExtra)
 	if err != nil {
-		zgh.ZLog().Error("message","service.QiNiu upload file",err,err.Error())
+		zgh.ZLog().Error("message","service.QiNiu upload file","err",err.Error())
 		alarm.Alarm("文件上传七牛失败了,文件名是"+fileName)
 		return
 	}

@@ -49,6 +49,8 @@ func RoutersInit() *gin.Engine{
 			cate.GET("/",m.Permission("console.cate.index"),consoleCate.Index)
 			cate.GET("/edit/:id",m.Permission("console.cate.edit"),consoleCate.Edit)
 			cate.PUT("/:id",m.Permission("console.cate.update"),cateV,consoleCate.Update)
+			cate.POST("/",m.Permission("console.cate.store"),cateV,consoleCate.Store)
+			cate.DELETE("/:id",m.Permission("console.cate.destroy"),consoleCate.Destroy)
 		}
 		//p.Use()
 		//{

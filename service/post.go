@@ -25,7 +25,7 @@ func ConsolePostCount(limit int,offset int,isTrash bool) (count int64,err error)
 		count,err = conf.SqlServer.Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Desc("id").Limit(limit,offset).Count(post)
 	}
 	if err != nil {
-		zgh.ZLog().Error("message","service.ConsolePostCount",err,err.Error())
+		zgh.ZLog().Error("message","service.ConsolePostCount","err",err.Error())
 		return 0,err
 	}
 	return count,nil
@@ -42,7 +42,7 @@ func ConsolePostIndex(limit int,offset int,isTrash bool) (postListArr []*common.
 	}
 
 	if err != nil {
-		zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
+		zgh.ZLog().Error("message","service.ConsolePostIndex","err",err.Error())
 		return nil,err
 	}
 
@@ -52,7 +52,7 @@ func ConsolePostIndex(limit int,offset int,isTrash bool) (postListArr []*common.
 		post := new(entity.ZPosts)
 		err = rows.Scan(post)
 		if err != nil {
-			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex","err",err.Error())
 			return nil,err
 		}
 
@@ -71,7 +71,7 @@ func ConsolePostIndex(limit int,offset int,isTrash bool) (postListArr []*common.
 		//category
 		cates,err := GetPostCateByPostId(post.Id)
 		if err != nil {
-			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex","err",err.Error())
 			return nil,err
 		}
 		consoleCate := common.ConsoleCate{
@@ -84,12 +84,12 @@ func ConsolePostIndex(limit int,offset int,isTrash bool) (postListArr []*common.
 		//tag
 		tagIds,err := GetPostTagsByPostId(post.Id)
 		if err != nil {
-			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex","err",err.Error())
 			return nil,err
 		}
 		tags,err := GetTagsByIds(tagIds)
 		if err != nil {
-			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex","err",err.Error())
 			return nil,err
 		}
 		var consoleTags []common.ConsoleTag
@@ -108,7 +108,7 @@ func ConsolePostIndex(limit int,offset int,isTrash bool) (postListArr []*common.
 		//view
 		view,err := PostView(post.Id)
 		if err != nil {
-			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex","err",err.Error())
 			return nil,err
 		}
 		consoleView := common.ConsoleView{
@@ -118,7 +118,7 @@ func ConsolePostIndex(limit int,offset int,isTrash bool) (postListArr []*common.
 		//user
 		user,err := GetUserById(post.UserId)
 		if err != nil {
-			zgh.ZLog().Error("message","service.ConsolePostIndex",err,err.Error())
+			zgh.ZLog().Error("message","service.ConsolePostIndex","err",err.Error())
 			return nil,err
 		}
 		consoleUser := common.ConsoleUser{
@@ -145,7 +145,7 @@ func PostView(postId int) (*entity.ZPostViews,error) {
 	postV := new(entity.ZPostViews)
 	_,err := conf.SqlServer.Where("post_id = ?",postId).Cols("num").Get(postV)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostView",err,err.Error())
+		zgh.ZLog().Error("message","service.PostView","err",err.Error())
 	}
 	return postV,nil
 }
@@ -168,7 +168,7 @@ func PostStore(ps common.PostStore) {
 	defer session.Close()
 	affected,err := session.Insert(postCreate)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostStore",err,err.Error())
+		zgh.ZLog().Error("message","service.PostStore","err",err.Error())
 		_ = session.Rollback()
 		return
 	}
@@ -187,7 +187,7 @@ func PostStore(ps common.PostStore) {
 		}
 		affected,err := session.Insert(postCateCreate)
 		if err != nil {
-			zgh.ZLog().Error("message","service.PostStore",err,err.Error())
+			zgh.ZLog().Error("message","service.PostStore","err",err.Error())
 			_ = session.Rollback()
 			return
 		}
@@ -207,7 +207,7 @@ func PostStore(ps common.PostStore) {
 			}
 			affected,err := session.Insert(postTagCreate)
 			if err != nil {
-				zgh.ZLog().Error("message","service.PostStore post tag insert err",err,err.Error())
+				zgh.ZLog().Error("message","service.PostStore post tag insert err","err",err.Error())
 				_ = session.Rollback()
 				return
 			}
@@ -226,7 +226,7 @@ func PostStore(ps common.PostStore) {
 
 	affected,err = session.Insert(postView)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostStore",err,err.Error())
+		zgh.ZLog().Error("message","service.PostStore","err",err.Error())
 		_ = session.Rollback()
 		return
 	}
@@ -241,7 +241,7 @@ func PostStore(ps common.PostStore) {
 
 	uid,err := conf.ZHashId.Encode([]int{postCreate.Id})
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostStore create uid error",err,err.Error())
+		zgh.ZLog().Error("message","service.PostStore create uid error","err",err.Error())
 		return
 	}
 
@@ -250,7 +250,7 @@ func PostStore(ps common.PostStore) {
 	}
 	affected,err = session.Where("id = ?",postCreate.Id).Update(newPostCreate)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostStore",err,err.Error())
+		zgh.ZLog().Error("message","service.PostStore","err",err.Error())
 		return
 	}
 
@@ -266,7 +266,7 @@ func PostDetail(postId int) (p *entity.ZPosts,err error) {
 	post := new(entity.ZPosts)
 	_,err = conf.SqlServer.Where("id = ?",postId).Get(post)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostEdit",err,err.Error())
+		zgh.ZLog().Error("message","service.PostEdit","err",err.Error())
 		return  post,err
 	}
 	return post,nil
@@ -276,7 +276,7 @@ func PostIdTag(postId int) (tagIds []int,err error) {
 	postTag := make([]entity.ZPostTag,0)
 	err = conf.SqlServer.Where("post_id = ?",postId).Find(&postTag)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostIdTag",err,err.Error())
+		zgh.ZLog().Error("message","service.PostIdTag","err",err.Error())
 		return
 	}
 
@@ -290,7 +290,7 @@ func PostCate(postId int) (int,error) {
 	postCate := new(entity.ZPostCate)
 	_,err := conf.SqlServer.Where("post_id = ?",postId).Get(postCate)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostCate",err,err.Error())
+		zgh.ZLog().Error("message","service.PostCate","err",err.Error())
 		return 0,err
 	}
 	return postCate.CateId,nil
@@ -314,7 +314,7 @@ func PostUpdate(postId int,ps common.PostStore) {
 	defer session.Close()
 	affected,err := session.Where("id = ?",postId).Update(postUpdate)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostUpdate",err,err.Error())
+		zgh.ZLog().Error("message","service.PostUpdate","err",err.Error())
 		_ = session.Rollback()
 		return
 	}
@@ -340,7 +340,7 @@ func PostUpdate(postId int,ps common.PostStore) {
 
 		affected,err := session.Insert(postCateCreate)
 		if err != nil {
-			zgh.ZLog().Error("message","service.PostUpdate",err,err.Error())
+			zgh.ZLog().Error("message","service.PostUpdate","err",err.Error())
 			_ = session.Rollback()
 			return
 		}
@@ -369,7 +369,7 @@ func PostUpdate(postId int,ps common.PostStore) {
 			}
 			affected,err := session.Insert(postTagCreate)
 			if err != nil {
-				zgh.ZLog().Error("message","service.PostUpdate post tag insert err",err,err.Error())
+				zgh.ZLog().Error("message","service.PostUpdate post tag insert err","err",err.Error())
 				_ = session.Rollback()
 				return
 			}
@@ -394,7 +394,7 @@ func PostDestroy(postId int) (bool,error) {
 	post.DeletedAt = &theTime
 	_,err = conf.SqlServer.Id(postId).Update(post)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostDestroy",err,err.Error())
+		zgh.ZLog().Error("message","service.PostDestroy","err",err.Error())
 		return false,err
 	}
 	return true,nil
@@ -406,7 +406,7 @@ func PostUnTrash(postId int) (bool,error) {
 	post.DeletedAt = &theTime
 	_,err := conf.SqlServer.Id(postId).Update(post)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostUnTrash",err,err.Error())
+		zgh.ZLog().Error("message","service.PostUnTrash","err",err.Error())
 		return false,err
 	}
 	return true,nil

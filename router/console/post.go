@@ -42,13 +42,13 @@ func (p *Post)Index(c *gin.Context) {
 	limit,offset := common.Offset(queryPage,queryLimit)
 	postList,err := service.ConsolePostIndex(limit,offset,false)
 	if err != nil {
-		zgh.ZLog().Error("message","console.Index",err,err.Error())
+		zgh.ZLog().Error("message","console.Index","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
 	queryPageInt,err := strconv.Atoi(queryPage)
 	if err != nil {
-		zgh.ZLog().Error("message","console.Index",err,err.Error())
+		zgh.ZLog().Error("message","console.Index","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
@@ -66,13 +66,13 @@ func (p *Post)Create(c *gin.Context) {
 	cates,err := service.CateListBySort()
 	appG := api.Gin{C: c}
 	if err != nil {
-		zgh.ZLog().Error("message","console.Create",err,err.Error())
+		zgh.ZLog().Error("message","console.Create","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
 	tags,err := service.AllTags()
 	if err != nil {
-		zgh.ZLog().Error("message","console.Create",err,err.Error())
+		zgh.ZLog().Error("message","console.Create","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
@@ -111,25 +111,25 @@ func (p *Post)Edit(c *gin.Context) {
 	appG := api.Gin{C: c}
 
 	if err != nil {
-		zgh.ZLog().Error("message","console.Edit",err,err.Error())
+		zgh.ZLog().Error("message","console.Edit","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
 	post,err := service.PostDetail(postIdInt)
 	if err != nil {
-		zgh.ZLog().Error("message","console.Edit",err,err.Error())
+		zgh.ZLog().Error("message","console.Edit","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
 	postTags,err := service.PostIdTag(postIdInt)
 	if err != nil {
-		zgh.ZLog().Error("message","console.Edit",err,err.Error())
+		zgh.ZLog().Error("message","console.Edit","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
 	postCate,err := service.PostCate(postIdInt)
 	if err != nil {
-		zgh.ZLog().Error("message","console.Edit",err,err.Error())
+		zgh.ZLog().Error("message","console.Edit","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
@@ -141,13 +141,13 @@ func (p *Post)Edit(c *gin.Context) {
 	data["post"] = posts
 	cates,err := service.CateListBySort()
 	if err != nil {
-		zgh.ZLog().Error("message","console.Create",err,err.Error())
+		zgh.ZLog().Error("message","console.Create","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
 	tags,err := service.AllTags()
 	if err != nil {
-		zgh.ZLog().Error("message","console.Create",err,err.Error())
+		zgh.ZLog().Error("message","console.Create","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
@@ -164,7 +164,7 @@ func (p *Post)Update(c *gin.Context) {
 	appG := api.Gin{C: c}
 
 	if err != nil {
-		zgh.ZLog().Error("message","console.Update",err,err.Error())
+		zgh.ZLog().Error("message","console.Update","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
@@ -193,14 +193,14 @@ func (p *Post)Destroy(c *gin.Context) {
 	appG := api.Gin{C: c}
 
 	if err != nil {
-		zgh.ZLog().Error("message","console.Destroy",err,err.Error())
+		zgh.ZLog().Error("message","console.Destroy","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
 
 	_,err = service.PostDestroy(postIdInt)
 	if err != nil {
-		zgh.ZLog().Error("message","console.Destroy",err,err.Error())
+		zgh.ZLog().Error("message","console.Destroy","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
@@ -217,13 +217,13 @@ func (p *Post)TrashIndex(c *gin.Context) {
 	limit,offset := common.Offset(queryPage,queryLimit)
 	postList,err := service.ConsolePostIndex(limit,offset,true)
 	if err != nil {
-		zgh.ZLog().Error("message","console.TrashIndex",err,err.Error())
+		zgh.ZLog().Error("message","console.TrashIndex","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
 	queryPageInt,err := strconv.Atoi(queryPage)
 	if err != nil {
-		zgh.ZLog().Error("message","console.TrashIndex",err,err.Error())
+		zgh.ZLog().Error("message","console.TrashIndex","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
@@ -243,13 +243,13 @@ func (p *Post)UnTrash(c *gin.Context) {
 	appG := api.Gin{C: c}
 
 	if err != nil {
-		zgh.ZLog().Error("message","console.Destroy",err,err.Error())
+		zgh.ZLog().Error("message","console.Destroy","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}
 	_,err = service.PostUnTrash(postIdInt)
 	if err != nil {
-		zgh.ZLog().Error("message","console.UnTrash",err,err.Error())
+		zgh.ZLog().Error("message","console.UnTrash","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}

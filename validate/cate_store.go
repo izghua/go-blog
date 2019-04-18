@@ -41,21 +41,21 @@ func (cv *CateStoreV)MyValidate() gin.HandlerFunc {
 }
 
 type CateStore struct {
-	Name string `valid:"Required;Max:100"`
-	DisplayName string `valid:"Required:Max:100"`
-	ParentId int `valid:"Required"`
-	SeoDesc string `valid:"Required;Max:250"`
+	Name string `valid:"Required;MaxSize(100)"`
+	DisplayName string `valid:"Required;MaxSize(100)"`
+	ParentId int `valid:"Min(0)"`
+	SeoDesc string `valid:"Required;MaxSize(250)"`
 }
 
 
 func (c *CateStore) Message() map[string]int {
 	return map[string]int{
 		"Name.Required":402000002,
-		"Name.Max":402000006,
+		"Name.MaxSize":402000006,
 		"DisplayName.Required":402000003,
-		"DisplayName.Max":402000007,
-		"ParentId.Required":402000004,
+		"DisplayName.MaxSize":402000007,
+		"ParentId.Min":402000004,
 		"SeoDesc.Required":402000005,
-		"SeoDesc.Max":402000008,
+		"SeoDesc.MaxSize":402000008,
 	}
 }

@@ -56,5 +56,8 @@ const (
 	QiNiuSecretKey = "us0URcelzGY-mcoSY1Lw3mkZrTP1QCsegRxArTvZ"
 	QiNiuBucket = "go-blog"
 	QiNiuZone = "HUABEI" //you can use "HUADONG","HUABEI","BEIMEI","HUANAN","XINJIAPO"
+
+
+	CateListKey =  "all:cate:sort"
 )
 
