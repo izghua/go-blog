@@ -48,7 +48,7 @@ func (p *Post)Index(c *gin.Context) {
 	}
 	queryPageInt,err := strconv.Atoi(queryPage)
 	if err != nil {
-		zgh.ZLog().Error("message","console.Index","err",err.Error())
+		zgh.ZLog().Error("message","console.Post.Index","err",err.Error())
 		appG.Response(http.StatusOK,500000000,nil)
 		return
 	}

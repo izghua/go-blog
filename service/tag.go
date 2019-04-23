@@ -47,6 +47,22 @@ func GetPostTagsByPostId(postId int) (tagsArr []int,err error) {
 	return
 }
 
+func GetTagById(tagId int) (tag *entity.ZTags,err error) {
+	tag = new(entity.ZTags)
+	_,err = conf.SqlServer.ID(tagId).Get(tag)
+	return
+}
+
+func TagUpdate(tagId int,ts common.TagStore) error {
+	tagUpdate := &entity.ZTags{
+		Name: ts.Name,
+		DisplayName: ts.DisplayName,
+		SeoDesc: ts.SeoDesc,
+	}
+	_,err := conf.SqlServer.ID(tagId).Update(tagUpdate)
+	return err
+}
+
 func GetTagsByIds(tagIds []int) ([]*entity.ZTags, error) {
 	tags := make([]*entity.ZTags,0)
 	err := conf.SqlServer.In("id",tagIds).Cols("id","name","display_name","seo_desc","num").Find(&tags)
@@ -56,6 +72,38 @@ func GetTagsByIds(tagIds []int) ([]*entity.ZTags, error) {
 	return tags,nil
 }
 
+func TagsIndex(limit int,offset int) (num int64,tags []*entity.ZTags,err error) {
+	tags = make([]*entity.ZTags,0)
+	num,err = conf.SqlServer.Desc("num").Limit(limit,offset).FindAndCount(&tags)
+	return
+}
+
+func DelTagRel(tagId int) {
+	session := conf.SqlServer.NewSession()
+	defer session.Close()
+	postTag := new(entity.ZPostTag)
+	_,err := session.Where("tag_id = ?",tagId).Delete(postTag)
+	if err != nil {
+		_ = session.Rollback()
+		zgh.ZLog().Error("message","service.DelTagRel","err",err.Error())
+		return
+	}
+	tag := new(entity.ZTags)
+	_,err = session.ID(tagId).Delete(tag)
+	if err != nil {
+		_ = session.Rollback()
+		zgh.ZLog().Error("message","service.DelTagRel","err",err.Error())
+		return
+	}
+	err = session.Commit()
+	if err != nil {
+		_ = session.Rollback()
+		zgh.ZLog().Error("message","service.DelTagRel","err",err.Error())
+		return
+	}
+	conf.CacheClient.Del(conf.TagListKey)
+	return
+}
 
 func AllTags() ([]entity.ZTags,error) {
 	cacheKey := conf.TagListKey

@@ -115,7 +115,7 @@ func CateUpdate(cateId int,cs common.CateStore) (bool,error) {
 		SeoDesc: cs.SeoDesc,
 		ParentId: cs.ParentId,
 	}
-	_,err := conf.SqlServer.Id(cateId).Cols("name","display_mame","seo_desc","parent_id").Update(cateUpdate)
+	_,err := conf.SqlServer.Id(cateId).Cols("name","display_name","seo_desc","parent_id").Update(cateUpdate)
 	if err != nil {
 		zgh.ZLog().Error("message","service.CateUpdate","err",err.Error())
 		return false,err

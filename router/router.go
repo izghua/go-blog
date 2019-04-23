@@ -58,6 +58,9 @@ func RoutersInit() *gin.Engine{
 			tagV := validate.NewValidate().NewTagV.MyValidate()
 			tag.GET("/",m.Permission("console.tag.index"),consoleTag.Index)
 			tag.POST("/",m.Permission("console.tag.store"),tagV,consoleTag.Store)
+			tag.GET("/edit/:id",m.Permission("console.tag.edit"),consoleTag.Edit)
+			tag.PUT("/:id",m.Permission("console.tag.update"),tagV,consoleTag.Update)
+			tag.DELETE("/:id",m.Permission("console.tag.destroy"),consoleTag.Destroy)
 		}
 		//p.Use()
 		//{
