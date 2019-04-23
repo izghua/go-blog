@@ -25,6 +25,12 @@ type CateStore struct {
 	SeoDesc string `json:"seoDesc"`
 }
 
+type TagStore struct {
+	Name string `json:"name"`
+	DisplayName string `json:"displayName"`
+	SeoDesc string `json:"seoDesc"`
+}
+
 type ConsolePostList struct {
 	Post ConsolePost `json:"post,omitempty"`
 	Tags []ConsoleTag `json:"tags,omitempty"`

@@ -100,6 +100,14 @@ func CateUpdate(cateId int,cs common.CateStore) (bool,error) {
 			zgh.ZLog().Error("message","service.CateUpdate",err,"the parent id is not exists ")
 			return false,errors.New("the parent id is not exists ")
 		}
+		ids := []int{cateId}
+		resIds := []int{0}
+		_,res2,_ := GetSimilar(ids,resIds,0)
+		for _,v := range res2 {
+			if v == cs.ParentId {
+				return false,errors.New("Can not be you child node ")
+			}
+		}
 	}
 	cateUpdate := &entity.ZCategories{
 		Name: cs.Name,
@@ -107,7 +115,7 @@ func CateUpdate(cateId int,cs common.CateStore) (bool,error) {
 		SeoDesc: cs.SeoDesc,
 		ParentId: cs.ParentId,
 	}
-	_,err := conf.SqlServer.Id(cateId).Update(cateUpdate)
+	_,err := conf.SqlServer.Id(cateId).Cols("name","display_mame","seo_desc","parent_id").Update(cateUpdate)
 	if err != nil {
 		zgh.ZLog().Error("message","service.CateUpdate","err",err.Error())
 		return false,err
@@ -115,6 +123,40 @@ func CateUpdate(cateId int,cs common.CateStore) (bool,error) {
 	conf.CacheClient.Del(conf.CateListKey)
 	return true,nil
 }
+
+func GetSimilar(beginId []int,resIds []int,level int) (beginId2 []int,resIds2 []int,level2 int) {
+	if len(beginId) != 0 {
+		cates := make([]*entity.ZCategories,0)
+		err := conf.SqlServer.In("parent_id",beginId).Find(&cates)
+		if err != nil {
+			zgh.ZLog().Error("message","service.GetSimilar",err,"the parent id data is not exists ")
+			return []int{},[]int{},0
+		}
+		if len(cates) != 0 {
+			if level == 0 {
+				resIds2 = beginId
+			} else {
+				resIds2 = resIds
+			}
+			for _,v := range cates {
+				id := v.Id
+				beginId2 = append(beginId2,id)
+				resIds2 = append(resIds2,id)
+			}
+			level2 = level + 1
+			return GetSimilar(beginId2,resIds2,level2)
+		}
+		if level == 0 && len(cates) == 0 {
+			return beginId,beginId,level
+		} else {
+			return beginId,resIds,level
+		}
+	}
+	return beginId,resIds,level
+}
+
+
+
 
 func GetPostCateByPostId(postId int) ( cates *entity.ZCategories,err error) {
 	postCate := new(entity.ZPostCate)
@@ -277,6 +319,7 @@ func allCates() ([]entity.ZCategories,error) {
 			zgh.ZLog().Info("message","service.AllCates","err",err.Error())
 			return cates,err
 		}
+
 		return cates,nil
 	}
 

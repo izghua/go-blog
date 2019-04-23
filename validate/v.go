@@ -13,13 +13,15 @@ type V interface {
 }
 
 type SomeValidate struct {
-	NewPostV V
-	NewCateV V
+	NewPostV 	V
+	NewCateV 	V
+	NewTagV 	V
 }
 
 func NewValidate() *SomeValidate {
 	return &SomeValidate{
-		NewPostV: &PostStoreV{},
-		NewCateV: &CateStoreV{},
+		NewPostV: 	&PostStoreV{},
+		NewCateV: 	&CateStoreV{},
+		NewTagV: 	&TagStoreV{},
 	}
 }

@@ -25,6 +25,7 @@ func RoutersInit() *gin.Engine{
 	r.Use(ginutil.Recovery(recoverHandler))
 	consolePost := console.NewPost()
 	consoleCate := console.NewCategory()
+	consoleTag := console.NewTag()
 	postImg := console.NewPostImg()
 	trash := console.NewTrash()
 	c := r.Group("/console")
@@ -51,6 +52,12 @@ func RoutersInit() *gin.Engine{
 			cate.PUT("/:id",m.Permission("console.cate.update"),cateV,consoleCate.Update)
 			cate.POST("/",m.Permission("console.cate.store"),cateV,consoleCate.Store)
 			cate.DELETE("/:id",m.Permission("console.cate.destroy"),consoleCate.Destroy)
+		}
+		tag := c.Group("/tag")
+		{
+			tagV := validate.NewValidate().NewTagV.MyValidate()
+			tag.GET("/",m.Permission("console.tag.index"),consoleTag.Index)
+			tag.POST("/",m.Permission("console.tag.store"),tagV,consoleTag.Store)
 		}
 		//p.Use()
 		//{

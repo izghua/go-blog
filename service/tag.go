@@ -9,12 +9,24 @@ package service
 import (
 	"encoding/json"
 	"github.com/go-redis/redis"
+	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
 	"github.com/izghua/go-blog/entity"
 	"github.com/izghua/zgh"
 	"time"
 )
 
+func TagStore(ts common.TagStore) (err error)  {
+	tag := &entity.ZTags{
+		Name: ts.Name,
+		DisplayName: ts.DisplayName,
+		SeoDesc: ts.SeoDesc,
+		Num: 0,
+	}
+	_,err = conf.SqlServer.Insert(tag)
+	conf.CacheClient.Del(conf.TagListKey)
+	return
+}
 
 func GetPostTagsByPostId(postId int) (tagsArr []int,err error) {
 	postTag := new(entity.ZPostTag)
@@ -46,7 +58,7 @@ func GetTagsByIds(tagIds []int) ([]*entity.ZTags, error) {
 
 
 func AllTags() ([]entity.ZTags,error) {
-	cacheKey := "all:tag"
+	cacheKey := conf.TagListKey
 	cacheRes,err := conf.CacheClient.Get(cacheKey).Result()
 	if err == redis.Nil {
 		tags,err := doCacheTagList(cacheKey)

@@ -59,5 +59,7 @@ const (
 
 
 	CateListKey =  "all:cate:sort"
+	TagListKey =  "all:tag"
+
 )
 
