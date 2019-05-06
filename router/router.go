@@ -28,6 +28,8 @@ func RoutersInit() *gin.Engine{
 	consoleTag := console.NewTag()
 	postImg := console.NewPostImg()
 	trash := console.NewTrash()
+	consoleSystem := console.NewHome()
+	consoleLink := console.NewLink()
 	c := r.Group("/console")
 	{
 		p := c.Group("/post")
@@ -61,6 +63,15 @@ func RoutersInit() *gin.Engine{
 			tag.GET("/edit/:id",m.Permission("console.tag.edit"),consoleTag.Edit)
 			tag.PUT("/:id",m.Permission("console.tag.update"),tagV,consoleTag.Update)
 			tag.DELETE("/:id",m.Permission("console.tag.destroy"),consoleTag.Destroy)
+		}
+		system := c.Group("/system")
+		{
+			system.GET("/",m.Permission("console.system.index"),consoleSystem.Index)
+			system.PUT("/:id",m.Permission("console.system.update"),consoleSystem.Update)
+		}
+		link := c.Group("/link")
+		{
+			link.GET("/",m.Permission("console.link.index"),consoleLink.Index)
 		}
 		//p.Use()
 		//{

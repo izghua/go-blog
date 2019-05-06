@@ -26,3 +26,11 @@ type Img interface {
 	ImgUpload(*gin.Context)
 }
 
+type System interface {
+	Index(*gin.Context)
+	Update(*gin.Context)
+}
+
+
+
+
