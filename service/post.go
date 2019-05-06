@@ -212,7 +212,19 @@ func PostStore(ps common.PostStore) {
 				return
 			}
 			if affected < 1 {
-				zgh.ZLog().Error("message","service.PostStore","err","post cate store no succeed")
+				zgh.ZLog().Error("message","service.PostStore","err","post tag store no succeed")
+				_ = session.Rollback()
+				return
+			}
+
+			affected,err = session.ID(v).Incr("num").Update(entity.ZTags{})
+			if err != nil {
+				zgh.ZLog().Error("message","service.PostStore post tag incr err","err",err.Error())
+				_ = session.Rollback()
+				return
+			}
+			if affected < 1 {
+				zgh.ZLog().Error("message","service.PostStore","err","post tag incr no succeed")
 				_ = session.Rollback()
 				return
 			}
@@ -352,13 +364,37 @@ func PostUpdate(postId int,ps common.PostStore) {
 		}
 	}
 
-	postTag := new(entity.ZPostTag)
-	_,err = session.Where("post_id = ?",postId).Delete(postTag)
+	postTag := make([]entity.ZPostTag,0)
+	err = session.Where("post_id = ?",postId).Find(&postTag)
 
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostUpdate","err","post tag delete no succeed")
+		zgh.ZLog().Error("message","service.PostUpdate","err","get post tag  no succeed")
 		_ = session.Rollback()
 		return
+	}
+
+	if len(postTag) > 0 {
+		for _,v := range postTag {
+			affected,err = session.ID(v.TagId).Decr("num").Update(entity.ZTags{})
+			if err != nil {
+				zgh.ZLog().Error("message","service.PostUpdate post tag decr  err","err",err.Error())
+				_ = session.Rollback()
+				return
+			}
+			if affected < 1 {
+				zgh.ZLog().Error("message","service.PostUpdate","err","post cate decr no succeed")
+				_ = session.Rollback()
+				return
+			}
+		}
+
+		_,err = session.Where("post_id = ?",postId).Delete(new(entity.ZPostTag))
+
+		if err != nil {
+			zgh.ZLog().Error("message","service.PostUpdate","err","delete post tag  no succeed")
+			_ = session.Rollback()
+			return
+		}
 	}
 
 	if len(ps.Tags) > 0 {
@@ -375,6 +411,17 @@ func PostUpdate(postId int,ps common.PostStore) {
 			}
 			if affected < 1 {
 				zgh.ZLog().Error("message","service.PostUpdate","err","post cate update no succeed")
+				_ = session.Rollback()
+				return
+			}
+			affected,err = session.ID(v).Incr("num").Update(entity.ZTags{})
+			if err != nil {
+				zgh.ZLog().Error("message","service.PostStore post tag incr err","err",err.Error())
+				_ = session.Rollback()
+				return
+			}
+			if affected < 1 {
+				zgh.ZLog().Error("message","service.PostStore","err","post tag incr no succeed")
 				_ = session.Rollback()
 				return
 			}
