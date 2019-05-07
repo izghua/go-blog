@@ -66,8 +66,9 @@ func RoutersInit() *gin.Engine{
 		}
 		system := c.Group("/system")
 		{
+			systemV := validate.NewValidate().NewSystemV.MyValidate()
 			system.GET("/",m.Permission("console.system.index"),consoleSystem.Index)
-			system.PUT("/:id",m.Permission("console.system.update"),consoleSystem.Update)
+			system.PUT("/:id",m.Permission("console.system.update"),systemV,consoleSystem.Update)
 		}
 		link := c.Group("/link")
 		{

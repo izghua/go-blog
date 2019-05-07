@@ -76,6 +76,14 @@ type ConsoleUser struct {
 	Status          int `json:"status,omitempty"`
 }
 
+type ConsoleSystem struct {
+	Title 			string `json:"title;omitempty"`
+	Keywords 		string `json:"keywords;omitempty"`
+	Theme        	int `json:"theme;omitempty"`
+	Description  	string `json:"description;omitempty"`
+	RecordNumber 	string `json:"recordNumber;omitempty"`
+}
+
 type ConsoleView struct {
 	Num int `json:"num,omitempty"`
 }

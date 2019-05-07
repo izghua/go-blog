@@ -16,6 +16,7 @@ type SomeValidate struct {
 	NewPostV 	V
 	NewCateV 	V
 	NewTagV 	V
+	NewSystemV  V
 }
 
 func NewValidate() *SomeValidate {
@@ -23,5 +24,6 @@ func NewValidate() *SomeValidate {
 		NewPostV: 	&PostStoreV{},
 		NewCateV: 	&CateStoreV{},
 		NewTagV: 	&TagStoreV{},
+		NewSystemV: &SystemUpdateV{},
 	}
 }
