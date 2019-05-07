@@ -73,6 +73,10 @@ func RoutersInit() *gin.Engine{
 		link := c.Group("/link")
 		{
 			link.GET("/",m.Permission("console.link.index"),consoleLink.Index)
+			link.POST("/",m.Permission("console.tlinkag.store"),consoleLink.Store)
+			link.GET("/edit/:id",m.Permission("console.link.edit"),consoleLink.Edit)
+			link.PUT("/:id",m.Permission("console.link.update"),consoleLink.Update)
+			link.DELETE("/:id",m.Permission("console.link.destroy"),consoleLink.Destroy)
 		}
 		//p.Use()
 		//{
