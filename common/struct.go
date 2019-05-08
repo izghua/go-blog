@@ -31,6 +31,12 @@ type TagStore struct {
 	SeoDesc string `json:"seoDesc"`
 }
 
+type LinkStore struct {
+	Name string `json:"name"`
+	Link string `json:"link"`
+	Order int `json:"order"`
+}
+
 type ConsolePostList struct {
 	Post ConsolePost `json:"post,omitempty"`
 	Tags []ConsoleTag `json:"tags,omitempty"`
