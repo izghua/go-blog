@@ -8,6 +8,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/izghua/go-blog/router/auth"
 	"github.com/izghua/go-blog/router/console"
 	"github.com/izghua/go-blog/validate"
 	"github.com/izghua/zgh"
@@ -84,6 +85,14 @@ func RoutersInit() *gin.Engine{
 		//
 		//}
 	}
+
+	consoleAuth := auth.NewAuth()
+	a := r.Group("/auth")
+	{
+		a.GET("/",m.Permission("console.auth.index"),consoleAuth.Login)
+		a.POST("/",m.Permission("console.auth.index"),consoleAuth.AuthLogin)
+	}
+
 	//r.Use(m.RouterAsName("last"))
 	//index := r.Group("/index")
 	//index.Use()

@@ -8,6 +8,7 @@ require (
 	github.com/go-xorm/xorm v0.7.1
 	github.com/izghua/zgh v0.0.20
 	github.com/microcosm-cc/bluemonday v1.0.2
+	github.com/mojocn/base64Captcha v0.0.0-20190509095025-87c9c59224d8
 	github.com/qiniu/api.v7 v7.2.5+incompatible
 	github.com/qiniu/x v7.0.8+incompatible // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
