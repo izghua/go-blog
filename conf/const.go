@@ -66,5 +66,7 @@ const (
 	Keywords = "默认关键词,叶落山城秋"
 	Description = "个人网站,https://github.com/izghua/go-blog"
 	RecordNumber = "000-0000"
+
+	UserCnt = 2
 )
 

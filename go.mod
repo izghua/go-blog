@@ -13,6 +13,7 @@ require (
 	github.com/qiniu/x v7.0.8+incompatible // indirect
 	github.com/shurcooL/sanitized_anchor_name v1.0.0 // indirect
 	github.com/speps/go-hashids v2.0.0+incompatible
+	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 	gopkg.in/russross/blackfriday.v2 v2.0.0-00010101000000-000000000000
 	qiniupkg.com/x v7.0.8+incompatible // indirect
 )

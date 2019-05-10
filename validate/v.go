@@ -19,15 +19,17 @@ type SomeValidate struct {
 	NewSystemV  	V
 	NewLinkV 		V
 	NewAuthLoginV 	V
+	NewAuthRegister V
 }
 
 func NewValidate() *SomeValidate {
 	return &SomeValidate{
-		NewPostV: 		&PostStoreV{},
-		NewCateV: 		&CateStoreV{},
-		NewTagV: 		&TagStoreV{},
-		NewSystemV: 	&SystemUpdateV{},
-		NewLinkV: 		&LinkStoreV{},
-		NewAuthLoginV:	&AuthLoginV{},
+		NewPostV: 			&PostStoreV{},
+		NewCateV: 			&CateStoreV{},
+		NewTagV: 			&TagStoreV{},
+		NewSystemV: 		&SystemUpdateV{},
+		NewLinkV: 			&LinkStoreV{},
+		NewAuthLoginV:		&AuthLoginV{},
+		NewAuthRegister:	&AuthRegisterV{},
 	}
 }

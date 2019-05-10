@@ -31,6 +31,7 @@ func RoutersInit() *gin.Engine{
 	trash := console.NewTrash()
 	consoleSystem := console.NewHome()
 	consoleLink := console.NewLink()
+	consoleAuth := auth.NewAuth()
 	c := r.Group("/console")
 	{
 		p := c.Group("/post")
@@ -80,12 +81,17 @@ func RoutersInit() *gin.Engine{
 			link.PUT("/:id",m.Permission("console.link.update"),linkV,consoleLink.Update)
 			link.DELETE("/:id",m.Permission("console.link.destroy"),consoleLink.Destroy)
 		}
-		consoleAuth := auth.NewAuth()
-		au := c.Group("/register")
+		al := c.Group("/login")
 		{
-			authRegisterV := validate.NewValidate().NewAuthLoginV.MyValidate()
-			au.GET("/",m.Permission("console.auth.index"),consoleAuth.Login)
-			au.POST("/",m.Permission("console.auth.index"),authRegisterV,consoleAuth.AuthLogin)
+			authLoginV := validate.NewValidate().NewAuthLoginV.MyValidate()
+			al.GET("/",m.Permission("console.login.index"),consoleAuth.Login)
+			al.POST("/",m.Permission("console.login.store"),authLoginV,consoleAuth.AuthLogin)
+		}
+		ar := c.Group("/register")
+		{
+			authRegisterV := validate.NewValidate().NewAuthRegister.MyValidate()
+			ar.GET("/",m.Permission("console.register.index"),consoleAuth.Register)
+			ar.POST("/",m.Permission("console.register.store"),authRegisterV,consoleAuth.AuthRegister)
 		}
 		//p.Use()
 		//{

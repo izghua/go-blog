@@ -37,11 +37,17 @@ type LinkStore struct {
 	Order int `json:"order"`
 }
 
-type AuthRegister struct {
+type AuthLogin struct {
 	Email string `json:"email"`
 	Password string `json:"password"`
 	Captcha string `json:"captcha"`
 	CaptchaKey string `json:"captchaKey"`
+}
+
+type AuthRegister struct {
+	UserName string `json:"userName"`
+	Email string `json:"email"`
+	Password string `json:"password"`
 }
 
 type ConsolePostList struct {
