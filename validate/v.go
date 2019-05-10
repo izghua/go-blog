@@ -13,19 +13,21 @@ type V interface {
 }
 
 type SomeValidate struct {
-	NewPostV 	V
-	NewCateV 	V
-	NewTagV 	V
-	NewSystemV  V
-	NewLinkV 	V
+	NewPostV 		V
+	NewCateV 		V
+	NewTagV 		V
+	NewSystemV  	V
+	NewLinkV 		V
+	NewAuthLoginV 	V
 }
 
 func NewValidate() *SomeValidate {
 	return &SomeValidate{
-		NewPostV: 	&PostStoreV{},
-		NewCateV: 	&CateStoreV{},
-		NewTagV: 	&TagStoreV{},
-		NewSystemV: &SystemUpdateV{},
-		NewLinkV: 	&LinkStoreV{},
+		NewPostV: 		&PostStoreV{},
+		NewCateV: 		&CateStoreV{},
+		NewTagV: 		&TagStoreV{},
+		NewSystemV: 	&SystemUpdateV{},
+		NewLinkV: 		&LinkStoreV{},
+		NewAuthLoginV:	&AuthLoginV{},
 	}
 }

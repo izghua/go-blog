@@ -7,8 +7,9 @@
 package auth
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/izghua/go-blog/common"
+	"github.com/izghua/zgh"
 	"github.com/izghua/zgh/gin/api"
 	"github.com/mojocn/base64Captcha"
 	"net/http"
@@ -46,9 +47,7 @@ func (c *Auth) Login(ctx *gin.Context) {
 		CaptchaLen: 5,
 	}
 	idKeyD, capD := base64Captcha.GenerateCaptcha("", configD)
-	//write to base64 string.
 	base64stringD := base64Captcha.CaptchaWriteToBase64Encoding(capD)
-	fmt.Println(idKeyD,base64stringD)
 	data := make(map[string]interface{})
 	data["key"] = idKeyD
 	data["png"] = base64stringD
@@ -56,5 +55,20 @@ func (c *Auth) Login(ctx *gin.Context) {
 	return
 }
 func (c *Auth) AuthLogin(ctx *gin.Context) {
-
+	appG := api.Gin{C: ctx}
+	requestJson,exists := ctx.Get("json")
+	if !exists {
+		zgh.ZLog().Error("message","auth.AuthLogin","error","get request_params from context fail")
+		appG.Response(http.StatusOK,401000004,nil)
+		return
+	}
+	ar,ok := requestJson.(common.AuthRegister)
+	if !ok {
+		zgh.ZLog().Error("message","auth.AuthLogin","error","request_params turn to error")
+		appG.Response(http.StatusOK,400001001,nil)
+		return
+	}
+	verifyResult := base64Captcha.VerifyCaptcha(ar.CaptchaKey, ar.Captcha)
+	appG.Response(http.StatusOK,0,verifyResult)
+	return
 }

@@ -80,18 +80,20 @@ func RoutersInit() *gin.Engine{
 			link.PUT("/:id",m.Permission("console.link.update"),linkV,consoleLink.Update)
 			link.DELETE("/:id",m.Permission("console.link.destroy"),consoleLink.Destroy)
 		}
+		consoleAuth := auth.NewAuth()
+		au := c.Group("/register")
+		{
+			authRegisterV := validate.NewValidate().NewAuthLoginV.MyValidate()
+			au.GET("/",m.Permission("console.auth.index"),consoleAuth.Login)
+			au.POST("/",m.Permission("console.auth.index"),authRegisterV,consoleAuth.AuthLogin)
+		}
 		//p.Use()
 		//{
 		//
 		//}
 	}
 
-	consoleAuth := auth.NewAuth()
-	a := r.Group("/auth")
-	{
-		a.GET("/",m.Permission("console.auth.index"),consoleAuth.Login)
-		a.POST("/",m.Permission("console.auth.index"),consoleAuth.AuthLogin)
-	}
+
 
 	//r.Use(m.RouterAsName("last"))
 	//index := r.Group("/index")
