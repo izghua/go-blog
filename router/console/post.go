@@ -100,7 +100,14 @@ func (p *Post)Store(c *gin.Context) {
 		return
 	}
 
-	service.PostStore(ps)
+	userId,exist := c.Get("userId")
+	if !exist || userId.(int) == 0 {
+		zgh.ZLog().Error("message","post.Store","error","Can not get user")
+		appG.Response(http.StatusOK,400001004,nil)
+		return
+	}
+
+	service.PostStore(ps,userId.(int))
 	appG.Response(http.StatusOK,0,nil)
 	return
 }

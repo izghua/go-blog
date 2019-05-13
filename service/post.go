@@ -151,10 +151,10 @@ func PostView(postId int) (*entity.ZPostViews,error) {
 }
 
 
-func PostStore(ps common.PostStore) {
+func PostStore( ps common.PostStore,userId int) {
 	postCreate := &entity.ZPosts{
 		Title: ps.Title,
-		UserId: 1,
+		UserId: userId,
 		Summary: ps.Summary,
 		Original: ps.Content,
 	}

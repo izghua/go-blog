@@ -8,6 +8,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	m2 "github.com/izghua/go-blog/middleware"
 	"github.com/izghua/go-blog/router/auth"
 	"github.com/izghua/go-blog/router/console"
 	"github.com/izghua/go-blog/validate"
@@ -37,49 +38,49 @@ func RoutersInit() *gin.Engine{
 		p := c.Group("/post")
 		{
 			postV := validate.NewValidate().NewPostV.MyValidate()
-			p.GET("/",m.Permission("console.post.index"),consolePost.Index)
-			p.GET("/create",m.Permission("console.post.create"),consolePost.Create)
-			p.POST("/",m.Permission("console.post.store"),postV,consolePost.Store)
-			p.GET("/edit/:id",m.Permission("console.post.edit"),consolePost.Edit)
-			p.PUT("/:id",m.Permission("console.post.update"),postV,consolePost.Update)
-			p.DELETE("/:id",m.Permission("console.post.destroy"),consolePost.Destroy)
-			p.GET("/trash",m.Permission("console.post.trash"),trash.TrashIndex)
-			p.PUT("/:id/trash",m.Permission("console.post.unTrash"),trash.UnTrash)
+			p.GET("/",m2.Permission("console.post.index"),consolePost.Index)
+			p.GET("/create",m2.Permission("console.post.create"),consolePost.Create)
+			p.POST("/",m2.Permission("console.post.store"),postV,consolePost.Store)
+			p.GET("/edit/:id",m2.Permission("console.post.edit"),consolePost.Edit)
+			p.PUT("/:id",m2.Permission("console.post.update"),postV,consolePost.Update)
+			p.DELETE("/:id",m2.Permission("console.post.destroy"),consolePost.Destroy)
+			p.GET("/trash",m2.Permission("console.post.trash"),trash.TrashIndex)
+			p.PUT("/:id/trash",m2.Permission("console.post.unTrash"),trash.UnTrash)
 
-			p.POST("/imgUpload",m.Permission("console.post.imgUpload"),postImg.ImgUpload)
+			p.POST("/imgUpload",m2.Permission("console.post.imgUpload"),postImg.ImgUpload)
 		}
 		cate := c.Group("/cate")
 		{
 			cateV := validate.NewValidate().NewCateV.MyValidate()
-			cate.GET("/",m.Permission("console.cate.index"),consoleCate.Index)
-			cate.GET("/edit/:id",m.Permission("console.cate.edit"),consoleCate.Edit)
-			cate.PUT("/:id",m.Permission("console.cate.update"),cateV,consoleCate.Update)
-			cate.POST("/",m.Permission("console.cate.store"),cateV,consoleCate.Store)
-			cate.DELETE("/:id",m.Permission("console.cate.destroy"),consoleCate.Destroy)
+			cate.GET("/",m2.Permission("console.cate.index"),consoleCate.Index)
+			cate.GET("/edit/:id",m2.Permission("console.cate.edit"),consoleCate.Edit)
+			cate.PUT("/:id",m2.Permission("console.cate.update"),cateV,consoleCate.Update)
+			cate.POST("/",m2.Permission("console.cate.store"),cateV,consoleCate.Store)
+			cate.DELETE("/:id",m2.Permission("console.cate.destroy"),consoleCate.Destroy)
 		}
 		tag := c.Group("/tag")
 		{
 			tagV := validate.NewValidate().NewTagV.MyValidate()
-			tag.GET("/",m.Permission("console.tag.index"),consoleTag.Index)
-			tag.POST("/",m.Permission("console.tag.store"),tagV,consoleTag.Store)
-			tag.GET("/edit/:id",m.Permission("console.tag.edit"),consoleTag.Edit)
-			tag.PUT("/:id",m.Permission("console.tag.update"),tagV,consoleTag.Update)
-			tag.DELETE("/:id",m.Permission("console.tag.destroy"),consoleTag.Destroy)
+			tag.GET("/",m2.Permission("console.tag.index"),consoleTag.Index)
+			tag.POST("/",m2.Permission("console.tag.store"),tagV,consoleTag.Store)
+			tag.GET("/edit/:id",m2.Permission("console.tag.edit"),consoleTag.Edit)
+			tag.PUT("/:id",m2.Permission("console.tag.update"),tagV,consoleTag.Update)
+			tag.DELETE("/:id",m2.Permission("console.tag.destroy"),consoleTag.Destroy)
 		}
 		system := c.Group("/system")
 		{
 			systemV := validate.NewValidate().NewSystemV.MyValidate()
-			system.GET("/",m.Permission("console.system.index"),consoleSystem.Index)
-			system.PUT("/:id",m.Permission("console.system.update"),systemV,consoleSystem.Update)
+			system.GET("/",m2.Permission("console.system.index"),consoleSystem.Index)
+			system.PUT("/:id",m2.Permission("console.system.update"),systemV,consoleSystem.Update)
 		}
 		link := c.Group("/link")
 		{
 			linkV := validate.NewValidate().NewLinkV.MyValidate()
-			link.GET("/",m.Permission("console.link.index"),consoleLink.Index)
-			link.POST("/",m.Permission("console.link.store"),linkV,consoleLink.Store)
-			link.GET("/edit/:id",m.Permission("console.link.edit"),consoleLink.Edit)
-			link.PUT("/:id",m.Permission("console.link.update"),linkV,consoleLink.Update)
-			link.DELETE("/:id",m.Permission("console.link.destroy"),consoleLink.Destroy)
+			link.GET("/",m2.Permission("console.link.index"),consoleLink.Index)
+			link.POST("/",m2.Permission("console.link.store"),linkV,consoleLink.Store)
+			link.GET("/edit/:id",m2.Permission("console.link.edit"),consoleLink.Edit)
+			link.PUT("/:id",m2.Permission("console.link.update"),linkV,consoleLink.Update)
+			link.DELETE("/:id",m2.Permission("console.link.destroy"),consoleLink.Destroy)
 		}
 		al := c.Group("/login")
 		{

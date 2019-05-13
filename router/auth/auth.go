@@ -76,7 +76,7 @@ func (c *Auth) Register(ctx *gin.Context) {
 		return
 	}
 	if cnt >= conf.UserCnt {
-		zgh.ZLog().Error("message","auth.Register","error","User cnt beyond expectation")
+		zgh.ZLog().Info("message","auth.Register","error","User cnt beyond expectation")
 		appG.Response(http.StatusOK,400001004,nil)
 		return
 	}
@@ -95,6 +95,17 @@ func (c *Auth) AuthRegister(ctx *gin.Context) {
 	if !ok {
 		zgh.ZLog().Error("message","auth.AuthRegister","error","request_params turn to error")
 		appG.Response(http.StatusOK,400001001,nil)
+		return
+	}
+	cnt,err := service.GetUserCnt()
+	if err != nil {
+		zgh.ZLog().Error("message","auth.Register","error",err.Error())
+		appG.Response(http.StatusOK,400001004,nil)
+		return
+	}
+	if cnt >= conf.UserCnt {
+		zgh.ZLog().Info("message","auth.Register","error","User cnt beyond expectation")
+		appG.Response(http.StatusOK,400001004,nil)
 		return
 	}
 	service.UserStore(ar)
@@ -144,12 +155,12 @@ func (c *Auth) AuthLogin(ctx *gin.Context) {
 	user,err := service.GetUserByEmail(al.Email)
 	if err != nil {
 		zgh.ZLog().Error("message","auth.AuthLogin","error",err.Error())
-		appG.Response(http.StatusOK,407000009,nil)
+		appG.Response(http.StatusOK,407000010,nil)
 		return
 	}
 	if user.Id <= 0 {
 		zgh.ZLog().Error("message","auth.AuthLogin","error","Can get user")
-		appG.Response(http.StatusOK,407000009,nil)
+		appG.Response(http.StatusOK,407000010,nil)
 		return
 	}
 
