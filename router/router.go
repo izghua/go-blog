@@ -11,6 +11,7 @@ import (
 	m2 "github.com/izghua/go-blog/middleware"
 	"github.com/izghua/go-blog/router/auth"
 	"github.com/izghua/go-blog/router/console"
+	"github.com/izghua/go-blog/router/index"
 	"github.com/izghua/go-blog/validate"
 	"github.com/izghua/zgh"
 	"github.com/izghua/zgh/gin/api"
@@ -33,6 +34,7 @@ func RoutersInit() *gin.Engine{
 	consoleSystem := console.NewHome()
 	consoleLink := console.NewLink()
 	consoleAuth := auth.NewAuth()
+	consoleHome := console.NewStatistics()
 	c := r.Group("/console")
 	{
 		p := c.Group("/post")
@@ -94,12 +96,22 @@ func RoutersInit() *gin.Engine{
 			ar.GET("/",m.Permission("console.register.index"),consoleAuth.Register)
 			ar.POST("/",m.Permission("console.register.store"),authRegisterV,consoleAuth.AuthRegister)
 		}
+		h := c.Group("/home")
+		{
+			h.GET("/",m.Permission("console.home.index"),consoleHome.Index)
+		}
 		//p.Use()
 		//{
 		//
 		//}
 	}
 
+	web := index.NewIndex()
+	r.LoadHTMLGlob("template/*")
+	h := r.Group("")
+	{
+		h.GET("/",web.Index)
+	}
 
 
 	//r.Use(m.RouterAsName("last"))

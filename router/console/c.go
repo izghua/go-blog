@@ -31,6 +31,9 @@ type System interface {
 	Update(*gin.Context)
 }
 
+type Statistics interface {
+	Index(*gin.Context)
+}
 
 
 

@@ -22,3 +22,8 @@ func GetUserById(userId int) (*entity.ZUsers, error) {
 	return user,nil
 }
 
+func UserCnt() (cnt int64,err error) {
+	user := new(entity.ZUsers)
+	cnt,err = conf.SqlServer.Count(user)
+	return
+}

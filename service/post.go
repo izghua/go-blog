@@ -458,3 +458,9 @@ func PostUnTrash(postId int) (bool,error) {
 	}
 	return true,nil
 }
+
+func PostCnt() (cnt int64,err error) {
+	post := new(entity.ZPosts)
+	cnt,err = conf.SqlServer.Count(post)
+	return
+}

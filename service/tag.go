@@ -165,3 +165,8 @@ func tags() ([]entity.ZTags, error) {
 	return tags,nil
 }
 
+func TagCnt() (cnt int64,err error) {
+	tag := new(entity.ZTags)
+	cnt,err = conf.SqlServer.Count(tag)
+	return
+}

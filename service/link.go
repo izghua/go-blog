@@ -49,3 +49,9 @@ func LinkDestroy(linkId int) (err error) {
 	_,err = conf.SqlServer.Id(linkId).Delete(link)
 	return
 }
+
+func LinkCnt() (cnt int64,err error) {
+	link := new(entity.ZLinks)
+	cnt,err = conf.SqlServer.Count(link)
+	return
+}

@@ -326,3 +326,8 @@ func allCates() ([]entity.ZCategories,error) {
 	return cates,nil
 }
 
+func CateCnt() (cnt int64,err error) {
+	cate := new(entity.ZCategories)
+	cnt,err = conf.SqlServer.Count(cate)
+	return
+}
