@@ -144,13 +144,13 @@ func RedisInit() {
 
 func JwtInit() {
 	jt := new(jwt.JwtParam)
-	ad := jt.SetDefaultAudience("zgh")
-	jti := jt.SetDefaultJti("izghua")
-	iss := jt.SetDefaultIss("izghua")
-	sk := jt.SetDefaultSecretKey("izghua")
+	ad := jt.SetDefaultAudience(JwtAudience)
+	jti := jt.SetDefaultJti(JwtJti)
+	iss := jt.SetDefaultIss(JwtIss)
+	sk := jt.SetDefaultSecretKey(JwtSecretKey)
 	rc := jt.SetRedisCache(CacheClient)
-	_ = jt.JwtInit(ad,jti,iss,sk,rc)
-
+	tl := jt.SetTokenLife(JwtTokenLife)
+	_ = jt.JwtInit(ad,jti,iss,sk,rc,tl)
 }
 
 func QCaptchaInit() {

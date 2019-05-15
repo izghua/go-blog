@@ -12,7 +12,7 @@ import (
 
 const (
 
-	AppUrl = "http://localhost:8081/static/images/uploads"
+	AppImgUrl = "http://localhost:8081/static/uploads/images/"
 
 	DefaultLimit = "20"
 
@@ -33,13 +33,19 @@ const (
 	HashIdLength = 8
 
 
+	JwtIss = "go-blog"
+	JwtAudience = "blog"
+	JwtJti = "go-blog"
+	JwtSecretKey = "go-blog"
+	JwtTokenLife = time.Hour * time.Duration(3)
+
 	RedisAddr = "localhost:6379"
 	RedisPwd = ""
 	RedisDb = 0
 
 
-	QCaptchaAid = "2040723710"
-	QCaptchaSecreptKey = "0hG5RLcAjsrktVjvV5YRRQQ**"
+	QCaptchaAid = ""
+	QCaptchaSecreptKey = "**"
 
 	BackUpFilePath = "./backup/"
 	BackUpDuration = time.Hour * 24
@@ -48,9 +54,10 @@ const (
 	DataCacheTimeDuration = 720
 	ImgUploadUrl = "http://localhost:8081/console/post/imgUpload"
 	ImgUploadDst = "./static/images/uploads/"
+	ImgUploadBoth = true // img will upload to qiniu and your server local
 
 	//qiniu
-	QiNiuUploadImg = true
+	QiNiuUploadImg = true // if you do not want to upload img to qiniu ,you can set this with false
 	QiNiuHostName = "http://pl89sz86l.bkt.clouddn.com/"
 	QiNiuAccessKey = "Mk80G9bd_VcsLvMamVXhqxrWiChc76Vz3UGlbJqA"
 	QiNiuSecretKey = "us0URcelzGY-mcoSY1Lw3mkZrTP1QCsegRxArTvZ"

@@ -26,6 +26,7 @@ func RoutersInit() *gin.Engine{
 	r.Use(m.CORS(m.CORSOptions{Origin: ""}))
 	r.Use(m.RequestID(m.RequestIDOptions{AllowSetting: true}))
 	r.Use(ginutil.Recovery(recoverHandler))
+	r.Static("/static/uploads/images/","./static/uploads/images/")
 	consolePost := console.NewPost()
 	consoleCate := console.NewCategory()
 	consoleTag := console.NewTag()
@@ -107,7 +108,7 @@ func RoutersInit() *gin.Engine{
 	}
 
 	web := index.NewIndex()
-	r.LoadHTMLGlob("template/*")
+	r.LoadHTMLGlob("/template/home/*")
 	h := r.Group("")
 	{
 		h.GET("/",web.Index)

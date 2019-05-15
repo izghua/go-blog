@@ -282,12 +282,19 @@ func (p *Post)ImgUpload(c *gin.Context) {
 		appG.Response(http.StatusOK,401000005,nil)
 		return
 	}
+
+	// Default upload both
 	data := make(map[string]interface{})
-	if conf.QiNiuUploadImg {
+	if conf.ImgUploadBoth {
 		go service.Qiniu(dst,filename)
-		data["path"] = conf.QiNiuHostName + filename
+		data["path"] = conf.AppImgUrl + filename
 	} else {
-		data["path"] = conf.AppUrl + filename
+		if conf.QiNiuUploadImg {
+			go service.Qiniu(dst,filename)
+			data["path"] = conf.QiNiuHostName + filename
+		} else {
+			data["path"] = conf.AppImgUrl + filename
+		}
 	}
 
 	appG.Response(http.StatusOK,0,data)
