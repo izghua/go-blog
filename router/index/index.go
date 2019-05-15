@@ -23,10 +23,11 @@ func (w *Web)Index(c *gin.Context) {
 	data["he"] = "开玩笑"
 	data["ha"] = "大小"
 
-	//appG := api.Gin{C: c}
-	//appG.Response(http.StatusOK,0,data)
-	c.HTML(http.StatusOK, "index.tmpl", gin.H{
-		"title": "Main website",
-	})
+	c.HTML(
+		http.StatusOK,
+		"index.tmpl",
+		gin.H{
+			"title": "M3ain website",
+		})
 	return
 }

@@ -108,9 +108,10 @@ func RoutersInit() *gin.Engine{
 	}
 
 	web := index.NewIndex()
-	r.LoadHTMLGlob("/template/home/*")
+	r.LoadHTMLGlob("template/home/*")
 	h := r.Group("")
 	{
+
 		h.GET("/",web.Index)
 	}
 
