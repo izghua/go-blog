@@ -27,6 +27,7 @@ func RoutersInit() *gin.Engine{
 	r.Use(m.RequestID(m.RequestIDOptions{AllowSetting: true}))
 	r.Use(ginutil.Recovery(recoverHandler))
 	r.Static("/static/uploads/images/","./static/uploads/images/")
+	//r.Static("/","./static/console/")
 	consolePost := console.NewPost()
 	consoleCate := console.NewCategory()
 	consoleTag := console.NewTag()
@@ -38,6 +39,7 @@ func RoutersInit() *gin.Engine{
 	consoleHome := console.NewStatistics()
 	c := r.Group("/console")
 	{
+		//r.LoadHTMLGlob("static/console/*")
 		p := c.Group("/post")
 		{
 			postV := validate.NewValidate().NewPostV.MyValidate()
