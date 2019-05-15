@@ -1,6 +1,8 @@
 .*
 .idea/vcs.xml
 
+!.gitkeep
+
 backup/*
 !backup/.gitkeep
 
