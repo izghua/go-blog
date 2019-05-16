@@ -7,6 +7,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/izghua/go-blog/conf"
 	"github.com/izghua/go-blog/router"
 )
@@ -16,6 +17,7 @@ func main() {
 	//csrf
 
 	r := router.RoutersInit()
+	fmt.Println("开始运行")
 	_ = r.Run(":8081")
 }
 

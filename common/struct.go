@@ -107,6 +107,10 @@ type ConsoleView struct {
 	Num int `json:"num,omitempty"`
 }
 
+type IndexPostList struct {
+	PostListArr []*ConsolePostList
+	Paginate Paginate
+}
 
 type Paginate struct {
 	Limit int `json:"limit"`

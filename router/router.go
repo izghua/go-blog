@@ -21,13 +21,14 @@ import (
 )
 
 func RoutersInit() *gin.Engine{
-	gin.SetMode(gin.DebugMode)
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.New()
 	r.Use(m.CORS(m.CORSOptions{Origin: ""}))
 	r.Use(m.RequestID(m.RequestIDOptions{AllowSetting: true}))
 	r.Use(ginutil.Recovery(recoverHandler))
 	r.Static("/static/uploads/images/","./static/uploads/images/")
 	//r.Static("/","./static/console/")
+	//r.StaticFS("/",http.Dir("./static/console/"))
 	consolePost := console.NewPost()
 	consoleCate := console.NewCategory()
 	consoleTag := console.NewTag()
@@ -40,6 +41,10 @@ func RoutersInit() *gin.Engine{
 	c := r.Group("/console")
 	{
 		//r.LoadHTMLGlob("static/console/*")
+		r.LoadHTMLGlob("static/console/*.html")
+		//r.LoadHTMLFiles("static/console/*/*")
+		r.Static("/static/console","./static/console")
+		r.StaticFile("/backend/","static/console/index.html")
 		p := c.Group("/post")
 		{
 			postV := validate.NewValidate().NewPostV.MyValidate()
@@ -110,10 +115,13 @@ func RoutersInit() *gin.Engine{
 	}
 
 	web := index.NewIndex()
-	r.LoadHTMLGlob("template/home/*")
+	//r.LoadHTMLGlob("template/home/*")
 	h := r.Group("")
 	{
-
+		r.LoadHTMLGlob("template/home/*.tmpl")
+		//r.LoadHTMLFiles("template/home/*")
+		r.Static("/static/home","./static/home")
+		//r.StaticFile("/","static/home/index.html")
 		h.GET("/",web.Index)
 	}
 

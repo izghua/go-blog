@@ -15,6 +15,7 @@ const (
 	AppImgUrl = "http://localhost:8081/static/uploads/images/"
 
 	DefaultLimit = "20"
+	DefaultIndexLimit = "12"
 
 	DbUser = "root"
 	DbPassword = "Passw0rd"
@@ -75,5 +76,9 @@ const (
 	RecordNumber = "000-0000"
 
 	UserCnt = 2
+
+
+	// index
+	PostIndex = "index:all:post:list"
 )
 

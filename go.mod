@@ -4,6 +4,7 @@ go 1.12
 
 require (
 	github.com/gin-gonic/gin v1.3.0
+	github.com/go-errors/errors v1.0.1
 	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/go-xorm/xorm v0.7.1
 	github.com/izghua/zgh v0.0.20
