@@ -464,3 +464,110 @@ func PostCnt() (cnt int64,err error) {
 	cnt,err = conf.SqlServer.Count(post)
 	return
 }
+
+func PostTagListCount(tagId int, limit int,offset int) (count int64,err error) {
+	postTag := new(entity.ZPostTag)
+	count,err = conf.SqlServer.Where("tag_id = ?",tagId).Desc("id").Limit(limit,offset).Count(postTag)
+	if err != nil {
+		zgh.ZLog().Error("message","service.PostTagListCount","err",err.Error())
+		return 0,err
+	}
+	return
+}
+
+
+func PostTagList(tagId int, limit int,offset int) (postListArr []*common.ConsolePostList,err error) {
+	postTag := new(entity.ZPostTag)
+	rows,err := conf.SqlServer.Where("tag_id = ?",tagId).Desc("id").Limit(limit,offset).Rows(postTag)
+
+	if err != nil {
+		zgh.ZLog().Error("message","service.Index.PostTagList","err",err.Error())
+		return nil,err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		//post
+		postTag := new(entity.ZPostTag)
+		err = rows.Scan(postTag)
+		if err != nil {
+			zgh.ZLog().Error("message","service.Index.PostTagList","err",err.Error())
+			return nil,err
+		}
+
+		post := new(entity.ZPosts)
+		_,err = conf.SqlServer.Id(postTag.PostId).Get(post)
+
+		consolePost := common.ConsolePost{
+			Id: post.Id,
+			Uid: post.Uid,
+			Title: post.Title,
+			Summary: post.Summary,
+			Original: post.Original,
+			Content: post.Content,
+			Password: post.Password,
+			CreatedAt: post.CreatedAt,
+			UpdatedAt: post.UpdatedAt,
+		}
+
+		postList := common.ConsolePostList{
+			Post: consolePost,
+		}
+		postListArr = append(postListArr,&postList)
+	}
+
+	return postListArr,nil
+}
+
+func PostCateListCount(cateId int, limit int,offset int) (count int64,err error) {
+	postCate := new(entity.ZPostCate)
+	count,err = conf.SqlServer.Where("cate_id = ?",cateId).Desc("id").Limit(limit,offset).Count(postCate)
+	if err != nil {
+		zgh.ZLog().Error("message","service.PostCateListCount","err",err.Error())
+		return 0,err
+	}
+	return
+}
+
+func PostCateList(cateId int, limit int,offset int) (postListArr []*common.ConsolePostList,err error) {
+	postCate := new(entity.ZPostCate)
+	rows,err := conf.SqlServer.Where("cate_id = ?",cateId).Desc("id").Limit(limit,offset).Rows(postCate)
+
+	if err != nil {
+		zgh.ZLog().Error("message","service.Index.PostCateList","err",err.Error())
+		return nil,err
+	}
+
+	defer rows.Close()
+	for rows.Next() {
+		//post
+		postCate := new(entity.ZPostCate)
+		err = rows.Scan(postCate)
+		if err != nil {
+			zgh.ZLog().Error("message","service.Index.PostCateList","err",err.Error())
+			return nil,err
+		}
+
+		post := new(entity.ZPosts)
+		_,err = conf.SqlServer.Id(postCate.PostId).Get(post)
+
+		consolePost := common.ConsolePost{
+			Id: post.Id,
+			Uid: post.Uid,
+			Title: post.Title,
+			Summary: post.Summary,
+			Original: post.Original,
+			Content: post.Content,
+			Password: post.Password,
+			CreatedAt: post.CreatedAt,
+			UpdatedAt: post.UpdatedAt,
+		}
+
+		postList := common.ConsolePostList{
+			Post: consolePost,
+		}
+		postListArr = append(postListArr,&postList)
+	}
+
+	return postListArr,nil
+}

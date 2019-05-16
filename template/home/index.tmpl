@@ -1,4 +1,4 @@
-{{define "index"}}
+{{define "pageList"}}
 <section id="hero" class="scrollme">
     <div class="container-fluid element-img"
          style="background: url({{.themeImg}}/index.jpg) no-repeat center center fixed;background-size: cover">
@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 opening-statement">
                     <div class="col-md-4">
-                        <h3><a href="post/43/index.html">{{$post.Post.Title}}</a></h3>
+                        <h3><a href="/post/detail/{{$post.Post.Id}}">{{$post.Post.Title}}</a></h3>
                         <span>
                         <span class="post-meta">
                           <time datetime="{{$post.Post.CreatedAt}}" itemprop="datePublished">
@@ -73,101 +73,15 @@
 
         {{end}}
 
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="post/43/index.html">南北湖 / 奕仙城 / 未完成的一日一夜游小记</a></h3>
-                    <span>
-                        <span class="post-meta">
-                          <time datetime="2018-01-06T06:00:07.000Z" itemprop="datePublished">
-                              2018-01-06
-                          </time>
-                            |
-                            <a href='tags/南北湖/index.html'>南北湖</a>,
-
-                            <a href='tags/奕仙城/index.html'>奕仙城</a>,
-
-                            <a href='tags/Travel/index.html'>Travel</a>
-
-
-                        </span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p>
-                        先来段正规的介绍12345南北湖，浙江省第一批省级风景名胜区、国家AAAA级旅游景区、浙江十大“最佳休闲度假胜地”之一。南北湖，山有层次，水有曲折，海有奇景，村有故事，是我国唯一融山、海、湖、村为一体的全景度假地，依托山海湖·村特色资源，提供多种主题度假方式，感受完美全景度假生活。门票：80元预订：60元海盐本地居民凭
-                        330424 开头的身份证可以办理南北湖旅游年卡，无限次进入南北湖，20元/年年卡办理公众号：nanbeihuly
-                        首
-
-                    </p>
-
-                    <p class="pull-right readMore">
-                        <a href="post/43/index.html">Read More...</a>
-                    </p>
-
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-
-
-
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2 opening-statement">
-                <div class="col-md-4">
-                    <h3><a href="post/42/index.html">Mac 下修改 iTunes 备份文件夹路径</a></h3>
-                    <span>
-                        <span class="post-meta">
-      <time datetime="2017-11-30T11:08:02.000Z" itemprop="datePublished">
-          2017-11-30
-      </time>
-
-
-    |
-    <a href='tags/iPhone/index.html'>iPhone</a>,
-
-    <a href='tags/备份/index.html'>备份</a>,
-
-    <a href='tags/iTunes/index.html'>iTunes</a>
-
-
-</span>
-                    </span>
-                </div>
-                <div class="col-md-8">
-                    <p>
-
-                    <p><img src="http://kieran-hexo.qiniudn.com/hexo_42_1.png" alt="iTunes"></p>
-                    <h3 id="前言"><a href="index.html#前言" class="headerlink" title="前言"></a>前言</h3>
-                    <p>手机电池又不行了，淘宝入了块电池自己换<br>换之前自然先备份下 iPhone<br>但 256GB 的 Mac 内存吃紧，想着备份到移动硬盘上<br>结果找了半天没有在 iTunes
-                        里发现更改备份文件夹的设置<br>无奈搜索一番，在此记录一下<br>
-
-                    </p>
-
-                    <p class="pull-right readMore">
-                        <a href="post/42/index.html">Read More...</a>
-                    </p>
-
-                </div>
-                <div class="clearfix"></div>
-                <hr class="nogutter">
-            </div>
-        </div>
-
 
 
         <nav class="pagination" role="pagination">
-
-            <a class="pull-left" href="../4/index.html" style="float: left;">
-                ← 信息隐藏——LSB算法
-            </a>
-
-
-            <a class="pull-right" href="../1/index.html">
-                Hexo 简单优化 →
-            </a>
-
+            {{if ne .paginate.Last .paginate.Current}}
+                <a class="pull-left" href="/?page={{.paginate.Last}}">← Prev Page</a>
+            {{end}}
+            {{if ne .paginate.Next .paginate.Current}}
+                <a class="pull-right" href="/?page={{.paginate.Next}}">Next Page →</a>
+            {{end}}
         </nav>
     </div>
 </section>

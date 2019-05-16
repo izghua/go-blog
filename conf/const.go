@@ -15,7 +15,7 @@ const (
 	AppImgUrl = "http://localhost:8081/static/uploads/images/"
 
 	DefaultLimit = "20"
-	DefaultIndexLimit = "12"
+	DefaultIndexLimit = "3"
 
 	DbUser = "root"
 	DbPassword = "Passw0rd"
@@ -79,6 +79,11 @@ const (
 
 
 	// index
-	PostIndex = "index:all:post:list"
+	PostIndexKey = "index:all:post:list"
+	TagPostIndexKey = "index:all:tag:post:list"
+	CatePostIndexKey = "index:all:cate:post:list"
+
+	LinkIndexKey = "index:all:link:list"
+	SystemIndexKey = "index:all:system:list"
 )
 

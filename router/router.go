@@ -8,6 +8,7 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/izghua/go-blog/common"
 	m2 "github.com/izghua/go-blog/middleware"
 	"github.com/izghua/go-blog/router/auth"
 	"github.com/izghua/go-blog/router/console"
@@ -17,6 +18,7 @@ import (
 	"github.com/izghua/zgh/gin/api"
 	m "github.com/izghua/zgh/gin/middleware"
 	"github.com/izghua/zgh/gin/util"
+	"html/template"
 	"net/http"
 )
 
@@ -115,14 +117,18 @@ func RoutersInit() *gin.Engine{
 	}
 
 	web := index.NewIndex()
-	//r.LoadHTMLGlob("template/home/*")
 	h := r.Group("")
 	{
+		r.SetFuncMap(template.FuncMap{
+			"rem": common.Rem,
+		})
 		r.LoadHTMLGlob("template/home/*.tmpl")
-		//r.LoadHTMLFiles("template/home/*")
+
 		r.Static("/static/home","./static/home")
 		//r.StaticFile("/","static/home/index.html")
 		h.GET("/",web.Index)
+		h.GET("/categories/:name",web.IndexCate)
+		h.GET("/tags/:name",web.IndexTag)
 	}
 
 

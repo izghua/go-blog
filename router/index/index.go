@@ -7,7 +7,6 @@
 package index
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/izghua/go-blog/conf"
 	"github.com/izghua/go-blog/service"
@@ -23,10 +22,6 @@ func NewIndex() Home {
 }
 
 func (w *Web)Index(c *gin.Context) {
-	//data := make(map[string]string)
-	//data["he"] = "开玩笑"
-	//data["ha"] = "大小"
-
 	// post with paginate
 	// cate
 	// tag
@@ -36,48 +31,94 @@ func (w *Web)Index(c *gin.Context) {
 	queryPage := c.DefaultQuery("page", "1")
 	queryLimit := c.DefaultQuery("limit", conf.DefaultIndexLimit)
 
-	h := gin.H{
-		"themeJs": "/static/home/assets/js",
-		"themeCss": "/static/home/assets/css",
-		"themeImg": "/static/home/assets/img",
-		"themeHLight": "/static/home/assets/highlightjs",
-		"themeFancyboxCss": "/static/home/assets/fancybox",
-		"themeFancyboxJs": "/static/home/assets/fancybox",
-	}
-	postData,err := service.IndexPost(queryPage,queryLimit)
+	h,system,catess,tags,links,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
 		c.HTML(http.StatusOK, "5xx.tmpl", h)
 		return
 	}
 
-	for _,v := range postData.PostListArr {
-		fmt.Println(v)
-	}
-
-
-	cate,err := service.CateListBySort()
+	postData,err := service.IndexPost(queryPage,queryLimit,"default","")
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
 		c.HTML(http.StatusOK, "5xx.tmpl", h)
 		return
 	}
 
-
-
-	h["cate"] = cate
+	h["cates"] = catess
+	h["system"] = system
+	h["links"] = links
+	h["tags"] = tags
 	h["post"] = postData.PostListArr
 	h["paginate"] = postData.Paginate
 	c.HTML(http.StatusOK, "master.tmpl", h)
 	return
 }
 
-func TTest(a int,b int) (bs int,res bool) {
-	if a > b {
-		b++
-		return b,true
-	} else {
-		return b,false
+func (w *Web)IndexTag(c *gin.Context) {
+	queryPage := c.DefaultQuery("page", "1")
+	queryLimit := c.DefaultQuery("limit", conf.DefaultIndexLimit)
+	name := c.Param("name")
+	h,system,cates,tags,links,err := service.CommonData()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Index","err",err.Error())
+		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		return
 	}
 
+	postData,err := service.IndexPost(queryPage,queryLimit,"tag",name)
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Index","err",err.Error())
+		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		return
+	}
+
+	h["cates"] = cates
+	h["system"] = system
+	h["links"] = links
+	h["tags"] = tags
+	h["post"] = postData.PostListArr
+	h["paginate"] = postData.Paginate
+	//funcMap := template.FuncMap{"rem": common.Rem}
+	//t := template.New("tags").Funcs(funcMap)
+	//t = template.Must(t.ParseFiles("template/home/tags.tmpl"))
+	//t.ExecuteTemplate(w, "layout", time.Now())
+
+	c.HTML(http.StatusOK, "tags.tmpl", h)
+	return
 }
+
+func (w *Web)IndexCate(c *gin.Context)  {
+	queryPage := c.DefaultQuery("page", "1")
+	queryLimit := c.DefaultQuery("limit", conf.DefaultIndexLimit)
+	name := c.Param("name")
+
+	h,system,cates,tags,links,err := service.CommonData()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.IndexCate","err",err.Error())
+		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		return
+	}
+
+	postData,err := service.IndexPost(queryPage,queryLimit,"cate",name)
+	if err != nil {
+		zgh.ZLog().Error("message","Index.IndexCate","err",err.Error())
+		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		return
+	}
+
+	h["cates"] = cates
+	h["system"] = system
+	h["links"] = links
+	h["tags"] = tags
+	h["post"] = postData.PostListArr
+	h["paginate"] = postData.Paginate
+	c.HTML(http.StatusOK, "categories.tmpl", h)
+	return
+
+}
+
+func (w *Web)Archives(c *gin.Context) {
+
+}
+

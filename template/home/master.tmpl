@@ -111,17 +111,15 @@ $$          $$$o       "o$$o$"$$"$$o$$o$$"$$o"       $$$          ""o
     <!-- Lists in Slidebars -->
     <ul class="sb-menu">
         <li><a href="/" class="animsition-link" title="Home">Home</a></li>
-        <li><a href="archives" class="animsition-link" title="archive">archives</a></li>
+        {{/*<li><a href="archives" class="animsition-link" title="archive">archives</a></li>*/}}
         <!-- Dropdown Menu -->
 
         <li>
             <a class="sb-toggle-submenu">Tags<span class="sb-caret"></span></a>
             <ul class="sb-submenu">
-
-                <li><a href="https://github.com/SuperKieran/TKL" target="_BLANK" class="animsition-link">TKL (Hexo Theme)</a></li>
-
-                <li><a href="https://superkieran.github.io/WooyunDrops/" target="_BLANK" class="animsition-link">Wooyun Drops</a></li>
-
+                {{ range $i,$tag := .tags }}
+                    <li><a href="/tags/{{$tag.Name}}" target="_BLANK" class="animsition-link">{{$tag.DisplayName}}<small>({{$tag.Num}})</small></a></li>
+                {{ end }}
             </ul>
         </li>
 
@@ -129,29 +127,9 @@ $$          $$$o       "o$$o$"$$"$$o$$o$$"$$o"       $$$          ""o
         <li>
             <a class="sb-toggle-submenu">Categories<span class="sb-caret"></span></a>
             <ul class="sb-submenu">
-
-                <li><a href="categories/C-Cpp/index.html" class="animsition-link">C/Cpp<small>(2)</small></a></li>
-
-                <li><a href="categories/CSS3/index.html" class="animsition-link">CSS3<small>(1)</small></a></li>
-
-                <li><a href="categories/Hexo/index.html" class="animsition-link">Hexo<small>(2)</small></a></li>
-
-                <li><a href="categories/IS/index.html" class="animsition-link">IS<small>(3)</small></a></li>
-
-                <li><a href="categories/JavaScript/index.html" class="animsition-link">JavaScript<small>(6)</small></a></li>
-
-                <li><a href="categories/Misc/index.html" class="animsition-link">Misc<small>(10)</small></a></li>
-
-                <li><a href="categories/Node-js/index.html" class="animsition-link">Node.js<small>(3)</small></a></li>
-
-                <li><a href="categories/Raspberrypi/index.html" class="animsition-link">Raspberrypi<small>(6)</small></a></li>
-
-                <li><a href="categories/React/index.html" class="animsition-link">React<small>(1)</small></a></li>
-
-                <li><a href="categories/Travel/index.html" class="animsition-link">Travel<small>(1)</small></a></li>
-
-                <li><a href="categories/XSS-CSRF/index.html" class="animsition-link">XSS/CSRF<small>(2)</small></a></li>
-
+                {{ range $i,$cate := .cates }}
+                    <li><a href="/categories/{{$cate.Cates.Name}}" class="animsition-link">{{ $cate.Html}}{{$cate.Cates.DisplayName}}</a></li>
+                {{end}}
             </ul>
         </li>
 
@@ -159,46 +137,17 @@ $$          $$$o       "o$$o$"$$"$$o$$o$$"$$o"       $$$          ""o
         <li>
             <a class="sb-toggle-submenu">Links<span class="sb-caret"></span></a>
             <ul class="sb-submenu">
-
-                <li><a href="https://feddy.org/" class="animsition-link">Feddy</a></li>
-
-                <li><a href="http://firefire.kieran.top/" class="animsition-link">FireFire</a></li>
-
-                <li><a href="http://www.jianshu.com/u/8830c9588a04" class="animsition-link">懒懒</a></li>
-
-                <li><a href="http://miibotree.com/" class="animsition-link">Miibotree</a></li>
-
-                <li><a href="http://homeway.me/" class="animsition-link">小草</a></li>
-
-                <li><a href="http://www.nohackair.net/" class="animsition-link">Airbasic</a></li>
-
-                <li><a href="http://pnck.github.io/" class="animsition-link">pnck</a></li>
-
-                <li><a href="http://edward-l.github.io/" class="animsition-link">Edward</a></li>
-
-                <li><a href="http://siida.me/" class="animsition-link">Eric</a></li>
-
-                <li><a href="https://blog.ibrother.me/" class="animsition-link">ibrother</a></li>
-
-                <li><a href="http://makaiqian.com/" class="animsition-link">小麻雀</a></li>
-
-                <li><a href="http://www.iphpt.com/" class="animsition-link">叶落山城秋</a></li>
-
-                <li><a href="http://cheesemucha.cn/" class="animsition-link">Echo</a></li>
-
-                <li><a href="https://www.techrex.net/" class="animsition-link">Techrex</a></li>
-
-                <li><a href="https://i.jakeyu.top/" class="animsition-link">Jakeyu</a></li>
-
-                <li><a href="http://3den.farbox.com/" class="animsition-link">Eric(ZZ)</a></li>
-
+                {{ range $i,$link := .links }}
+                    <li><a href="{{$link.Link}}" class="animsition-link">{{$link.Name}}</a></li>
+                {{end}}
+                <li><a href="https://www.iphpt.com/" class="animsition-link">叶落山城秋</a></li>
             </ul>
         </li>
 
     </ul>
     <!-- Lists in Slidebars -->
     <ul class="sb-menu secondary">
-        <li><a href="about.html" class="animsition-link" title="about">About</a></li>
+        <li><a href="/post/detail/1" class="animsition-link" title="about">About</a></li>
 {{/*        <li><a href="atom.xml" class="animsition-link" title="rss">RSS</a></li>*/}}
         <li><a href="/archive" class="animsition-link" title="Archive">Archive</a></li>
 
@@ -254,7 +203,7 @@ $$          $$$o       "o$$o$"$$"$$o$$o$$"$$o"       $$$          ""o
     <!-- ============================ Header & Logo bar =========================== -->
 
 
-    {{template "index" .}}
+    {{template "pageList" .}}
     <!-- ============================ Content =========================== -->
 
 

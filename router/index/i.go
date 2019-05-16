@@ -10,4 +10,7 @@ import "github.com/gin-gonic/gin"
 
 type Home interface {
 	Index(*gin.Context)
+	IndexTag(*gin.Context)
+	IndexCate(*gin.Context)
+	Archives(*gin.Context)
 }
