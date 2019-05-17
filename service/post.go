@@ -14,6 +14,7 @@ import (
 	"github.com/izghua/zgh"
 	"github.com/microcosm-cc/bluemonday"
 	"gopkg.in/russross/blackfriday.v2"
+	"html/template"
 	"time"
 )
 
@@ -278,10 +279,134 @@ func PostDetail(postId int) (p *entity.ZPosts,err error) {
 	post := new(entity.ZPosts)
 	_,err = conf.SqlServer.Where("id = ?",postId).Get(post)
 	if err != nil {
-		zgh.ZLog().Error("message","service.PostEdit","err",err.Error())
+		zgh.ZLog().Error("message","service.PostDetail","err",err.Error())
 		return  post,err
 	}
 	return post,nil
+}
+
+func IndexPostDetailDao(postId int) (postDetail common.IndexPostDetail,err error) {
+	post := new(entity.ZPosts)
+	_,err = conf.SqlServer.Where("id = ?",postId).Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Get(post)
+	if err != nil {
+		zgh.ZLog().Error("message","service.IndexPostDetailDao","err",err.Error())
+		return
+	}
+
+	Post := common.IndexPost{
+		Id: post.Id,
+		Uid: post.Uid,
+		Title: post.Title,
+		Summary: post.Summary,
+		Original: post.Original,
+		Content: template.HTML(post.Content),
+		Password: post.Password,
+		CreatedAt: post.CreatedAt,
+		UpdatedAt: post.UpdatedAt,
+	}
+
+
+	tags,err := PostIdTags(postId)
+	if err != nil {
+		zgh.ZLog().Error("message","service.IndexPostDetailDao","err",err.Error())
+		return
+	}
+	var Tags []common.ConsoleTag
+	for _,v := range tags {
+		consoleTag := common.ConsoleTag{
+			Id: v.Id,
+			Name: v.Name,
+			DisplayName: v.DisplayName,
+			SeoDesc: v.SeoDesc,
+			Num: v.Num,
+		}
+		Tags = append(Tags,consoleTag)
+	}
+
+	cate,err := PostCates(postId)
+	if err != nil {
+		zgh.ZLog().Error("message","service.IndexPostDetailDao","err",err.Error())
+		return
+	}
+	Cate := common.ConsoleCate{
+		Id: cate.Id,
+		Name: cate.Name,
+		DisplayName: cate.DisplayName,
+		SeoDesc: cate.SeoDesc,
+	}
+
+	//view
+	view,err := PostView(post.Id)
+	if err != nil {
+		zgh.ZLog().Error("message","service.IndexPostDetailDao","err",err.Error())
+		return
+	}
+	View := common.ConsoleView{
+		Num: view.Num,
+	}
+
+	//user
+	user,err := GetUserById(post.UserId)
+	if err != nil {
+		zgh.ZLog().Error("message","service.IndexPostDetailDao","err",err.Error())
+		return
+	}
+	Author := common.ConsoleUser{
+		Id: user.Id,
+		Name: user.Name,
+		Email: user.Email,
+		Status: user.Status,
+	}
+
+	// last post
+	lastPost,err := LastPost(postId)
+	if err != nil {
+		zgh.ZLog().Error("message","service.IndexPostDetailDao","err",err.Error())
+		return
+	}
+
+	// next post
+	nextPost,err := NextPost(postId)
+	if err != nil {
+		zgh.ZLog().Error("message","service.IndexPostDetailDao","err",err.Error())
+		return
+	}
+
+	postDetail = common.IndexPostDetail{
+		Post: Post,
+		Category: Cate,
+		Tags: Tags,
+		View: View,
+		Author: Author,
+		LastPost: lastPost,
+		NextPost: nextPost,
+	}
+
+	return postDetail,nil
+}
+
+func LastPost(postId int) (post *entity.ZPosts,err error)  {
+	post = new(entity.ZPosts)
+	_,err = conf.SqlServer.Where("id < ?",postId).Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Desc("id").Get(post)
+	return
+}
+
+func NextPost(postId int) (post *entity.ZPosts,err error)  {
+	post = new(entity.ZPosts)
+	_,err = conf.SqlServer.Where("id > ?",postId).Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Desc("id").Get(post)
+	return
+}
+
+
+func PostIdTags(postId int) (tags []*entity.ZTags,err error)  {
+	tagIds,err :=  PostIdTag(postId)
+	if err != nil {
+		zgh.ZLog().Error("message","service.PostIdTags","err",err.Error())
+		return
+	}
+	//tags = make([]entity.ZTags,0)
+	err = conf.SqlServer.In("id",tagIds).Find(&tags)
+	return
 }
 
 func PostIdTag(postId int) (tagIds []int,err error) {
@@ -296,6 +421,21 @@ func PostIdTag(postId int) (tagIds []int,err error) {
 		tagIds = append(tagIds,v.TagId)
 	}
 	return tagIds,nil
+}
+
+func PostCates(postId int) (cate *entity.ZCategories,err error) {
+	cateId,err := PostCate(postId)
+	if err != nil {
+		zgh.ZLog().Error("message","service.PostCates","err",err.Error())
+		return
+	}
+	cate = new(entity.ZCategories)
+	_,err = conf.SqlServer.Id(cateId).Get(cate)
+	if err != nil {
+		zgh.ZLog().Error("message","service.PostCates","err",err.Error())
+		return
+	}
+	return
 }
 
 func PostCate(postId int) (int,error) {

@@ -6,7 +6,10 @@
  */
 package common
 
-import "strconv"
+import (
+	"strconv"
+	"time"
+)
 
 func Offset(page string,limit string) (limitInt int,offset int) {
 	pageInt,err := strconv.Atoi(page)
@@ -94,4 +97,8 @@ func Rem(divisor int) bool {
 	} else {
 		return false
 	}
+}
+
+func MDate(times time.Time) string {
+	return times.Format("2006-01-02")
 }

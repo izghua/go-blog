@@ -6,7 +6,6 @@
  */
 package common
 
-
 var Permissions  = []string{
 	"GET/console.post.index",
 	"GET/console.post.create",
@@ -34,6 +33,9 @@ var Permissions  = []string{
 	"GET/console.link.edit",
 	"PUT/console.link.update",
 	"DELETE/console.link.destroy",
+	"DELETE/console.auth.logout",
+	"GET/console.home.index",
+	"DELETE/console.auth.cache",
 }
 
 func CheckPermissions(permission string,method string) bool  {

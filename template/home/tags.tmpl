@@ -1,4 +1,4 @@
-{{define "pageList"}}
+{{define "tagList"}}
 <section id="hero" class="scrollme">
     <div class="container-fluid element-img" style="background: url({{.themeImg}}/tags.jpg) no-repeat center center fixed;background-size: cover">
         <div class="row">
@@ -34,7 +34,7 @@
                         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
                             <h4 class="title"><a href="/detail/{{$value.Post.Id}}">{{$value.Post.Title}}</a></h4>
 
-                            <p><time datetime="{{$value.Post.CreatedAt}}"><a href="/detail/{{$value.Post.Id}}">       {{ $value.Post.CreatedAt}}</a></time></p>
+                            <p><time datetime="{{$value.Post.CreatedAt}}"><a href="/detail/{{$value.Post.Id}}">       {{MDate $value.Post.CreatedAt}}</a></time></p>
                         </div>
 
                         {{if rem $key}}

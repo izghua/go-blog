@@ -8,6 +8,7 @@ package index
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
 	"github.com/izghua/go-blog/service"
 	"github.com/izghua/zgh"
@@ -15,6 +16,7 @@ import (
 )
 
 type Web struct {
+	ApiController
 }
 
 func NewIndex() Home {
@@ -22,101 +24,119 @@ func NewIndex() Home {
 }
 
 func (w *Web)Index(c *gin.Context) {
-	// post with paginate
-	// cate
-	// tag
-	// link
-	// system
-
+	w.C = c
 	queryPage := c.DefaultQuery("page", "1")
 	queryLimit := c.DefaultQuery("limit", conf.DefaultIndexLimit)
 
-	h,system,catess,tags,links,err := service.CommonData()
+	h,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
-		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		w.Response(http.StatusOK,408000000,h)
 		return
 	}
 
 	postData,err := service.IndexPost(queryPage,queryLimit,"default","")
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
-		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		w.Response(http.StatusOK,408000001,h)
 		return
 	}
 
-	h["cates"] = catess
-	h["system"] = system
-	h["links"] = links
-	h["tags"] = tags
 	h["post"] = postData.PostListArr
 	h["paginate"] = postData.Paginate
-	c.HTML(http.StatusOK, "master.tmpl", h)
+	w.Response(http.StatusOK,0,h)
 	return
 }
 
 func (w *Web)IndexTag(c *gin.Context) {
+	w.C = c
 	queryPage := c.DefaultQuery("page", "1")
 	queryLimit := c.DefaultQuery("limit", conf.DefaultIndexLimit)
 	name := c.Param("name")
-	h,system,cates,tags,links,err := service.CommonData()
+	h,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
-		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		w.Response(http.StatusOK,408000000,h)
 		return
 	}
 
 	postData,err := service.IndexPost(queryPage,queryLimit,"tag",name)
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
-		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		w.Response(http.StatusOK,408000001,h)
 		return
 	}
 
-	h["cates"] = cates
-	h["system"] = system
-	h["links"] = links
-	h["tags"] = tags
 	h["post"] = postData.PostListArr
 	h["paginate"] = postData.Paginate
-	//funcMap := template.FuncMap{"rem": common.Rem}
-	//t := template.New("tags").Funcs(funcMap)
-	//t = template.Must(t.ParseFiles("template/home/tags.tmpl"))
-	//t.ExecuteTemplate(w, "layout", time.Now())
+	h["tem"] = "tagList"
 
-	c.HTML(http.StatusOK, "tags.tmpl", h)
+	c.HTML(http.StatusOK, "master.tmpl", h)
 	return
 }
 
 func (w *Web)IndexCate(c *gin.Context)  {
+	w.C = c
 	queryPage := c.DefaultQuery("page", "1")
 	queryLimit := c.DefaultQuery("limit", conf.DefaultIndexLimit)
 	name := c.Param("name")
 
-	h,system,cates,tags,links,err := service.CommonData()
+	h,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.IndexCate","err",err.Error())
-		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		w.Response(http.StatusOK,408000000,h)
 		return
 	}
 
 	postData,err := service.IndexPost(queryPage,queryLimit,"cate",name)
 	if err != nil {
 		zgh.ZLog().Error("message","Index.IndexCate","err",err.Error())
-		c.HTML(http.StatusOK, "5xx.tmpl", h)
+		w.Response(http.StatusOK,408000001,h)
 		return
 	}
 
-	h["cates"] = cates
-	h["system"] = system
-	h["links"] = links
-	h["tags"] = tags
 	h["post"] = postData.PostListArr
 	h["paginate"] = postData.Paginate
-	c.HTML(http.StatusOK, "categories.tmpl", h)
+	h["tem"] = "cateList"
+	w.Response(http.StatusOK,0,h)
 	return
 
 }
+
+func (w *Web)Detail(c *gin.Context) {
+	w.C = c
+	postIdStr := c.Param("id")
+
+	h,err := service.CommonData()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Detail","err",err.Error())
+		w.Response(http.StatusOK,408000000,h)
+		return
+	}
+
+	postDetail,err :=  service.IndexPostDetail(postIdStr)
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Detail","err",err.Error())
+		w.Response(http.StatusOK,408000002,h)
+		return
+	}
+
+	go service.PostViewAdd(postIdStr)
+
+	github := common.IndexGithubParam{
+		GithubName: conf.GithubName,
+		GithubRepo: conf.GithubRepo,
+		GithubClientId: conf.GithubClientId,
+		GithubClientSecret: conf.GithubClientSecret,
+	}
+
+	h["post"] = postDetail
+	h["github"] = github
+	h["tem"] = "detail"
+	w.Response(http.StatusOK,0,h)
+	return
+}
+
 
 func (w *Web)Archives(c *gin.Context) {
 

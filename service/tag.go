@@ -8,6 +8,7 @@ package service
 
 import (
 	"encoding/json"
+	"github.com/go-errors/errors"
 	"github.com/go-redis/redis"
 	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
@@ -17,13 +18,25 @@ import (
 )
 
 func TagStore(ts common.TagStore) (err error)  {
-	tag := &entity.ZTags{
+	tag := new(entity.ZTags)
+	_,err = conf.SqlServer.Where("name = ?",ts.Name).Get(tag)
+	if err != nil {
+		zgh.ZLog().Error("message","service.TagStore","error",err.Error())
+		return err
+	}
+
+	if tag.Id > 0 {
+		zgh.ZLog().Error("message","service.TagStore","error","Tag has exists")
+		return errors.New("Tag has exists")
+	}
+
+	tagInsert := &entity.ZTags{
 		Name: ts.Name,
 		DisplayName: ts.DisplayName,
 		SeoDesc: ts.SeoDesc,
 		Num: 0,
 	}
-	_,err = conf.SqlServer.Insert(tag)
+	_,err = conf.SqlServer.Insert(tagInsert)
 	conf.CacheClient.Del(conf.TagListKey)
 	return
 }

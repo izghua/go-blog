@@ -12,5 +12,6 @@ type Home interface {
 	Index(*gin.Context)
 	IndexTag(*gin.Context)
 	IndexCate(*gin.Context)
+	Detail(*gin.Context)
 	Archives(*gin.Context)
 }

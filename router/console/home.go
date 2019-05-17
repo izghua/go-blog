@@ -98,13 +98,13 @@ func (h *HomeStatistics)Index(c *gin.Context)  {
 		Title: "标签总数",
 		Icon: "md-share",
 		Count: tagCnt,
-		Color: "#ed3f14",
+		Color: "#39ed14",
 	}
 	data = append(data,tcnt)
 	qcnt := Res{
-		Title: "未知问题",
-		Icon: "md-share",
-		Count: 999,
+		Title: "未知BUG",
+		Icon: "ios-bug",
+		Count: 998,
 		Color: "#ed3f14",
 	}
 	data = append(data,qcnt)

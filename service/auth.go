@@ -48,3 +48,7 @@ func UserStore(ar common.AuthRegister) (user *entity.ZUsers, err error) {
 	fmt.Println(userInsert.Id)
 	return
 }
+
+func DelAllCache() {
+	conf.CacheClient.Del(conf.CateListKey,conf.TagListKey,conf.PostIndexKey,conf.TagPostIndexKey,conf.CatePostIndexKey,conf.LinkIndexKey,conf.SystemIndexKey,conf.PostDetailIndexKey)
+}

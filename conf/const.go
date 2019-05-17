@@ -54,7 +54,7 @@ const (
 
 	DataCacheTimeDuration = 720
 	ImgUploadUrl = "http://localhost:8081/console/post/imgUpload"
-	ImgUploadDst = "./static/images/uploads/"
+	ImgUploadDst = "./static/uploads/images/"
 	ImgUploadBoth = true // img will upload to qiniu and your server local
 
 	//qiniu
@@ -85,5 +85,13 @@ const (
 
 	LinkIndexKey = "index:all:link:list"
 	SystemIndexKey = "index:all:system:list"
+
+	PostDetailIndexKey = "index:post:detail"
+
+	// github gitment
+	GithubName = "xzghua"
+	GithubRepo = "ttest"
+	GithubClientId = "e298594e1aae93dbdaa7"
+	GithubClientSecret = "02fd3cccdd51d28ec861aa509fd73bb0a5c15ca1"
 )
 

@@ -1,0 +1,88 @@
+{{define "detail"}}
+    <link rel="stylesheet" href="{{.themeHLightCss}}/darcula.css" type="text/css">
+    <link rel="stylesheet" href="{{.themeShareCss}}/share.min.css" type="text/css">
+    <script src="{{.themeShareJs}}/qrcode.js"></script>
+    <script src="{{.themeShareJs}}/social-share.min.js"></script>
+    <script src="{{.themeHLightJs}}/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+
+    <section id="intro">
+    <div class="container">
+        <div class="row col-md-offset-2">
+            <div class="col-md-8">
+    			<span class="post-meta">
+                  <time datetime="{{.post.Post.CreatedAt}}" itemprop="datePublished">
+                      {{.post.Post.CreatedAt}}
+                  </time>
+                        |
+                    {{range $k,$v := .post.Tags}}
+                        <a href='../../tags/{{$v.Name}}'>{{$v.DisplayName}}</a>,
+                    {{end}}
+                </span>
+                <h1>{{ .post.Post.Title}}</h1>
+            </div>
+        </div>
+        <div class="col-md-8 col-md-offset-2">
+            {{ .post.Post.Content}}
+            <div class="clearfix"></div>
+            <hr class="nogutter">
+            <span style="color: #19A1F9">欢迎转载,但请附上原文地址哦,尊重原创,谢谢大家 本文地址: <a style="color: #19A1F9" href="/detail/{{.post.Post.Id}}}}/">https://www.iphpt.com/detail/{{.post.Post.Id}}/</a></span>
+            <hr class="nogutter">
+            <div class="social-share"></div>
+        </div>
+
+        <nav class="m-pagination col-md-8 col-md-offset-2 col-sm-24" role="pagination">
+
+            {{if gt .post.LastPost.Id 0 }}
+                <a class="pull-left" href="/detail/{{.post.LastPost.Id}}" style="float: left;max-width:35%;">
+                    ←
+                    <span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;"> {{.post.LastPost.Title}}</span>
+                </a>
+            {{end}}
+
+            {{if gt .post.NextPost.Id 0 }}
+                <a class="pull-right" href="/detail/{{ .post.NextPost.Id}}" style="max-width:35%;float: right;">
+                    <span style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;">{{ .post.NextPost.Title}}</span>
+                    →
+                </a>
+            {{end}}
+        </nav>
+
+    </div>
+        <div  style="text-align: center;width: 45%;margin: auto;">
+            <div id='comments'></div>
+        </div>
+    </section>
+    <div>
+            <script>
+                var $config = {
+                    title               : {{ .psot.Post.Title }},
+                    description         : {{ .psot.Post.Summary }},
+                    wechatQrcodeTitle   : "微信扫一扫：分享", // 微信二维码提示文字
+                    wechatQrcodeHelper  : '<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈.。</p>',
+                    disabled            : ['facebook', 'twitter'],
+                };
+                socialShare('.social-share', $config);
+            </script>
+            <div class="col-md-8 col-md-offset-2 col-sm-24">
+                <div id="container"></div>
+                <link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+                <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+                <script>
+                    const gitment = new Gitment({
+                        {{/*id: {{ .post.Post.Id }}, // optional*/}}
+                        owner: {{ .github.GithubName }},
+                        repo: {{ .github.GithubRepo }},
+                        title: {{ .post.Post.Title }},
+                        oauth: {
+                            client_id: {{ .github.GithubClientId }},
+                            client_secret: {{ .github.GithubClientSecret }},
+                        },
+                    });
+                    gitment.render('comments')
+                </script>
+            </div>
+        </div>
+
+{{end}}

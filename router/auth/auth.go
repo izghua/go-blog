@@ -27,6 +27,8 @@ type ConsoleAuth interface {
 	AuthRegister(*gin.Context)
 	Login(*gin.Context)
 	AuthLogin(*gin.Context)
+	Logout(*gin.Context)
+	DelCache(*gin.Context)
 }
 
 
@@ -181,5 +183,31 @@ func (c *Auth) AuthLogin(ctx *gin.Context) {
 		return
 	}
 	appG.Response(http.StatusOK,0,token)
+	return
+}
+
+func (c *Auth)Logout(ctx *gin.Context) {
+	appG := api.Gin{C: ctx}
+	token,exist := ctx.Get("token")
+	if !exist || token == ""{
+		zgh.ZLog().Error("message","auth.Logout","error","Can not get token")
+		appG.Response(http.StatusOK,400001004,nil)
+		return
+	}
+	_,err := jwt.UnsetToken(token.(string))
+	if err != nil {
+		zgh.ZLog().Error("message","auth.Logout","error",err.Error())
+		appG.Response(http.StatusOK,407000014,nil)
+		return
+	}
+	appG.Response(http.StatusOK,0,token)
+	return
+}
+
+
+func (c *Auth)DelCache(ctx *gin.Context) {
+	appG := api.Gin{C: ctx}
+	service.DelAllCache()
+	appG.Response(http.StatusOK,0,nil)
 	return
 }

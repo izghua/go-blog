@@ -41,14 +41,13 @@
             <div class="row">
                 <div class="col-md-8 col-md-offset-2 opening-statement">
                     <div class="col-md-4">
-                        <h3><a href="/post/detail/{{$post.Post.Id}}">{{$post.Post.Title}}</a></h3>
+                        <h3><a href="/detail/{{$post.Post.Id}}">{{$post.Post.Title}}</a></h3>
                         <span>
                         <span class="post-meta">
                           <time datetime="{{$post.Post.CreatedAt}}" itemprop="datePublished">
                               {{$post.Post.CreatedAt}}
                           </time>
                             |
-
                             {{ range $t,$tag := $post.Tags }}
                                 <a href='tags/{{$tag.Name}}'>{{$tag.DisplayName}}</a>
                                 ,
@@ -58,11 +57,11 @@
                     </div>
                     <div class="col-md-8">
                         <p>
-                            {{$post.Post.Summary}}
+                            {{$post.Post.Summary}} ...
                         </p>
 
                         <p class="pull-right readMore">
-                            <a href="post/ {{$post.Post.Id}}">Read More...</a>
+                            <a href="detail/{{$post.Post.Id}}">Read More...</a>
                         </p>
 
                     </div>
@@ -72,7 +71,6 @@
             </div>
 
         {{end}}
-
 
 
         <nav class="pagination" role="pagination">

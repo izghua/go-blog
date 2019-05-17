@@ -23,7 +23,7 @@ func Permission(routerAsName string) gin.HandlerFunc {
 		fmt.Println(routerAsName,c.Request.Method)
 		res :=  common.CheckPermissions(routerAsName,c.Request.Method)
 		if !res {
-			zgh.ZLog().Error("method","middleware.Permission","info","router permission")
+			zgh.ZLog().Error("method","middleware.Permission","info","router permission","router name",routerAsName,"method",c.Request.Method)
 			apiG.Response(http.StatusOK,400001005,nil)
 			return
 		}
@@ -53,6 +53,7 @@ func Permission(routerAsName string) gin.HandlerFunc {
 			return
 		}
 		c.Set("userId",userIdInt)
+		c.Set("token",token)
 		//if routerAsName == "" {
 		//	apiG.Response(http.StatusOK,0,nil)
 		//	return

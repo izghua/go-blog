@@ -59,6 +59,17 @@ func DelCateRel(cateId int) {
 
 func CateStore(cs common.CateStore) (bool,error) {
 
+	defaultCate := new(entity.ZCategories)
+	_,err := conf.SqlServer.Where("name = ?",cs.Name).Get(defaultCate)
+	if err != nil {
+		zgh.ZLog().Error("message","service.CateStore","err",err.Error())
+		return false,err
+	}
+	if defaultCate.Id > 0 {
+		zgh.ZLog().Error("message","service.CateStore","err","Cate has exists ")
+		return false,errors.New("Tag has exists ")
+	}
+
 	if cs.ParentId > 0 {
 		cate := new(entity.ZCategories)
 		_,err := conf.SqlServer.Id(cs.ParentId).Get(cate)
@@ -78,7 +89,7 @@ func CateStore(cs common.CateStore) (bool,error) {
 		SeoDesc: cs.SeoDesc,
 		ParentId: cs.ParentId,
 	}
-	_,err := conf.SqlServer.Insert(cate)
+	_,err = conf.SqlServer.Insert(cate)
 	if err != nil {
 		zgh.ZLog().Error("message","service.CateStore","err",err.Error())
 		return false,err

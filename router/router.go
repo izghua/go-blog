@@ -29,6 +29,7 @@ func RoutersInit() *gin.Engine{
 	r.Use(m.RequestID(m.RequestIDOptions{AllowSetting: true}))
 	r.Use(ginutil.Recovery(recoverHandler))
 	r.Static("/static/uploads/images/","./static/uploads/images/")
+	//r.StaticFile("/*","./static/uploads/images/")
 	//r.Static("/","./static/console/")
 	//r.StaticFS("/",http.Dir("./static/console/"))
 	consolePost := console.NewPost()
@@ -94,6 +95,15 @@ func RoutersInit() *gin.Engine{
 			link.PUT("/:id",m2.Permission("console.link.update"),linkV,consoleLink.Update)
 			link.DELETE("/:id",m2.Permission("console.link.destroy"),consoleLink.Destroy)
 		}
+		c.DELETE("/logout",m2.Permission("console.auth.logout"),consoleAuth.Logout)
+		c.DELETE("/cache",m2.Permission("console.auth.cache"),consoleAuth.DelCache)
+		h := c.Group("/home")
+		{
+			h.GET("/",m2.Permission("console.home.index"),consoleHome.Index)
+		}
+
+		// 不需要登录状态权限
+
 		al := c.Group("/login")
 		{
 			authLoginV := validate.NewValidate().NewAuthLoginV.MyValidate()
@@ -106,14 +116,6 @@ func RoutersInit() *gin.Engine{
 			ar.GET("/",m.Permission("console.register.index"),consoleAuth.Register)
 			ar.POST("/",m.Permission("console.register.store"),authRegisterV,consoleAuth.AuthRegister)
 		}
-		h := c.Group("/home")
-		{
-			h.GET("/",m.Permission("console.home.index"),consoleHome.Index)
-		}
-		//p.Use()
-		//{
-		//
-		//}
 	}
 
 	web := index.NewIndex()
@@ -121,14 +123,18 @@ func RoutersInit() *gin.Engine{
 	{
 		r.SetFuncMap(template.FuncMap{
 			"rem": common.Rem,
+			"MDate": common.MDate,
 		})
 		r.LoadHTMLGlob("template/home/*.tmpl")
 
 		r.Static("/static/home","./static/home")
+		//r.Static("/static/uploads/images/","./static/uploads/images/")
+		//r.StaticFS("/static/*",)
 		//r.StaticFile("/","static/home/index.html")
 		h.GET("/",web.Index)
 		h.GET("/categories/:name",web.IndexCate)
 		h.GET("/tags/:name",web.IndexTag)
+		h.GET("/detail/:id",web.Detail)
 	}
 
 

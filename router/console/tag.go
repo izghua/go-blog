@@ -8,7 +8,6 @@
 package console
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
@@ -66,7 +65,6 @@ func (t *Tag)Store(c *gin.Context) {
 		return
 	}
 	var ts common.TagStore
-	fmt.Println(requestJson,"000000")
 	ts,ok := requestJson.(common.TagStore)
 	if !ok {
 		zgh.ZLog().Error("message","Tag.Store","error","request_params turn to error")

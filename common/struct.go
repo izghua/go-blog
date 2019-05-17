@@ -7,6 +7,8 @@
 package common
 
 import (
+	"github.com/izghua/go-blog/entity"
+	"html/template"
 	"time"
 )
 
@@ -121,3 +123,33 @@ type Paginate struct {
 	Next int `json:"next"`
 }
 
+type IndexPost struct {
+	Id        int 	`json:"id,omitempty"`
+	Uid       string `json:"uid,omitempty"`
+	UserId    int `json:"userId,omitempty"`
+	Title     string `json:"title,omitempty"`
+	Summary   string `json:"summary,omitempty"`
+	Original  string `json:"original,omitempty"`
+	Content   template.HTML `json:"content,omitempty"`
+	Password  string `json:"password,omitempty"`
+	DeletedAt time.Time `json:"deletedAt,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+}
+
+type IndexPostDetail struct {
+	Post IndexPost `json:"post,omitempty"`
+	Tags []ConsoleTag `json:"tags,omitempty"`
+	Category ConsoleCate `json:"category,omitempty"`
+	View ConsoleView `json:"view,omitempty"`
+	Author ConsoleUser `json:"author,omitempty"`
+	LastPost *entity.ZPosts `json:"lastPost,omitempty"`
+	NextPost *entity.ZPosts `json:"nextPost,omitempty"`
+}
+
+type IndexGithubParam struct {
+	GithubName  string
+	GithubRepo string
+	GithubClientId string
+	GithubClientSecret string
+}
