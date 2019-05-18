@@ -131,6 +131,7 @@ func RoutersInit() *gin.Engine{
 		//r.Static("/static/uploads/images/","./static/uploads/images/")
 		//r.StaticFS("/static/*",)
 		//r.StaticFile("/","static/home/index.html")
+		
 		h.GET("/",web.Index)
 		h.GET("/categories/:name",web.IndexCate)
 		h.GET("/tags/:name",web.IndexTag)
