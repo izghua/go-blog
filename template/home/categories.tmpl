@@ -32,28 +32,28 @@
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <div class="row boxes">
-                        {{ range $key,$value := .posts }}
+                        {{ range $key,$value := .post }}
                         <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 wow fadeInUp" data-wow-delay="0.3s">
-
                             <h4 class="title"><a href="/detail/{{$value.Post.Id}}">{{$value.Post.Title}}</a></h4>
 
                             <p><time datetime="{{$value.Post.CreatedAt}}"><a href="/detail/{{$value.Post.Id}}">       {{MDate $value.Post.CreatedAt}}</a></time></p>
                         </div>
-                        {{if rem $key}}
-                    </div><div class="row boxes">
-                        {{end}}
+
+                            {{if rem $key}}
+                                </div>
+                                <div class="row boxes">
+                            {{end}}
                         {{end}}
                     </div>
                 </div>
             </div>
             <nav class="pagination" role="pagination">
-                {{ if ne .currentPage   1 }}
-                    <a class="pull-left" href="?page={{.lastPage}}">← Newer Posts</a>
+                {{if ne .paginate.Last .paginate.Current}}
+                    <a class="pull-left" href="/?page={{.paginate.Last}}">← Prev Page</a>
                 {{end}}
-                {{ if ne .currentPage  .nextPage }}
-                    <a class="pull-right" href="?page={{.nextPage}}">Older Posts →</a>
+                {{if ne .paginate.Next .paginate.Current}}
+                    <a class="pull-right" href="/?page={{.paginate.Next}}">Next Page →</a>
                 {{end}}
-
             </nav>
         </div>
     </section>
