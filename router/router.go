@@ -135,6 +135,7 @@ func RoutersInit() *gin.Engine{
 		h.GET("/categories/:name",web.IndexCate)
 		h.GET("/tags/:name",web.IndexTag)
 		h.GET("/detail/:id",web.Detail)
+		h.GET("/archives",web.Archives)
 	}
 
 

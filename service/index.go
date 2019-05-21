@@ -39,6 +39,9 @@ func CommonData() (h gin.H,err error) {
 		"themeHLightJs": "/static/home/assets/highlightjs",
 		"themeShareCss": "/static/home/assets/css",
 		"themeShareJs": "/static/home/assets/js",
+		"themeArchivesJs": "/static/home/assets/js",
+		"themeArchivesCss": "/static/home/assets/css",
+
 		"tem": "defaultList",
 	}
 	cates,err := CateListBySort()

@@ -139,6 +139,20 @@ func (w *Web)Detail(c *gin.Context) {
 
 
 func (w *Web)Archives(c *gin.Context) {
+	w.C = c
 
+	h,err := service.CommonData()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Archives","err",err.Error())
+		w.Response(http.StatusOK,408000000,h)
+		return
+	}
+
+	// 按照月份,然后
+
+
+	h["tem"] = "archives"
+	w.Response(http.StatusOK,0,h)
+	return
 }
 

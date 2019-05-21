@@ -206,6 +206,8 @@ $$          $$$o       "o$$o$"$$"$$o$$o$$"$$o"       $$$          ""o
         {{template "cateList" .}}
     {{ else if eq .tem "detail" }}
         {{template "detail" .}}
+    {{ else if eq .tem "archives" }}
+        {{template "archives" .}}
     {{ else }}
         {{template "tagList" .}}
     {{end}}
