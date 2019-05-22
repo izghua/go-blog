@@ -36,10 +36,14 @@ func (a *ApiController) Response(httpCode, errCode int, data gin.H) {
 	roundedStr := fmt.Sprintf("%.3fms", rounded)
 	a.C.Writer.Header().Set("X-Response-time", roundedStr)
 	zgh.ZLog().Info("message", "Index Response", "code", errCode, "errMsg", msg, "took", roundedStr)
-	if errCode != 0 {
+	if errCode == 500 {
 		a.C.HTML(http.StatusOK,"5xx.tmpl",data)
-	} else {
+	} else if errCode == 404 {
+		a.C.HTML(http.StatusOK,"4xx.tmpl",data)
+	} else if errCode == 0  {
 		a.C.HTML(http.StatusOK,"master.tmpl",data)
+	} else {
+		a.C.HTML(http.StatusOK,"5xx.tmpl",nil)
 	}
 
 	a.C.Abort()

@@ -88,6 +88,8 @@ const (
 
 	PostDetailIndexKey = "index:post:detail"
 
+	ArchivesKey = "index:archives:list"
+
 	// github gitment
 	GithubName = "xzghua"
 	GithubRepo = "ttest"

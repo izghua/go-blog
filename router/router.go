@@ -28,6 +28,7 @@ func RoutersInit() *gin.Engine{
 	r.Use(m.CORS(m.CORSOptions{Origin: ""}))
 	r.Use(m.RequestID(m.RequestIDOptions{AllowSetting: true}))
 	r.Use(ginutil.Recovery(recoverHandler))
+	r.Use(m2.CheckExist())
 	r.Static("/static/uploads/images/","./static/uploads/images/")
 	//r.StaticFile("/*","./static/uploads/images/")
 	//r.Static("/","./static/console/")
@@ -124,6 +125,7 @@ func RoutersInit() *gin.Engine{
 		r.SetFuncMap(template.FuncMap{
 			"rem": common.Rem,
 			"MDate": common.MDate,
+			"MDate2": common.MDate2,
 		})
 		r.LoadHTMLGlob("template/home/*.tmpl")
 
@@ -136,15 +138,9 @@ func RoutersInit() *gin.Engine{
 		h.GET("/tags/:name",web.IndexTag)
 		h.GET("/detail/:id",web.Detail)
 		h.GET("/archives",web.Archives)
+		h.GET("/404",web.NoFound)
 	}
 
-
-	//r.Use(m.RouterAsName("last"))
-	//index := r.Group("/index")
-	//index.Use()
-	//{
-	//	index.GET("/index",index2.Index)
-	//}
 	zgh.ZLog().Info("标记","路由")
 	return r
 }

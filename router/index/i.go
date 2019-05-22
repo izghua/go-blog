@@ -14,4 +14,5 @@ type Home interface {
 	IndexCate(*gin.Context)
 	Detail(*gin.Context)
 	Archives(*gin.Context)
+	NoFound(*gin.Context)
 }

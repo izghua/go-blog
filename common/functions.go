@@ -100,5 +100,9 @@ func Rem(divisor int) bool {
 }
 
 func MDate(times time.Time) string {
-	return times.Format("2006-01-02")
+	return times.Format("2006-01-02 15:04:05")
+}
+
+func MDate2(times time.Time) string {
+	return times.Format("01-02")
 }

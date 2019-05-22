@@ -13,6 +13,8 @@ import (
 	"github.com/izghua/go-blog/service"
 	"github.com/izghua/zgh"
 	"net/http"
+	"sort"
+	"time"
 )
 
 type Web struct {
@@ -69,6 +71,7 @@ func (w *Web)IndexTag(c *gin.Context) {
 
 	h["post"] = postData.PostListArr
 	h["paginate"] = postData.Paginate
+	h["tagName"] = name
 	h["tem"] = "tagList"
 
 	c.HTML(http.StatusOK, "master.tmpl", h)
@@ -97,6 +100,7 @@ func (w *Web)IndexCate(c *gin.Context)  {
 
 	h["post"] = postData.PostListArr
 	h["paginate"] = postData.Paginate
+	h["cateName"] = name
 	h["tem"] = "cateList"
 	w.Response(http.StatusOK,0,h)
 	return
@@ -140,7 +144,6 @@ func (w *Web)Detail(c *gin.Context) {
 
 func (w *Web)Archives(c *gin.Context) {
 	w.C = c
-
 	h,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Archives","err",err.Error())
@@ -148,11 +151,44 @@ func (w *Web)Archives(c *gin.Context) {
 		return
 	}
 
-	// 按照月份,然后
+	res,err := service.PostArchives()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Archives","err",err.Error())
+		w.Response(http.StatusOK,408000006,h)
+		return
+	}
+	loc, _ := time.LoadLocation("Asia/Shanghai")
+
+	var dateIndexs []int
+	for k,_ := range res{
+		tt, _ := time.ParseInLocation("2006-01-02 15:04:05", k+"-01 00:00:00", loc)
+		dateIndexs = append(dateIndexs,int(tt.Unix()))
+	}
+
+	sort.Sort(sort.Reverse(sort.IntSlice(dateIndexs)))
+
+	var newData []interface{}
+	for _,j := range dateIndexs {
+		dds := make(map[string]interface{})
+		tm := time.Unix(int64(j), 0)
+		dateIndex := tm.Format("2006-01")
+		dds["dates"] = dateIndex
+		dds["lists"] = res[dateIndex]
+		newData = append(newData,dds)
+	}
 
 
 	h["tem"] = "archives"
+	h["archives"] = newData
 	w.Response(http.StatusOK,0,h)
 	return
 }
 
+func (w *Web)NoFound(c *gin.Context)  {
+	w.C = c
+	w.Response(http.StatusOK,404,gin.H{
+		"themeJs": "/static/home/assets/js",
+		"themeCss": "/static/home/assets/css",
+	})
+	return
+}

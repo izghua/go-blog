@@ -19,8 +19,8 @@ body {
 
 .history {
     background: url(../img/line04.gif) repeat-y 187px 0;
-    overflow: hidden;
-    position: relative
+    /*overflow: hidden;*/
+    /*position: relative*/
 }
 
 .history-date {
@@ -35,7 +35,7 @@ body {
     font-family: 微软雅黑;
     font-weight: 400;
     padding-left: 45px;
-    margin-bottom: 74px
+    margin-bottom: 20px
 }
 
 .history-date h2.first {
@@ -43,7 +43,7 @@ body {
     left: 0;
     top: 0;
     width: 935px;
-    z-index: 99
+    z-index: 100000
 }
 
 .history-date h2 a {
@@ -69,7 +69,7 @@ body {
 
 .history-date ul li {
     background: url(../img/icon07.gif) no-repeat 180px 0;
-    padding-bottom: 50px;
+    padding-bottom: 10px;
     zoom:1}
 
 .history-date ul li.last {

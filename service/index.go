@@ -308,3 +308,73 @@ func PostViewAdd(postIdStr string) {
 	}
 	return
 }
+
+func PostArchives() (archivesList map[string][]*entity.ZPosts,err error) {
+	cacheKey := conf.ArchivesKey
+	field := ":all:"
+
+	cacheRes,err := conf.CacheClient.HGet(cacheKey,field).Result()
+	if err == redis.Nil {
+		// cache key does not exist
+		// set data to the cache what use the cache key
+		archivesList,err := doCacheArchives(cacheKey,field)
+		if err != nil {
+			zgh.ZLog().Error("message","service.index.PostArchives","err",err.Error())
+			return archivesList,err
+		}
+		return archivesList,nil
+	} else if err != nil {
+		zgh.ZLog().Error("message","service.index.PostArchives","err",err.Error())
+		return archivesList,err
+	}
+
+	if cacheRes == "" {
+		// Data is  null
+		// set data to the cache what use the cache key
+		archivesList,err := doCacheArchives(cacheKey,field)
+		if err != nil {
+			zgh.ZLog().Error("message","service.index.PostArchives","err",err.Error())
+			return archivesList,err
+		}
+		return archivesList,nil
+	}
+
+	archivesList = make(map[string][]*entity.ZPosts)
+	err = json.Unmarshal([]byte(cacheRes),&archivesList)
+	if err != nil {
+		zgh.ZLog().Error("message","service.index.PostArchives","err",err.Error())
+		archivesList,err := doCacheArchives(cacheKey,field)
+		if err != nil {
+			zgh.ZLog().Error("message","service.index.PostArchives","err",err.Error())
+			return archivesList,err
+		}
+		return archivesList,nil
+	}
+	return
+}
+
+func doCacheArchives(cacheKey string,field string) (archivesList map[string][]*entity.ZPosts,err error) {
+	posts := make([]*entity.ZPosts,0)
+	err = conf.SqlServer.Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Desc("created_at").Find(&posts)
+	if err != nil {
+		zgh.ZLog().Error("message","service.Index.doCacheArchives","err",err.Error())
+		return
+	}
+	archivesList = make(map[string][]*entity.ZPosts)
+	for _,v := range posts {
+		date := v.CreatedAt.Format("2006-01")
+		archivesList[date] = append(archivesList[date],v)
+	}
+
+	jsonRes,err := json.Marshal(&archivesList)
+	if err != nil {
+		zgh.ZLog().Error("message","service.index.doCacheArchives","err",err.Error())
+		return
+	}
+	err = conf.CacheClient.HSet(cacheKey,field,jsonRes).Err()
+	if err != nil {
+		zgh.ZLog().Error("message","service.index.doCacheArchives","err",err.Error())
+		return
+	}
+	return
+}

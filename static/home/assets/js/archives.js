@@ -5,7 +5,7 @@ function systole() {
     if (!$(".history").length) {
         return;
     }
-    var $warpEle = $(".history-date"), $targetA = $warpEle.find("h2 a,ul li dl dt a"), parentH, eleTop = [];
+    var $warpEle = $(".history-date"), $targetA = $warpEle.find("h2 a"), parentH, eleTop = [];
     parentH = $warpEle.parent().height();
     $warpEle.parent().css({
         "height": 59
@@ -21,7 +21,9 @@ function systole() {
         }, 1600).children().fadeIn();
         $warpEle.parent().animate({
             "height": parentH
-        }, 2600);
+        }, 2600,function () {
+            $('.history').removeAttr("style");
+        });
         $warpEle.find("ul").children(":not('h2:first')").addClass("bounceInDown").css({
             "-webkit-animation-duration": "2s",
             "-webkit-animation-delay": "0",
@@ -30,6 +32,7 @@ function systole() {
         }).end().children("h2").css({
             "position": "relative"
         });
+
     }, 600);
     $targetA.click(function() {
         $(this).parent().css({
