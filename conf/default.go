@@ -73,7 +73,7 @@ func BackUpInit() {
 	dest := "./zip/"+time.Now().Format("2006-01-02")+".zip"
 	backu := bp.SetFilePath(BackUpFilePath).
 		SetFiles("./backup").
-		SetDest(dest).SetDuration(BackUpDuration)
+		SetDest(dest).SetCronSpec(BackUpDuration)
 	data := make(map[string]string)
 	data[time.Now().Format("2006-01-02")+".zip"] = dest
 	bp.Ep = MailClient

@@ -11,8 +11,9 @@ import (
 )
 
 const (
+	AppUrl = "http://localhost:8081"
 
-	AppImgUrl = "http://localhost:8081/static/uploads/images/"
+	AppImgUrl =  AppUrl + "/static/uploads/images/"
 
 	DefaultLimit = "20"
 	DefaultIndexLimit = "3"
@@ -25,8 +26,8 @@ const (
 
 	AlarmType = "mail,wechat"
 
-	MailUser = "test@g9zz.com"
-	MailPwd = "1234abcd#"
+	MailUser = "test@test.com"
+	MailPwd = ""
 	MailHost = "smtp.mxhichina.com:25"
 
 
@@ -49,11 +50,11 @@ const (
 	QCaptchaSecreptKey = "**"
 
 	BackUpFilePath = "./backup/"
-	BackUpDuration = time.Hour * 24
+	BackUpDuration = "* * */1 * *"
 	BackUpSentTo = "xzghua@gmail.com"
 
 	DataCacheTimeDuration = 720
-	ImgUploadUrl = "http://localhost:8081/console/post/imgUpload"
+	ImgUploadUrl = AppUrl +"/console/post/imgUpload"
 	ImgUploadDst = "./static/uploads/images/"
 	ImgUploadBoth = true // img will upload to qiniu and your server local
 
