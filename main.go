@@ -22,9 +22,15 @@ func main() {
 	}
 	spec := "0 * * * * *"
 	cron.ZgCron(spec,f)
+	//conf.GetAppUrls()
+	fmt.Println(conf.NConf.AppUrl)
+	conf.SetValueToStruct("AppUrl","./imgages222")
+	conf.SetValueToStruct("AppImgUrl","./imgages3333333")
+	fmt.Println(conf.NConf.AppImgUrl,conf.NConf.AppUrl)
 	r := router.RoutersInit()
 	fmt.Println("开始运行")
 	_ = r.Run(":8081")
+
 }
 
 

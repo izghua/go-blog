@@ -153,3 +153,14 @@ type IndexGithubParam struct {
 	GithubClientId string
 	GithubClientSecret string
 }
+
+
+type Category struct {
+	Cates entity.ZCategories `json:"cates"`
+	Html string `json:"html"`
+}
+
+type IndexCategory struct {
+	Cates entity.ZCategories `json:"cates"`
+	Html template.HTML `json:"html"`
+}

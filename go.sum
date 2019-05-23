@@ -94,6 +94,7 @@ github.com/izghua/zgh v0.0.22 h1:LxI4PNDgnlpdWITSWmjiMngRQTtLYf2qCvVegxXHxcY=
 github.com/izghua/zgh v0.0.22/go.mod h1:YT0CpH1MbMKVqO6ndHAHr2Bis2J2svZGj27IwegtAjQ=
 github.com/izghua/zgh v0.0.23 h1:/wZv2Kd93oLw2aatbpHWG8DXhX9b5g8hHN4/3OmQV90=
 github.com/izghua/zgh v0.0.23/go.mod h1:YT0CpH1MbMKVqO6ndHAHr2Bis2J2svZGj27IwegtAjQ=
+github.com/izghua/zgh v0.0.24 h1:2wSgOfsABOZ0UvUbjVsqV5M3wwyS+kR5YAaMv1cfe+U=
 github.com/izghua/zgh v0.0.24/go.mod h1:YT0CpH1MbMKVqO6ndHAHr2Bis2J2svZGj27IwegtAjQ=
 github.com/jackc/fake v0.0.0-20150926172116-812a484cc733 h1:vr3AYkKovP8uR8AvSGGUK1IDqRa5lAAvEkZG1LKaCRc=
 github.com/jackc/fake v0.0.0-20150926172116-812a484cc733/go.mod h1:WrMFNQdiFJ80sQsxDoMokWK1W5TQtxBFNpzWTD84ibQ=
