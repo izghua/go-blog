@@ -37,7 +37,7 @@ func TagStore(ts common.TagStore) (err error)  {
 		Num: 0,
 	}
 	_,err = conf.SqlServer.Insert(tagInsert)
-	conf.CacheClient.Del(conf.TagListKey)
+	conf.CacheClient.Del( conf.Cnf.TagListKey)
 	return
 }
 
@@ -114,12 +114,12 @@ func DelTagRel(tagId int) {
 		zgh.ZLog().Error("message","service.DelTagRel","err",err.Error())
 		return
 	}
-	conf.CacheClient.Del(conf.TagListKey)
+	conf.CacheClient.Del( conf.Cnf.TagListKey)
 	return
 }
 
 func AllTags() ([]entity.ZTags,error) {
-	cacheKey := conf.TagListKey
+	cacheKey :=  conf.Cnf.TagListKey
 	cacheRes,err := conf.CacheClient.Get(cacheKey).Result()
 	if err == redis.Nil {
 		tags,err := doCacheTagList(cacheKey)
@@ -158,7 +158,7 @@ func doCacheTagList(cacheKey string) ([]entity.ZTags,error) {
 		zgh.ZLog().Error("message","service.doCacheTagList","err",err.Error())
 		return nil,err
 	}
-	err = conf.CacheClient.Set(cacheKey,jsonRes,conf.DataCacheTimeDuration * time.Hour).Err()
+	err = conf.CacheClient.Set(cacheKey,jsonRes,time.Duration(conf.Cnf.DataCacheTimeDuration) * time.Hour).Err()
 	if err != nil {
 		zgh.ZLog().Error("message","service.doCacheTagList","err",err.Error())
 		return nil,err

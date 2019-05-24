@@ -37,7 +37,7 @@ func (p *Post)Index(c *gin.Context) {
 	appG := api.Gin{C: c}
 
 	queryPage := c.DefaultQuery("page", "1")
-	queryLimit := c.DefaultQuery("limit", conf.DefaultLimit)
+	queryLimit := c.DefaultQuery("limit", conf.Cnf.DefaultLimit)
 
 	limit,offset := common.Offset(queryPage,queryLimit)
 	postList,err := service.ConsolePostIndex(limit,offset,false)
@@ -79,7 +79,7 @@ func (p *Post)Create(c *gin.Context) {
 	data := make(map[string]interface{})
 	data["cates"] = cates
 	data["tags"] = tags
-	data["imgUploadUrl"] = conf.ImgUploadUrl
+	data["imgUploadUrl"] = conf.Cnf.ImgUploadUrl
 	appG.Response(http.StatusOK,0,data)
 	return
 }
@@ -160,7 +160,7 @@ func (p *Post)Edit(c *gin.Context) {
 	}
 	data["cates"] = cates
 	data["tags"] = tags
-	data["imgUploadUrl"] = conf.ImgUploadUrl
+	data["imgUploadUrl"] =  conf.Cnf.ImgUploadUrl
 	appG.Response(http.StatusOK,0,data)
 	return
 }
@@ -219,7 +219,7 @@ func (p *Post)TrashIndex(c *gin.Context) {
 	appG := api.Gin{C: c}
 
 	queryPage := c.DefaultQuery("page", "1")
-	queryLimit := c.DefaultQuery("limit", conf.DefaultLimit)
+	queryLimit := c.DefaultQuery("limit", conf.Cnf.DefaultLimit)
 
 	limit,offset := common.Offset(queryPage,queryLimit)
 	postList,err := service.ConsolePostIndex(limit,offset,true)
@@ -276,7 +276,7 @@ func (p *Post)ImgUpload(c *gin.Context) {
 	}
 
 	filename := filepath.Base(file.Filename)
-	dst := conf.ImgUploadDst + filename
+	dst :=  conf.Cnf.ImgUploadDst + filename
 	if err := c.SaveUploadedFile(file, dst); err != nil {
 		zgh.ZLog().Info("message","post.ImgUpload","error",err.Error())
 		appG.Response(http.StatusOK,401000005,nil)
@@ -285,15 +285,15 @@ func (p *Post)ImgUpload(c *gin.Context) {
 
 	// Default upload both
 	data := make(map[string]interface{})
-	if conf.ImgUploadBoth {
+	if  conf.Cnf.ImgUploadBoth {
 		go service.Qiniu(dst,filename)
-		data["path"] = conf.AppImgUrl + filename
+		data["path"] =  conf.Cnf.AppImgUrl + filename
 	} else {
-		if conf.QiNiuUploadImg {
+		if  conf.Cnf.QiNiuUploadImg {
 			go service.Qiniu(dst,filename)
-			data["path"] = conf.QiNiuHostName + filename
+			data["path"] =  conf.Cnf.QiNiuHostName + filename
 		} else {
-			data["path"] = conf.AppImgUrl + filename
+			data["path"] =  conf.Cnf.AppImgUrl + filename
 		}
 	}
 

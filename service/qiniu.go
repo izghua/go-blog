@@ -30,10 +30,10 @@ type MyPutRet struct {
 // FileName is the name what  qiniu name as
 // The storage Zone is default
 func Qiniu(localFile string,fileName string) {
-	accessKey := conf.QiNiuAccessKey
-	secretKey := conf.QiNiuSecretKey
+	accessKey :=  conf.Cnf.QiNiuAccessKey
+	secretKey :=  conf.Cnf.QiNiuSecretKey
 	//localFile := "./static/images/uploads/2.jpeg"
-	bucket := conf.QiNiuBucket
+	bucket :=  conf.Cnf.QiNiuBucket
 	key := fileName
 	putPolicy := storage.PutPolicy{
 		Scope: bucket,
@@ -42,7 +42,7 @@ func Qiniu(localFile string,fileName string) {
 	upToken := putPolicy.UploadToken(mac)
 
 	cfg := storage.Config{}
-	switch conf.QiNiuZone {
+	switch  conf.Cnf.QiNiuZone {
 	case "HUABEI":
 		cfg.Zone = &storage.ZoneHuabei
 	case "HUADONG":

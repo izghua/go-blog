@@ -61,7 +61,7 @@ func LinkCnt() (cnt int64,err error) {
 }
 
 func AllLink() (links []entity.ZLinks,err error) {
-	cacheKey := conf.LinkIndexKey
+	cacheKey := conf.Cnf.LinkIndexKey
 	cacheRes,err := conf.CacheClient.Get(cacheKey).Result()
 	if err == redis.Nil {
 		links,err := doCacheLinkList(cacheKey)
@@ -100,7 +100,7 @@ func doCacheLinkList(cacheKey string) (links []entity.ZLinks,err error) {
 		zgh.ZLog().Error("message","service.doCacheLinkList","err",err.Error())
 		return nil,err
 	}
-	err = conf.CacheClient.Set(cacheKey,jsonRes,conf.DataCacheTimeDuration * time.Hour).Err()
+	err = conf.CacheClient.Set(cacheKey,jsonRes,time.Duration(conf.Cnf.DataCacheTimeDuration) * time.Hour).Err()
 	if err != nil {
 		zgh.ZLog().Error("message","service.doCacheLinkList","err",err.Error())
 		return nil,err

@@ -77,7 +77,7 @@ func (c *Auth) Register(ctx *gin.Context) {
 		appG.Response(http.StatusOK,400001004,nil)
 		return
 	}
-	if cnt >= conf.UserCnt {
+	if cnt >= int64(conf.Cnf.UserCnt) {
 		zgh.ZLog().Info("message","auth.Register","error","User cnt beyond expectation")
 		appG.Response(http.StatusOK,400001004,nil)
 		return
@@ -105,7 +105,7 @@ func (c *Auth) AuthRegister(ctx *gin.Context) {
 		appG.Response(http.StatusOK,400001004,nil)
 		return
 	}
-	if cnt >= conf.UserCnt {
+	if cnt >= int64(conf.Cnf.UserCnt) {
 		zgh.ZLog().Info("message","auth.Register","error","User cnt beyond expectation")
 		appG.Response(http.StatusOK,400001004,nil)
 		return

@@ -29,7 +29,7 @@ func (t *Tag)Index(c *gin.Context) {
 	appG := api.Gin{C: c}
 
 	queryPage := c.DefaultQuery("page", "1")
-	queryLimit := c.DefaultQuery("limit", conf.DefaultLimit)
+	queryLimit := c.DefaultQuery("limit", conf.Cnf.DefaultLimit)
 
 	limit,offset := common.Offset(queryPage,queryLimit)
 	count,tags,err := service.TagsIndex(limit,offset)

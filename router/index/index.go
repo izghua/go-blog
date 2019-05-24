@@ -28,7 +28,7 @@ func NewIndex() Home {
 func (w *Web)Index(c *gin.Context) {
 	w.C = c
 	queryPage := c.DefaultQuery("page", "1")
-	queryLimit := c.DefaultQuery("limit", conf.DefaultIndexLimit)
+	queryLimit := c.DefaultQuery("limit", conf.Cnf.DefaultIndexLimit)
 
 	h,err := service.CommonData()
 	if err != nil {
@@ -53,7 +53,7 @@ func (w *Web)Index(c *gin.Context) {
 func (w *Web)IndexTag(c *gin.Context) {
 	w.C = c
 	queryPage := c.DefaultQuery("page", "1")
-	queryLimit := c.DefaultQuery("limit", conf.DefaultIndexLimit)
+	queryLimit := c.DefaultQuery("limit", conf.Cnf.DefaultIndexLimit)
 	name := c.Param("name")
 	h,err := service.CommonData()
 	if err != nil {
@@ -81,7 +81,7 @@ func (w *Web)IndexTag(c *gin.Context) {
 func (w *Web)IndexCate(c *gin.Context)  {
 	w.C = c
 	queryPage := c.DefaultQuery("page", "1")
-	queryLimit := c.DefaultQuery("limit", conf.DefaultIndexLimit)
+	queryLimit := c.DefaultQuery("limit", conf.Cnf.DefaultIndexLimit)
 	name := c.Param("name")
 
 	h,err := service.CommonData()
@@ -128,10 +128,10 @@ func (w *Web)Detail(c *gin.Context) {
 	go service.PostViewAdd(postIdStr)
 
 	github := common.IndexGithubParam{
-		GithubName: conf.GithubName,
-		GithubRepo: conf.GithubRepo,
-		GithubClientId: conf.GithubClientId,
-		GithubClientSecret: conf.GithubClientSecret,
+		GithubName: conf.Cnf.GithubName,
+		GithubRepo: conf.Cnf.GithubRepo,
+		GithubClientId: conf.Cnf.GithubClientId,
+		GithubClientSecret: conf.Cnf.GithubClientSecret,
 	}
 
 	h["post"] = postDetail

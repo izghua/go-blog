@@ -25,11 +25,11 @@ func GetSystemList() (system *entity.ZSystems,err error) {
 	}
 	if system.Id <= 0 {
 		systemInsert := entity.ZSystems{
-			Theme:conf.Theme,
-			Title: conf.Title,
-			Keywords: conf.Keywords,
-			Description: conf.Description,
-			RecordNumber: conf.RecordNumber,
+			Theme: conf.Cnf.Theme,
+			Title:  conf.Cnf.Title,
+			Keywords:  conf.Cnf.Keywords,
+			Description:  conf.Cnf.Description,
+			RecordNumber:  conf.Cnf.RecordNumber,
 		}
 		_,err = conf.SqlServer.Insert(systemInsert)
 		if err != nil {
@@ -58,7 +58,7 @@ func SystemUpdate(sId int,ss common.ConsoleSystem) error {
 }
 
 func IndexSystem() (system *entity.ZSystems,err error) {
-	cacheKey := conf.SystemIndexKey
+	cacheKey := conf.Cnf.SystemIndexKey
 	cacheRes,err := conf.CacheClient.Get(cacheKey).Result()
 	if err == redis.Nil {
 		system,err := doCacheIndexSystem(cacheKey)
@@ -97,7 +97,7 @@ func doCacheIndexSystem(cacheKey string) (system *entity.ZSystems,err error) {
 		zgh.ZLog().Error("message","service.doCacheIndexSystem","err",err.Error())
 		return system,err
 	}
-	err = conf.CacheClient.Set(cacheKey,jsonRes,conf.DataCacheTimeDuration * time.Hour).Err()
+	err = conf.CacheClient.Set(cacheKey,jsonRes,time.Duration(conf.Cnf.DataCacheTimeDuration) * time.Hour).Err()
 	if err != nil {
 		zgh.ZLog().Error("message","service.doCacheIndexSystem","err",err.Error())
 		return system,err

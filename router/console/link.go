@@ -28,7 +28,7 @@ func (l *Link) Index(c *gin.Context) {
 	appG := api.Gin{C: c}
 
 	queryPage := c.DefaultQuery("page", "1")
-	queryLimit := c.DefaultQuery("limit", conf.DefaultLimit)
+	queryLimit := c.DefaultQuery("limit", conf.Cnf.DefaultLimit)
 	queryPageInt,err := strconv.Atoi(queryPage)
 	if err != nil {
 		zgh.ZLog().Error("message","console.Post.Index","err",err.Error())

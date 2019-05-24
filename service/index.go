@@ -87,14 +87,14 @@ func IndexPost(page string,limit string,indexType IndexType,name string) (indexP
 	var postKey string
 	switch indexType {
 	case IndexTypeOne:
-		postKey = conf.TagPostIndexKey
+		postKey = conf.Cnf.TagPostIndexKey
 	case IndexTypeTwo:
-		postKey = conf.CatePostIndexKey
+		postKey = conf.Cnf.CatePostIndexKey
 	case IndexTypeThree:
-		postKey = conf.PostIndexKey
+		postKey = conf.Cnf.PostIndexKey
 		name = "default"
 	default:
-		postKey = conf.PostIndexKey
+		postKey = conf.Cnf.PostIndexKey
 	}
 
 	field := ":name:" + name + ":page:" + page + ":limit:"+limit
@@ -228,7 +228,7 @@ func doCacheIndexPostList(cacheKey string,field string,indexType IndexType,name 
 }
 
 func IndexPostDetail(postIdStr string) (postDetail common.IndexPostDetail,err error) {
-	cacheKey := conf.PostDetailIndexKey
+	cacheKey := conf.Cnf.PostDetailIndexKey
 	field := ":post:id:" + postIdStr
 
 	postIdInt,err := strconv.Atoi(postIdStr)
@@ -310,7 +310,7 @@ func PostViewAdd(postIdStr string) {
 }
 
 func PostArchives() (archivesList map[string][]*entity.ZPosts,err error) {
-	cacheKey := conf.ArchivesKey
+	cacheKey := conf.Cnf.ArchivesKey
 	field := ":all:"
 
 	cacheRes,err := conf.CacheClient.HGet(cacheKey,field).Result()

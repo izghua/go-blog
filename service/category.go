@@ -53,7 +53,7 @@ func DelCateRel(cateId int) {
 		zgh.ZLog().Error("message","service.DelCateRel","err",err.Error())
 		return
 	}
-	conf.CacheClient.Del(conf.CateListKey)
+	conf.CacheClient.Del( conf.Cnf.CateListKey)
 	return
 }
 
@@ -94,7 +94,7 @@ func CateStore(cs common.CateStore) (bool,error) {
 		zgh.ZLog().Error("message","service.CateStore","err",err.Error())
 		return false,err
 	}
-	conf.CacheClient.Del(conf.CateListKey)
+	conf.CacheClient.Del( conf.Cnf.CateListKey)
 	return true,nil
 }
 
@@ -131,7 +131,7 @@ func CateUpdate(cateId int,cs common.CateStore) (bool,error) {
 		zgh.ZLog().Error("message","service.CateUpdate","err",err.Error())
 		return false,err
 	}
-	conf.CacheClient.Del(conf.CateListKey)
+	conf.CacheClient.Del( conf.Cnf.CateListKey)
 	return true,nil
 }
 
@@ -199,7 +199,7 @@ func GetPostCateByPostId(postId int) ( cates *entity.ZCategories,err error) {
 
 // Get the cate list what by parent sort
 func CateListBySort() ([]common.Category, error) {
-	cacheKey := conf.CateListKey
+	cacheKey :=  conf.Cnf.CateListKey
 	cacheRes,err := conf.CacheClient.Get(cacheKey).Result()
 	if err == redis.Nil {
 		// cache key does not exist
@@ -260,7 +260,7 @@ func doCacheCateList(cacheKey string) ([]common.Category,error) {
 		zgh.ZLog().Error("message","service.CateListBySort","err",err.Error())
 		return nil,err
 	}
-	err = conf.CacheClient.Set(cacheKey,jsonRes,conf.DataCacheTimeDuration * time.Hour).Err()
+	err = conf.CacheClient.Set(cacheKey,jsonRes,time.Duration(conf.Cnf.DataCacheTimeDuration) * time.Hour).Err()
 	if err != nil {
 		zgh.ZLog().Error("message","service.CateListBySort","err",err.Error())
 		return nil,err
