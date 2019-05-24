@@ -7,7 +7,10 @@
  */
 package conf
 
-import "reflect"
+import (
+	"fmt"
+	"reflect"
+)
 
 var NConf = &Conf{
 	AppUrl: "22222222",
@@ -17,7 +20,9 @@ var NConf = &Conf{
 func SetValueToStruct(key string,value string) *Conf {
 	//p := &Conf{}
 	v := reflect.ValueOf(NConf).Elem()
-	v.FieldByName(key).Set(reflect.ValueOf(value))
+
+	fmt.Println(v.FieldByName(key).IsValid())
+	//v.FieldByName(key).Set(reflect.ValueOf(value))
 	//v.FieldByName("AppImgUrl").Set(reflect.ValueOf(appImgUrl))
 	return NConf
 }
