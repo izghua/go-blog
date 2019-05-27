@@ -30,20 +30,21 @@ const  (
 
 func CommonData() (h gin.H,err error) {
 	h = gin.H{
-		"themeJs": "/static/home/assets/js",
-		"themeCss": "/static/home/assets/css",
-		"themeImg": "/static/home/assets/img",
-		"themeFancyboxCss": "/static/home/assets/fancybox",
-		"themeFancyboxJs": "/static/home/assets/fancybox",
-		"themeHLightCss": "/static/home/assets/highlightjs",
-		"themeHLightJs": "/static/home/assets/highlightjs",
-		"themeShareCss": "/static/home/assets/css",
-		"themeShareJs": "/static/home/assets/js",
-		"themeArchivesJs": "/static/home/assets/js",
-		"themeArchivesCss": "/static/home/assets/css",
+		"themeJs": conf.Cnf.ThemeJs,
+		"themeCss": conf.Cnf.ThemeCss,
+		"themeImg": conf.Cnf.ThemeImg,
+		"themeFancyboxCss": conf.Cnf.ThemeFancyboxCss,
+		"themeFancyboxJs": conf.Cnf.ThemeFancyboxJs,
+		"themeHLightCss": conf.Cnf.ThemeHLightCss,
+		"themeHLightJs": conf.Cnf.ThemeHLightJs,
+		"themeShareCss": conf.Cnf.ThemeShareCss,
+		"themeShareJs": conf.Cnf.ThemeShareJs,
+		"themeArchivesJs": conf.Cnf.ThemeArchivesJs,
+		"themeArchivesCss": conf.Cnf.ThemeArchivesCss,
 
 		"tem": "defaultList",
 	}
+	h["script"] = template.HTML(conf.Cnf.OtherScript)
 	cates,err := CateListBySort()
 	if err != nil {
 		zgh.ZLog().Error("message","service.Index.CommonData","err",err.Error())

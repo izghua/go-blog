@@ -9,6 +9,7 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/izghua/go-blog/common"
+	"github.com/izghua/go-blog/conf"
 	m2 "github.com/izghua/go-blog/middleware"
 	"github.com/izghua/go-blog/router/auth"
 	"github.com/izghua/go-blog/router/console"
@@ -23,16 +24,17 @@ import (
 )
 
 func RoutersInit() *gin.Engine{
-	gin.SetMode(gin.ReleaseMode)
+	if conf.Env == "prod" {
+		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
+	}
 	r := gin.New()
 	r.Use(m.CORS(m.CORSOptions{Origin: ""}))
 	r.Use(m.RequestID(m.RequestIDOptions{AllowSetting: true}))
 	r.Use(ginutil.Recovery(recoverHandler))
 	r.Use(m2.CheckExist())
 	r.Static("/static/uploads/images/","./static/uploads/images/")
-	//r.StaticFile("/*","./static/uploads/images/")
-	//r.Static("/","./static/console/")
-	//r.StaticFS("/",http.Dir("./static/console/"))
 	consolePost := console.NewPost()
 	consoleCate := console.NewCategory()
 	consoleTag := console.NewTag()
@@ -44,9 +46,7 @@ func RoutersInit() *gin.Engine{
 	consoleHome := console.NewStatistics()
 	c := r.Group("/console")
 	{
-		//r.LoadHTMLGlob("static/console/*")
 		r.LoadHTMLGlob("static/console/*.html")
-		//r.LoadHTMLFiles("static/console/*/*")
 		r.Static("/static/console","./static/console")
 		r.StaticFile("/backend/","static/console/index.html")
 		p := c.Group("/post")
@@ -130,9 +130,6 @@ func RoutersInit() *gin.Engine{
 		r.LoadHTMLGlob("template/home/*.tmpl")
 
 		r.Static("/static/home","./static/home")
-		//r.Static("/static/uploads/images/","./static/uploads/images/")
-		//r.StaticFS("/static/*",)
-		//r.StaticFile("/","static/home/index.html")
 		h.GET("/",web.Index)
 		h.GET("/categories/:name",web.IndexCate)
 		h.GET("/tags/:name",web.IndexTag)
@@ -141,7 +138,7 @@ func RoutersInit() *gin.Engine{
 		h.GET("/404",web.NoFound)
 	}
 
-	zgh.ZLog().Info("标记","路由")
+	zgh.ZLog().Info("note","router")
 	return r
 }
 

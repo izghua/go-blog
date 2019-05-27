@@ -7,7 +7,6 @@
 package conf
 
 import (
-	"fmt"
 	"github.com/go-redis/redis"
 	"github.com/go-xorm/xorm"
 	"github.com/izghua/zgh"
@@ -23,7 +22,6 @@ import (
 	"github.com/speps/go-hashids"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"os"
 	"path/filepath"
 	"time"
 )
@@ -34,6 +32,7 @@ var (
 	CacheClient *redis.Client
 	MailClient *mail.EmailParam
 	Cnf *Conf
+	Env string
 )
 
 
@@ -59,6 +58,7 @@ func ZLogInit() {
 	if err != nil {
 		zgh.ZLog().Error(err.Error())
 	}
+	return
 }
 
 func DbInit () {
@@ -71,15 +71,17 @@ func DbInit () {
 	sqlServer,err := conn.InitMysql(dbUser,dbPwd,dbPort,dbHost,dbdb)
 	SqlServer = sqlServer
 	if err != nil {
-		zgh.ZLog().Error("有错误",err.Error())
+		zgh.ZLog().Error("some errors",err.Error())
+		panic(err.Error())
 	}
+	return
 }
 
 func BackUpInit() {
 	bp := new(backup.BackUpParam)
 	dest := "./zip/"+time.Now().Format("2006-01-02")+".zip"
 	backu := bp.SetFilePath(Cnf.BackUpFilePath).
-		SetFiles("./backup").
+		SetFiles("./backup","./static/uploads/images").
 		SetDest(dest).SetCronSpec(Cnf.BackUpDuration)
 	data := make(map[string]string)
 	data[time.Now().Format("2006-01-02")+".zip"] = dest
@@ -97,6 +99,7 @@ func BackUpInit() {
 	} else {
 		zgh.ZLog().Info("message","Congratulations for backup")
 	}
+	return
 }
 
 
@@ -109,6 +112,7 @@ func AlarmInit() {
 	if err != nil {
 		zgh.ZLog().Error(err.Error())
 	}
+	return
 }
 
 func MailInit() {
@@ -118,9 +122,15 @@ func MailInit() {
 	mailHost :=  m.SetMailHost(mail.EmailType(Cnf.MailHost))
 	mails,err := m.MailInit(mailPwd,mailHost,mailUser)
 	if err != nil {
-		zgh.ZLog().Error(err.Error())
+		zgh.ZLog().Error("message",err.Error())
+	} else {
+		MailClient = mails
+		zgh.ZLog().Info("message","begin to backup")
+		BackUpInit()
+		return
 	}
 	MailClient = mails
+	return
 }
 
 
@@ -134,7 +144,7 @@ func ZHashIdInit() {
 		zgh.ZLog().Error(err.Error())
 	}
 	ZHashId = zHashId
-
+	return
 }
 
 func RedisInit() {
@@ -145,8 +155,10 @@ func RedisInit() {
 	client,err := rc.RedisInit(addr,db,pwd)
 	if err != nil {
 		zgh.ZLog().Error(err.Error())
+		panic(err.Error())
 	}
 	CacheClient = client
+	return
 }
 
 func JwtInit() {
@@ -158,6 +170,7 @@ func JwtInit() {
 	rc := jt.SetRedisCache(CacheClient)
 	tl := jt.SetTokenLife(time.Hour * time.Duration(Cnf.JwtTokenLife))
 	_ = jt.JwtInit(ad,jti,iss,sk,rc,tl)
+	return
 }
 
 func QCaptchaInit() {
@@ -165,6 +178,7 @@ func QCaptchaInit() {
 	aid := qc.SetAid(Cnf.QCaptchaAid)
 	sk := qc.SetSecretKey(Cnf.QCaptchaSecretKey)
 	_ = qc.QQCaptchaInit(aid,sk)
+	return
 }
 
 func CnfInit() {
@@ -226,27 +240,60 @@ func CnfInit() {
 		GithubRepo : "",
 		GithubClientId : "",
 		GithubClientSecret : "",
+		ThemeJs: "/static/home/assets/js",
+		ThemeCss: "/static/home/assets/css",
+		ThemeImg: "/static/home/assets/img",
+		ThemeFancyboxCss: "/static/home/assets/fancybox",
+		ThemeFancyboxJs: "/static/home/assets/fancybox",
+		ThemeHLightCss: "/static/home/assets/highlightjs",
+		ThemeHLightJs: "/static/home/assets/highlightjs",
+		ThemeShareCss: "/static/home/assets/css",
+		ThemeShareJs: "/static/home/assets/js",
+		ThemeArchivesJs: "/static/home/assets/js",
+		ThemeArchivesCss: "/static/home/assets/css",
 	}
+
+
+	files,_ := filepath.Glob("./env.*.yaml")
+	dev := false
+	prod := false
+	for _,v := range files {
+		switch v {
+		case "env.dev.yaml":
+			dev = true
+		case "env.prod.yaml":
+			prod = true
+		default:
+			continue
+		}
+	}
+
+	var fileName string
+	var env string
+	if dev {
+		fileName = "/env.dev.yaml"
+		env = "dev"
+	} else if prod {
+		fileName = "/env.prod.yaml"
+		env = "prod"
+	} else {
+		fileName = "default"
+		env = "dev"
+	}
+
+	if fileName == "default" {
+		Cnf = cf
+		Env = env
+		return
+	}
+
 	res,err := filepath.Abs(filepath.Dir("./main.go"))
 	if err != nil {
 		zgh.ZLog().Error(err.Error())
 	}
-	//filepath.Match("")
-	dir,err := os.Getwd()
-	err = filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		return nil
-	})
-
-	files,_ := filepath.Glob("./*")
-	fmt.Println(files)
-	for _,v := range files {
-		fmt.Println(v)
-	}
-
-
 
 	//读取yaml配置文件
-	yamlFile, err := ioutil.ReadFile(res+"/env.dev.yaml")
+	yamlFile, err := ioutil.ReadFile(res+fileName)
 	if err != nil {
 		zgh.ZLog().Error(err.Error())
 	}
@@ -257,4 +304,6 @@ func CnfInit() {
 	}
 
 	Cnf = cf
+	Env = env
+	return
 }

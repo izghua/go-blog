@@ -177,7 +177,19 @@ type Conf struct {
 	GithubClientId string `yaml:"GithubClientId"`
 	GithubClientSecret string `yaml:"GithubClientSecret"`
 
-	Test string `yaml:"Test"`
+	OtherScript string `yaml:"OtherScript"`
+
+	ThemeJs string `yaml:"ThemeJs"`
+	ThemeCss string `yaml:"ThemeCss"`
+	ThemeImg string `yaml:"ThemeImg"`
+	ThemeFancyboxCss string `yaml:"ThemeFancyboxCss"`
+	ThemeFancyboxJs string `yaml:"ThemeFancyboxJs"`
+	ThemeHLightCss string `yaml:"ThemeHLightCss"`
+	ThemeHLightJs string `yaml:"ThemeHLightJs"`
+	ThemeShareCss string `yaml:"ThemeShareCss"`
+	ThemeShareJs string `yaml:"ThemeShareJs"`
+	ThemeArchivesJs string `yaml:"ThemeArchivesJs"`
+	ThemeArchivesCss string `yaml:"ThemeArchivesCss"`
 }
 
 
