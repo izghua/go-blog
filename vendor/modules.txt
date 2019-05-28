@@ -85,7 +85,7 @@ github.com/shurcooL/sanitized_anchor_name
 github.com/speps/go-hashids
 # github.com/ugorji/go v1.1.4
 github.com/ugorji/go/codec
-# golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f
+# golang.org/x/crypto v0.0.0-20190513172903-22d7a77e9e5f => github.com/golang/crypto v0.0.0-20190513172903-22d7a77e9e5f
 golang.org/x/crypto/bcrypt
 golang.org/x/crypto/blowfish
 # golang.org/x/image v0.0.0-20190501045829-6d32002ffd75
@@ -104,7 +104,7 @@ google.golang.org/appengine/cloudsql
 gopkg.in/go-playground/validator.v8
 # gopkg.in/russross/blackfriday.v2 v2.0.0-00010101000000-000000000000 => github.com/russross/blackfriday v2.0.0+incompatible
 gopkg.in/russross/blackfriday.v2
-# gopkg.in/yaml.v2 v2.2.2
+# gopkg.in/yaml.v2 v2.2.2 => github.com/go-yaml/yaml v0.0.0-20181115110504-51d6538a90f8
 gopkg.in/yaml.v2
 # qiniupkg.com/x v7.0.8+incompatible
 qiniupkg.com/x/bytes.v7
