@@ -152,6 +152,7 @@ type IndexGithubParam struct {
 	GithubRepo string
 	GithubClientId string
 	GithubClientSecret string
+	GithubLabels string
 }
 
 

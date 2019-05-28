@@ -240,6 +240,7 @@ func CnfInit() {
 		GithubRepo : "",
 		GithubClientId : "",
 		GithubClientSecret : "",
+		GithubLabels : "Gitalk",
 		ThemeJs: "/static/home/assets/js",
 		ThemeCss: "/static/home/assets/css",
 		ThemeImg: "/static/home/assets/img",

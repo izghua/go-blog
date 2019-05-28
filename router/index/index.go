@@ -132,6 +132,7 @@ func (w *Web)Detail(c *gin.Context) {
 		GithubRepo: conf.Cnf.GithubRepo,
 		GithubClientId: conf.Cnf.GithubClientId,
 		GithubClientSecret: conf.Cnf.GithubClientSecret,
+		GithubLabels: conf.Cnf.GithubLabels,
 	}
 
 	h["post"] = postDetail
