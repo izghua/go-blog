@@ -95,6 +95,12 @@ type Conf struct {
 
 	OtherScript string `yaml:"OtherScript"`
 
+
+	ThemeNiceImg string `yaml:"ThemeNiceImg"`
+	ThemeAllCss string `yaml:"ThemeAllCss"`
+	ThemeIndexImg string `yaml:"ThemeIndexImg"`
+	ThemeCateImg string `yaml:"ThemeCateImg"`
+	ThemeTagImg string `yaml:"ThemeTagImg"`
 	ThemeJs string `yaml:"ThemeJs"`
 	ThemeCss string `yaml:"ThemeCss"`
 	ThemeImg string `yaml:"ThemeImg"`

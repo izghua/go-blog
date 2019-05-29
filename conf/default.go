@@ -252,6 +252,11 @@ func CnfInit() {
 		ThemeShareJs: "/static/home/assets/js",
 		ThemeArchivesJs: "/static/home/assets/js",
 		ThemeArchivesCss: "/static/home/assets/css",
+		ThemeNiceImg: "/static/home/assets/img",
+		ThemeAllCss: "/static/home/assets/css",
+		ThemeIndexImg: "/static/home/assets/img",
+		ThemeCateImg: "/static/home/assets/img",
+		ThemeTagImg: "/static/home/assets/img",
 	}
 
 

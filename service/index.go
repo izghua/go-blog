@@ -41,6 +41,11 @@ func CommonData() (h gin.H,err error) {
 		"themeShareJs": conf.Cnf.ThemeShareJs,
 		"themeArchivesJs": conf.Cnf.ThemeArchivesJs,
 		"themeArchivesCss": conf.Cnf.ThemeArchivesCss,
+		"themeNiceImg": conf.Cnf.ThemeNiceImg,
+		"themeAllCss": conf.Cnf.ThemeAllCss,
+		"themeIndexImg": conf.Cnf.ThemeIndexImg,
+		"themeCateImg": conf.Cnf.ThemeCateImg,
+		"themeTagImg": conf.Cnf.ThemeTagImg,
 
 		"tem": "defaultList",
 	}

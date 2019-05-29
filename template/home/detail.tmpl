@@ -1,10 +1,9 @@
 {{define "detail"}}
     <link rel="stylesheet" href="{{.themeHLightCss}}/darcula.css" type="text/css">
-    <link rel="stylesheet" href="{{.themeShareCss}}/share.min.css" type="text/css">
-    <script src="{{.themeShareJs}}/qrcode.js"></script>
-    <script src="{{.themeShareJs}}/social-share.min.js"></script>
-    <script src="{{.themeHLightJs}}/highlight.pack.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <link rel="stylesheet" href="{{.themeShareCss}}/share.min.css"  type="text/css">
+    <script src="{{.themeShareJs}}/qrcode.js" ></script>
+    <script src="{{.themeHLightJs}}/highlight.pack.js" ></script>
+    <script >hljs.initHighlightingOnLoad();</script>
 
 
     <section id="intro">
@@ -70,35 +69,35 @@
     </section>
 
     <div>
+        <script src="{{.themeShareJs}}/social-share.min.js" ></script>
+        <script>
+            var $config = {
+                title               : {{ .psot.Post.Title }},
+                description         : {{ .psot.Post.Summary }},
+                wechatQrcodeTitle   : "微信扫一扫：分享", // 微信二维码提示文字
+                wechatQrcodeHelper  : '<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈.。</p>',
+                disabled            : ['facebook', 'twitter'],
+            };
+            socialShare('.social-share', $config);
+        </script>
+        <div class="col-md-8 col-md-offset-2 col-sm-24">
+            <div id="container"></div>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+            <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
             <script>
-                var $config = {
-                    title               : {{ .psot.Post.Title }},
-                    description         : {{ .psot.Post.Summary }},
-                    wechatQrcodeTitle   : "微信扫一扫：分享", // 微信二维码提示文字
-                    wechatQrcodeHelper  : '<p>微信里点“发现”，扫一下</p><p>二维码便可将本文分享至朋友圈.。</p>',
-                    disabled            : ['facebook', 'twitter'],
-                };
-                socialShare('.social-share', $config);
+                const gitalk = new Gitalk({
+                    clientID: {{ .github.GithubClientId }},
+                    clientSecret: {{ .github.GithubClientSecret }},
+                    repo: {{ .github.GithubRepo }},
+                    owner: {{ .github.GithubName }},
+                    admin: [{{ .github.GithubName }}],
+                    id: "{{ .post.Post.Id }}",      // Ensure uniqueness and length less than 50
+                    distractionFreeMode: false,  // Facebook-like distraction free mode
+                    labels: [{{ .github.GithubLabels }}], //因为以前用的是 gitment,现在是gitalk,labels不是 或 的关系.. 所以只能显示这个了
+                });
+                gitalk.render('gitalk-container');
             </script>
-            <div class="col-md-8 col-md-offset-2 col-sm-24">
-                <div id="container"></div>
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-                <script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-                <script>
-                    const gitalk = new Gitalk({
-                        clientID: {{ .github.GithubClientId }},
-                        clientSecret: {{ .github.GithubClientSecret }},
-                        repo: {{ .github.GithubRepo }},
-                        owner: {{ .github.GithubName }},
-                        admin: [{{ .github.GithubName }}],
-                        id: "{{ .post.Post.Id }}",      // Ensure uniqueness and length less than 50
-                        distractionFreeMode: false,  // Facebook-like distraction free mode
-                        labels: [{{ .github.GithubLabels }}], //因为以前用的是 gitment,现在是gitalk,labels不是 或 的关系.. 所以只能显示这个了
-                    });
-
-                    gitalk.render('gitalk-container');
-                </script>
             </div>
-        </div>
+    </div>
 
 {{end}}
