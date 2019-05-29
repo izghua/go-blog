@@ -1,62 +1,65 @@
 # go-blog
 
-地址: [https://www.iphpt.com](https://www.iphpt.com)
+Address: [https://www.iphpt.com](https://www.iphpt.com)
 
-> 自己花了一些时间单独重构的!
+> I spent some time refactoring alone!
 
-## 主要功能有:
+[中文文档](./README.CN.md)
 
-1. 文章发布和修改
-2. 文章回收站和撤回
-3. 文章分类
-4. 文章标签
-5. 网站信息自由设置
-6. 文章支持markdown
-7. 网站静态文件可自由配置`本地`或 `CDN`
-8. 可上传图片,可选择上传至`服务器`或 `七牛` 或 `两者同时`
-9. 自由添加友链和管理友链顺序
-10. 采用`github`的`issue`功能作为评论系统,界面优美且方便其他用户留言和通知
-11. <font color=red >定时备份数据和静态资源</font>
-12. 备份数据邮件发送至邮箱
+## main:
 
-## 技术点:
+1. Article release and modification
+2. Article Recycle Bin and Withdrawal
+3. Article categories
+4. Article tags
+5. Website information freedom setting
+6. Article support markdown
+7. ★ Website static files can be freely configured `local` or `CDN`
+8. ★ You can choose to upload images to `server` or `qiniu` or both at the same time.
+9. Freely add friendchain and manage friend chain order
+10. Using the `issue` function of `github` as a commenting system, the interface is beautiful and convenient for other users to leave messages and notifications.
+11. ★ Regularly back up data and static resources
+12. ★ Backup data mail is sent to the mailbox
 
-###  主要代码是 `golang`+`vue`+`HTML`+`CSS`+`MySql`
-    - 后端代码是基于`golang`的`gin`框架封装成的一个自用的包  [https://github.com/izghua/zgh](https://github.com/izghua/zgh)
-    - 后台代码是基于`vue`的`iview`UI组件开发的后台, [https://github.com/izghua/go-blog-backend](https://github.com/izghua/go-blog-backend)
-    - 前台是基于`HTML+CSS`,展示页面 [https://www.iphpt.com](https://www.iphpt.com)
-    - 缓存用的`redis`
-    - 数据库用的是 `MySql`
-    - 配置文件用的 `yaml`
+## Technical point:
+
+###  The main code is `golang`+`vue`+`HTML`+`CSS`+`MySql`
+
+    - The backend code is a self-contained package based on the `golang` `gin` framework.  [https://github.com/izghua/zgh](https://github.com/izghua/zgh)
+    - The background code is based on the `iview` UI component development of `vue`, [https://github.com/izghua/go-blog-backend](https://github.com/izghua/go-blog-backend)
+    - The front desk is based on `HTML+CSS`, the display page [https://www.iphpt.com](https://www.iphpt.com)
+    - The cache is `redis`
+    - The database is `MySql`
+    - The Configuration file is`yaml`
     
-### 安装方法
+### How to install
 
 [go-blog安装教程](https://www.iphpt.com/detail/130)    
 
     
-### 历史
+### history
 
-本站起始于2015年,最开始由`zblog`开源框架搭建
+This site started in 2015 and was originally built by the `zblog` open source framework.
 
-在2016年,我利用`PHP`的`Laravel`框架 重构了前后端所有代码!
-    - 界面: [http://php.iphpt.com](http://php.iphpt.com)
-    - 代码: [https://github.com/xzghua/laravel-5-myblog](https://github.com/xzghua/laravel-5-myblog)
+In 2016, I used the `Larvel` framework of `PHP` to refactor all the code at the front and back
+    - Web: [http://php.iphpt.com](http://php.iphpt.com)
+    - Code: [https://github.com/xzghua/laravel-5-myblog](https://github.com/xzghua/laravel-5-myblog)
 
-在2019年,我利用`Golang`再次重构了它
-    - 界面: [https://www.iphpt.com](https://www.iphpt.com)
-    - 代码: [https://github.com/izghua/go-blog](https://github.com/izghua/go-blog)
+In 2019, I refactored it again with `Golang`
+    - Web: [https://www.iphpt.com](https://www.iphpt.com)
+    - Code: [https://github.com/izghua/go-blog](https://github.com/izghua/go-blog)
 
-### 展示图        
+### Sample image        
  
-新:
-   - 后台登录: ![后台登录](./static/uploads/images/bc-login.png)
-   - 后台首页: ![后台首页](./static/uploads/images/bc-home.png)
-   - 后台列表: ![后台列表](./static/uploads/images/bc-post.png)
+NEW:
+   - backend-login: ![backend-login](./static/uploads/images/bc-login.png)
+   - backend-home: ![backend-home](./static/uploads/images/bc-home.png)
+   - backend-list: ![backend-list](./static/uploads/images/bc-post.png)
 
-旧:
-   - 后台登录: ![后台登录](./static/uploads/images/old-bc-login.png)
-   - 后台首页: ![后台首页](./static/uploads/images/old-bc-home.png)
-   - 后台列表: ![后台列表](./static/uploads/images/old-bc-post.png)
+OLD:
+   - backend-login: ![backend-login](./static/uploads/images/old-bc-login.png)
+   - backend-home: ![backend-home](./static/uploads/images/old-bc-home.png)
+   - backend-list: ![backend-list](./static/uploads/images/old-bc-post.png)
 
 
 
