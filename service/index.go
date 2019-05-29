@@ -308,7 +308,7 @@ func PostViewAdd(postIdStr string) {
 		zgh.ZLog().Error("message","service.Index.PostViewAdd","err",err.Error())
 		return
 	}
-	_,err = conf.SqlServer.Id(postIdInt).Incr("num").Update(entity.ZPostViews{})
+	_,err = conf.SqlServer.Where("post_id = ?",postIdInt).Incr("num").Update(entity.ZPostViews{})
 	if err != nil {
 		zgh.ZLog().Error("message","service.Index.PostViewAdd","err",err.Error())
 		return
