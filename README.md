@@ -23,13 +23,13 @@ Address: [https://www.iphpt.com](https://www.iphpt.com)
 
 ## Technical point:
 
-###  The main code is `golang`+`vue`+`HTML`+`CSS`+`MySql`
+###  The main code is `golang`+`vue`+`HTML`+`CSS`+`MySQL`
 
     - The backend code is a self-contained package based on the `golang` `gin` framework.  [https://github.com/izghua/zgh](https://github.com/izghua/zgh)
     - The background code is based on the `iview` UI component development of `vue`, [https://github.com/izghua/go-blog-backend](https://github.com/izghua/go-blog-backend)
     - The front desk is based on `HTML+CSS`, the display page [https://www.iphpt.com](https://www.iphpt.com)
     - The cache is `redis`
-    - The database is `MySql`
+    - The database is `MySQL`
     - The Configuration file is`yaml`
     
 ### How to install

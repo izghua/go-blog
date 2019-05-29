@@ -21,12 +21,12 @@
 
 ## 技术点:
 
-###  主要代码是 `golang`+`vue`+`HTML`+`CSS`+`MySql`
+###  主要代码是 `golang`+`vue`+`HTML`+`CSS`+`MySQL`
     - 后端代码是基于`golang`的`gin`框架封装成的一个自用的包  [https://github.com/izghua/zgh](https://github.com/izghua/zgh)
     - 后台代码是基于`vue`的`iview`UI组件开发的后台, [https://github.com/izghua/go-blog-backend](https://github.com/izghua/go-blog-backend)
     - 前台是基于`HTML+CSS`,展示页面 [https://www.iphpt.com](https://www.iphpt.com)
     - 缓存用的`redis`
-    - 数据库用的是 `MySql`
+    - 数据库用的是 `MySQL`
     - 配置文件用的 `yaml`
     
 ### 安装方法
