@@ -46,6 +46,7 @@ func CommonData() (h gin.H,err error) {
 		"themeIndexImg": conf.Cnf.ThemeIndexImg,
 		"themeCateImg": conf.Cnf.ThemeCateImg,
 		"themeTagImg": conf.Cnf.ThemeTagImg,
+		"title": "",
 
 		"tem": "defaultList",
 	}

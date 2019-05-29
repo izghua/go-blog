@@ -10,8 +10,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
+	"github.com/izghua/go-blog/entity"
 	"github.com/izghua/go-blog/service"
 	"github.com/izghua/zgh"
+	"html/template"
 	"net/http"
 	"sort"
 	"time"
@@ -46,6 +48,7 @@ func (w *Web)Index(c *gin.Context) {
 
 	h["post"] = postData.PostListArr
 	h["paginate"] = postData.Paginate
+	h["title"] = h["system"].(*entity.ZSystems).Title
 	w.Response(http.StatusOK,0,h)
 	return
 }
@@ -73,6 +76,7 @@ func (w *Web)IndexTag(c *gin.Context) {
 	h["paginate"] = postData.Paginate
 	h["tagName"] = name
 	h["tem"] = "tagList"
+	h["title"] = template.HTML(name + " --  tags &nbsp;&nbsp;-&nbsp;&nbsp;"+h["system"].(*entity.ZSystems).Title)
 
 	c.HTML(http.StatusOK, "master.tmpl", h)
 	return
@@ -102,6 +106,8 @@ func (w *Web)IndexCate(c *gin.Context)  {
 	h["paginate"] = postData.Paginate
 	h["cateName"] = name
 	h["tem"] = "cateList"
+	h["title"] = template.HTML(name + " --  category &nbsp;&nbsp;-&nbsp;&nbsp;" + h["system"].(*entity.ZSystems).Title)
+
 	w.Response(http.StatusOK,0,h)
 	return
 
@@ -138,6 +144,8 @@ func (w *Web)Detail(c *gin.Context) {
 	h["post"] = postDetail
 	h["github"] = github
 	h["tem"] = "detail"
+	h["title"] = template.HTML(postDetail.Post.Title + " &nbsp;&nbsp;-&nbsp;&nbsp;" + h["system"].(*entity.ZSystems).Title)
+
 	w.Response(http.StatusOK,0,h)
 	return
 }
@@ -181,6 +189,8 @@ func (w *Web)Archives(c *gin.Context) {
 
 	h["tem"] = "archives"
 	h["archives"] = newData
+	h["title"] = template.HTML("归档 &nbsp;&nbsp;-&nbsp;&nbsp;" + h["system"].(*entity.ZSystems).Title)
+
 	w.Response(http.StatusOK,0,h)
 	return
 }
