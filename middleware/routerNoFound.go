@@ -9,6 +9,7 @@ package middleware
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/izghua/zgh"
 	"net/http"
 	"strings"
 )
@@ -16,6 +17,7 @@ import (
 func CheckExist() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		path := c.Request.URL.Path
+		zgh.ZLog().Info("message","routerNoFound CheckExist","Path",path)
 		s := strings.Contains(path,"/backend/")
 		c.Next()
 		status := c.Writer.Status()
