@@ -29,7 +29,7 @@ func (a *ApiController) Response(httpCode, errCode int, data gin.H) {
 	}
 	msg := conf.GetMsg(errCode)
 	beginTime, _ := strconv.ParseInt(a.C.Writer.Header().Get("X-Begin-Time"), 10, 64)
-	
+
 	duration := time.Now().Sub(time.Unix(0, beginTime))
 	milliseconds := float64(duration) / float64(time.Millisecond)
 	rounded := float64(int(milliseconds*100+.5)) / 100

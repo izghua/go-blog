@@ -22,6 +22,7 @@
 ## 技术点:
 
 ###  主要代码是 `golang`+`vue`+`HTML`+`CSS`+`MySQL`
+
     - 后端代码是基于`golang`的`gin`框架封装成的一个自用的包  [https://github.com/izghua/zgh](https://github.com/izghua/zgh)
     - 后台代码是基于`vue`的`iview`UI组件开发的后台, [https://github.com/izghua/go-blog-backend](https://github.com/izghua/go-blog-backend)
     - 前台是基于`HTML+CSS`,展示页面 [https://www.iphpt.com](https://www.iphpt.com)
@@ -39,14 +40,17 @@
 本站起始于2015年,最开始由`zblog`开源框架搭建
 
 在2016年,我利用`PHP`的`Laravel`框架 重构了前后端所有代码!
+
     - 界面: [http://php.iphpt.com](http://php.iphpt.com)
     - 代码: [https://github.com/xzghua/laravel-5-myblog](https://github.com/xzghua/laravel-5-myblog)
 
 在2019年,我利用`Golang`再次重构了它
+
     - 界面: [https://www.iphpt.com](https://www.iphpt.com)
     - 代码: [https://github.com/izghua/go-blog](https://github.com/izghua/go-blog)
 
 ### 历史版本:
+
     Z-blog: [https://github.com/xzghua/iphpt](https://github.com/xzghua/iphpt)
     Laravel: [https://github.com/xzghua/laravel-5-myblog](https://github.com/xzghua/laravel-5-myblog)
     Beego(未上线): [https://github.com/xzghua/beego-postgres-blog](https://github.com/xzghua/beego-postgres-blog)
@@ -55,11 +59,13 @@
 ### 展示图        
  
 新:
+
    - 后台登录: ![后台登录](./static/uploads/images/bc-login.png)
    - 后台首页: ![后台首页](./static/uploads/images/bc-home.png)
    - 后台列表: ![后台列表](./static/uploads/images/bc-post.png)
 
 旧:
+
    - 后台登录: ![后台登录](./static/uploads/images/old-bc-login.png)
    - 后台首页: ![后台首页](./static/uploads/images/old-bc-home.png)
    - 后台列表: ![后台列表](./static/uploads/images/old-bc-post.png)
