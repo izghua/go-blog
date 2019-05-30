@@ -17,3 +17,5 @@ static/images/uploads/*
 
 *.yaml
 !env.example.yaml
+
+robots.txt
