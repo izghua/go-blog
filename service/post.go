@@ -7,6 +7,7 @@
 package service
 
 import (
+	"errors"
 	"github.com/go-xorm/xorm"
 	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
@@ -292,7 +293,9 @@ func IndexPostDetailDao(postId int) (postDetail common.IndexPostDetail,err error
 		zgh.ZLog().Error("message","service.IndexPostDetailDao","err",err.Error())
 		return
 	}
-
+	if post.Id <= 0 {
+		return postDetail,errors.New("Post do not exists ")
+	}
 	Post := common.IndexPost{
 		Id: post.Id,
 		Uid: post.Uid,

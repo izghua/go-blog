@@ -35,14 +35,14 @@ func (w *Web)Index(c *gin.Context) {
 	h,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
-		w.Response(http.StatusOK,408000000,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 
 	postData,err := service.IndexPost(queryPage,queryLimit,"default","")
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
-		w.Response(http.StatusOK,408000001,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 
@@ -61,14 +61,14 @@ func (w *Web)IndexTag(c *gin.Context) {
 	h,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
-		w.Response(http.StatusOK,408000000,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 
 	postData,err := service.IndexPost(queryPage,queryLimit,"tag",name)
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Index","err",err.Error())
-		w.Response(http.StatusOK,408000001,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 
@@ -91,14 +91,14 @@ func (w *Web)IndexCate(c *gin.Context)  {
 	h,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.IndexCate","err",err.Error())
-		w.Response(http.StatusOK,408000000,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 
 	postData,err := service.IndexPost(queryPage,queryLimit,"cate",name)
 	if err != nil {
 		zgh.ZLog().Error("message","Index.IndexCate","err",err.Error())
-		w.Response(http.StatusOK,408000001,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 
@@ -120,14 +120,14 @@ func (w *Web)Detail(c *gin.Context) {
 	h,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Detail","err",err.Error())
-		w.Response(http.StatusOK,408000000,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 
 	postDetail,err :=  service.IndexPostDetail(postIdStr)
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Detail","err",err.Error())
-		w.Response(http.StatusOK,408000002,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 
@@ -156,14 +156,14 @@ func (w *Web)Archives(c *gin.Context) {
 	h,err := service.CommonData()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Archives","err",err.Error())
-		w.Response(http.StatusOK,408000000,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 
 	res,err := service.PostArchives()
 	if err != nil {
 		zgh.ZLog().Error("message","Index.Archives","err",err.Error())
-		w.Response(http.StatusOK,408000006,h)
+		w.Response(http.StatusOK,404,h)
 		return
 	}
 	loc, _ := time.LoadLocation("Asia/Shanghai")
