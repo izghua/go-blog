@@ -37,17 +37,19 @@ Address: [https://www.iphpt.com](https://www.iphpt.com)
 [go-blog安装教程](https://www.iphpt.com/detail/130)    
 [关于go-blog的配置文件解析](https://www.iphpt.com/detail/131)
     
-### history
+### History
 
 This site started in 2015 and was originally built by the `zblog` open source framework.
 
 In 2016, I used the `Larvel` framework of `PHP` to refactor all the code at the front and back
-    - Web: [http://php.iphpt.com](http://php.iphpt.com)
-    - Code: [https://github.com/xzghua/laravel-5-myblog](https://github.com/xzghua/laravel-5-myblog)
+
+ - Web: [http://php.iphpt.com](http://php.iphpt.com)
+ - Code: [https://github.com/xzghua/laravel-5-myblog](https://github.com/xzghua/laravel-5-myblog)
 
 In 2019, I refactored it again with `Golang`
-    - Web: [https://www.iphpt.com](https://www.iphpt.com)
-    - Code: [https://github.com/izghua/go-blog](https://github.com/izghua/go-blog)
+
+ - Web: [https://www.iphpt.com](https://www.iphpt.com)
+ - Code: [https://github.com/izghua/go-blog](https://github.com/izghua/go-blog)
 
 ### History Version:
     Z-blog: [https://github.com/xzghua/iphpt](https://github.com/xzghua/iphpt)
