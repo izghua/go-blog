@@ -34,7 +34,8 @@ Address: [https://www.iphpt.com](https://www.iphpt.com)
     
 ### How to install
 
-[go-blog安装教程](https://www.iphpt.com/detail/130)    
+[go-blog安装教程](https://www.iphpt.com/detail/130) 
+   
 [关于go-blog的配置文件解析](https://www.iphpt.com/detail/131)
     
 ### History
@@ -52,10 +53,10 @@ In 2019, I refactored it again with `Golang`
  - Code: [https://github.com/izghua/go-blog](https://github.com/izghua/go-blog)
 
 ### History Version:
-    Z-blog: [https://github.com/xzghua/iphpt](https://github.com/xzghua/iphpt)
-    Laravel: [https://github.com/xzghua/laravel-5-myblog](https://github.com/xzghua/laravel-5-myblog)
-    Beego(Not online): [https://github.com/xzghua/beego-postgres-blog](https://github.com/xzghua/beego-postgres-blog)
-    Golang: [https://github.com/izghua/go-blog](https://github.com/izghua/go-blog)
+ - Z-blog: [https://github.com/xzghua/iphpt](https://github.com/xzghua/iphpt)
+ - Laravel: [https://github.com/xzghua/laravel-5-myblog](https://github.com/xzghua/laravel-5-myblog)
+ - Beego(Not online): [https://github.com/xzghua/beego-postgres-blog](https://github.com/xzghua/beego-postgres-blog)
+ - Golang: [https://github.com/izghua/go-blog](https://github.com/izghua/go-blog)
 
 ### Sample image        
  
