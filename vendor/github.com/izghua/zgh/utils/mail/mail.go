@@ -152,7 +152,7 @@ func (ep *EmailParam)SendMail2(to string) error {
 	sendTo := strings.Split(to, ";")
 
 	subject := ep.Subject
-	boundary := "next message" //boundary 用于分割邮件内容，可自定义. 注意它的开始和结束格式
+	boundary := "next message"
 
 	mime := bytes.NewBuffer(nil)
 	user := string(ep.User)
@@ -167,9 +167,7 @@ func (ep *EmailParam)SendMail2(to string) error {
 	//邮件普通Text正文
 	mime.WriteString(fmt.Sprintf("--%s\r\n", boundary))
 	mime.WriteString("Content-Type: text/plain; charset=utf-8\r\n")
-	//mime.WriteString("This is a multipart message in MIME format.")
 
-	//邮件HTML正文
 	mime.WriteString(fmt.Sprintf("\n--%s\r\n", boundary))
 
 	boundaryHtml := "boundaryHtml"
@@ -184,9 +182,7 @@ func (ep *EmailParam)SendMail2(to string) error {
 	fmt.Println(ep.Subject,ep.Attaches,ep.Description,ep.Body,sendTo,host)
 
 	for k,v := range ep.Attaches {
-		//attaFile := "./2018-12-25.zip"
 		attaFile := v
-		//attaFileName := "2018-12-25.zip"
 		attaFileName := k
 		mime.WriteString(fmt.Sprintf("\n--%s\r\n", boundary))
 		mime.WriteString("Content-Type: application/octet-stream\r\n")
@@ -203,41 +199,13 @@ func (ep *EmailParam)SendMail2(to string) error {
 		base64.StdEncoding.Encode(b, attaData)
 		mime.Write(b)
 	}
-	//fmt.Println(ep.Subject,"111",ep.Body,"2222",ep.Attaches,"3",to,"4444",ep.Password,"5555",ep.Host,"6666",ep.User)
-	// 第一个附件
-	//attaFile := "./2018-12-25.zip"
-	//attaFileName := "2018-12-25.zip"
-	//mime.WriteString(fmt.Sprintf("\n--%s\r\n", boundary))
-	//mime.WriteString("Content-Type: application/octet-stream\r\n")
-	//mime.WriteString("Content-Description: 附一个Go文件\r\n")
-	//mime.WriteString("Content-Transfer-Encoding: base64\r\n")
-	//mime.WriteString("Content-Disposition: attachment; filename=\"" + attaFileName + "\"\r\n\r\n")
-	//
-	//fmt.Println("读取并编码文件内容")
-	////读取并编码文件内容
-	//attaData, err := ioutil.ReadFile(attaFile)
-	//if err != nil {
-	//	return err
-	//}
-	//b := make([]byte, base64.StdEncoding.EncodedLen(len(attaData)))
-	//base64.StdEncoding.Encode(b, attaData)
-	//mime.Write(b)
 
-	//fmt.Println("第二个附件")
-	////第二个附件
-	//mime.WriteString(fmt.Sprintf("\r\n--%s\r\n", boundary))
-	//mime.WriteString("Content-Type: text/plain\r\n")
-	//mime.WriteString("Content-Description: 附一个Text文件\r\n")
-	//mime.WriteString("Content-Disposition: attachment; filename=\"test.txt\"\r\n\r\n")
-	//mime.WriteString("this is the attachment text")
-
-	fmt.Println("邮件结束")
-	//邮件结束
+	zgh.ZLog().Info("message","mail to the last")
 	mime.WriteString("\r\n--" + boundary + "--\r\n\r\n")
-
 	auth := smtp.PlainAuth("", user, password, mailAddr)
-
-	return smtp.SendMail(host, auth, user, sendTo, mime.Bytes())
+	err := smtp.SendMail(host, auth, user, sendTo, mime.Bytes())
+	zgh.ZLog().Info("message","mail to the last","last",err)
+	return err
 }
 
 
@@ -259,6 +227,7 @@ func SendMail( to string, subject string, body string) error {
 	msg = []byte(subject + contentType + body)
 	sendTo := strings.Split(to, ";")
 	err := smtp.SendMail(host, auth, user, sendTo, msg)
+	zgh.ZLog().Info("message","SendMail","last",err)
 	return err
 }
 
