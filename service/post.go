@@ -396,7 +396,7 @@ func LastPost(postId int) (post *entity.ZPosts,err error)  {
 
 func NextPost(postId int) (post *entity.ZPosts,err error)  {
 	post = new(entity.ZPosts)
-	_,err = conf.SqlServer.Where("id > ?",postId).Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Desc("id").Get(post)
+	_,err = conf.SqlServer.Where("id > ?",postId).Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Asc("id").Get(post)
 	return
 }
 

@@ -50,5 +50,15 @@ func UserStore(ar common.AuthRegister) (user *entity.ZUsers, err error) {
 }
 
 func DelAllCache() {
-	conf.CacheClient.Del( conf.Cnf.CateListKey, conf.Cnf.TagListKey, conf.Cnf.PostIndexKey, conf.Cnf.TagPostIndexKey, conf.Cnf.CatePostIndexKey, conf.Cnf.LinkIndexKey, conf.Cnf.SystemIndexKey, conf.Cnf.PostDetailIndexKey,conf.Cnf.ArchivesKey)
+	conf.CacheClient.Del(
+		conf.Cnf.TagListKey,
+		conf.Cnf.CateListKey,
+		conf.Cnf.ArchivesKey,
+		conf.Cnf.LinkIndexKey,
+		conf.Cnf.PostIndexKey,
+		conf.Cnf.SystemIndexKey,
+		conf.Cnf.TagPostIndexKey,
+		conf.Cnf.CatePostIndexKey,
+		conf.Cnf.PostDetailIndexKey,
+	)
 }
