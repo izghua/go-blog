@@ -46,7 +46,6 @@ func RoutersInit() *gin.Engine{
 	consoleHome := console.NewStatistics()
 	c := r.Group("/console")
 	{
-		r.LoadHTMLGlob("static/console/*.html")
 		r.Static("/static/console","./static/console")
 		r.StaticFile("/backend/","static/console/index.html")
 		r.StaticFile("/backend/register","static/console/index.html")
