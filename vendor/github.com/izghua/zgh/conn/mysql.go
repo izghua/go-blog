@@ -84,7 +84,7 @@ func InitMysql(options ...Sp) (*xorm.Engine,error){
 		option(q)
 	}
 
-	dataSourceName := q.UserName + ":" + q.Password + "@/" + q.DataBase + "?charset=utf8"
+	dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8", q.UserName, q.Password, q.Host, q.Port, q.DataBase)
 	engine, err := xorm.NewEngine("mysql", dataSourceName)
 	if err != nil {
 		zgh.ZLog().Error("mysql","初始化数据库，创建连接异常:"+err.Error())

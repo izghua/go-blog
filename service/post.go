@@ -8,6 +8,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"github.com/go-xorm/xorm"
 	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
@@ -167,6 +168,12 @@ func PostStore( ps common.PostStore,userId int) {
 
 
 	session := conf.SqlServer.NewSession()
+	err := session.Begin()
+	if err != nil {
+		_ = session.Rollback()
+		zgh.ZLog().Error("message","service.PostStore","err",err.Error())
+		return
+	}
 	defer session.Close()
 	affected,err := session.Insert(postCreate)
 	if err != nil {
@@ -464,8 +471,15 @@ func PostUpdate(postId int,ps common.PostStore) {
 	html := bluemonday.UGCPolicy().SanitizeBytes(unsafe)
 	postUpdate.Content = string(html)
 
-
 	session := conf.SqlServer.NewSession()
+	now := time.Now()
+	err := session.Begin()
+	fmt.Println("------------------------------------------------------------",time.Since(now))
+	if err != nil {
+		_ = session.Rollback()
+		zgh.ZLog().Error("message","service.PostUpdate","err",err.Error())
+		return
+	}
 	defer session.Close()
 	affected,err := session.Where("id = ?",postId).Update(postUpdate)
 	if err != nil {

@@ -46,7 +46,7 @@ func RoutersInit() *gin.Engine{
 	consoleHome := console.NewStatistics()
 	c := r.Group("/console")
 	{
-		r.LoadHTMLGlob("static/console/*.html")
+		//r.LoadHTMLGlob("static/console/*.html")
 		r.Static("/static/console","./static/console")
 		r.StaticFile("/backend/","static/console/index.html")
 		r.StaticFile("/backend/register","static/console/index.html")
@@ -136,6 +136,8 @@ func RoutersInit() *gin.Engine{
 		h.GET("/tags/:name",web.IndexTag)
 		h.GET("/detail/:id",web.Detail)
 		h.GET("/archives",web.Archives)
+		h.GET("/rss",web.Rss)
+		h.GET("/atom",web.Atom)
 		h.GET("/404",web.NoFound)
 	}
 

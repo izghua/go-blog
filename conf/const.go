@@ -76,6 +76,8 @@ type Conf struct {
 
 	UserCnt int `yaml:"UserCnt"`
 
+	Author string `yaml:"Author"`
+	Email string `yaml:"Email"`
 
 	// index
 	PostIndexKey string `yaml:"PostIndexKey"`

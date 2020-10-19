@@ -32,9 +32,15 @@ func GetCateByParentId(parentId int) (cate *entity.ZCategories,err error) {
 
 func DelCateRel(cateId int) {
 	session := conf.SqlServer.NewSession()
+	err := session.Begin()
+	if err != nil {
+		_ = session.Rollback()
+		zgh.ZLog().Error("message","service.DelCateRel","err",err.Error())
+		return
+	}
 	defer session.Close()
 	postCate := new(entity.ZPostCate)
-	_,err := session.Where("cate_id = ?",cateId).Delete(postCate)
+	_,err = session.Where("cate_id = ?",cateId).Delete(postCate)
 	if err != nil {
 		_ = session.Rollback()
 		zgh.ZLog().Error("message","service.DelCateRel","err",err.Error())

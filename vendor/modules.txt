@@ -31,28 +31,30 @@ github.com/go-xorm/core
 github.com/go-xorm/xorm
 # github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0
 github.com/golang/freetype
-github.com/golang/freetype/truetype
 github.com/golang/freetype/raster
+github.com/golang/freetype/truetype
 # github.com/golang/protobuf v1.3.1
 github.com/golang/protobuf/proto
-# github.com/izghua/zgh v0.0.28
+# github.com/gorilla/feeds v1.1.1
+github.com/gorilla/feeds
+# github.com/izghua/zgh v0.0.29
 github.com/izghua/zgh
 github.com/izghua/zgh/conf
 github.com/izghua/zgh/conn
+github.com/izghua/zgh/gin/api
+github.com/izghua/zgh/gin/middleware
+github.com/izghua/zgh/gin/util
 github.com/izghua/zgh/jwt
+github.com/izghua/zgh/request
+github.com/izghua/zgh/utils
 github.com/izghua/zgh/utils/alarm
 github.com/izghua/zgh/utils/backup
+github.com/izghua/zgh/utils/cron
 github.com/izghua/zgh/utils/hashid
 github.com/izghua/zgh/utils/mail
 github.com/izghua/zgh/utils/qq_captcha
 github.com/izghua/zgh/utils/string
-github.com/izghua/zgh/gin/api
-github.com/izghua/zgh/gin/middleware
-github.com/izghua/zgh/gin/util
-github.com/izghua/zgh/utils
-github.com/izghua/zgh/utils/cron
 github.com/izghua/zgh/utils/zip
-github.com/izghua/zgh/request
 # github.com/json-iterator/go v1.1.6
 github.com/json-iterator/go
 # github.com/mattn/go-isatty v0.0.7
@@ -68,11 +70,11 @@ github.com/mojocn/base64Captcha
 github.com/mojocn/base64Captcha/store
 # github.com/qiniu/api.v7 v7.2.5+incompatible
 github.com/qiniu/api.v7/auth/qbox
-github.com/qiniu/api.v7/storage
 github.com/qiniu/api.v7/conf
+github.com/qiniu/api.v7/storage
 # github.com/qiniu/x v7.0.8+incompatible
-github.com/qiniu/x/bytes.v7/seekable
 github.com/qiniu/x/bytes.v7
+github.com/qiniu/x/bytes.v7/seekable
 github.com/qiniu/x/reqid.v7
 github.com/qiniu/x/xlog.v7
 # github.com/robfig/cron v1.1.0
@@ -92,10 +94,10 @@ golang.org/x/crypto/blowfish
 golang.org/x/image/font
 golang.org/x/image/math/fixed
 # golang.org/x/net v0.0.0-20190503192946-f4e77d36d62c
-golang.org/x/net/html
 golang.org/x/net/context
-golang.org/x/net/publicsuffix
+golang.org/x/net/html
 golang.org/x/net/html/atom
+golang.org/x/net/publicsuffix
 # golang.org/x/sys v0.0.0-20190412213103-97732733099d
 golang.org/x/sys/unix
 # google.golang.org/appengine v1.5.0

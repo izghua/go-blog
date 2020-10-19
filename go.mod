@@ -7,7 +7,8 @@ require (
 	github.com/go-errors/errors v1.0.1
 	github.com/go-redis/redis v6.15.2+incompatible
 	github.com/go-xorm/xorm v0.7.1
-	github.com/izghua/zgh v0.0.28
+	github.com/gorilla/feeds v1.1.1
+	github.com/izghua/zgh v0.0.29
 	github.com/microcosm-cc/bluemonday v1.0.2
 	github.com/mojocn/base64Captcha v0.0.0-20190509095025-87c9c59224d8
 	github.com/qiniu/api.v7 v7.2.5+incompatible

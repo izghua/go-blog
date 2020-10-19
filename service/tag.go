@@ -93,9 +93,15 @@ func TagsIndex(limit int,offset int) (num int64,tags []*entity.ZTags,err error) 
 
 func DelTagRel(tagId int) {
 	session := conf.SqlServer.NewSession()
+	err := session.Begin()
+	if err != nil {
+		_ = session.Rollback()
+		zgh.ZLog().Error("message","service.DelTagRel","err",err.Error())
+		return
+	}
 	defer session.Close()
 	postTag := new(entity.ZPostTag)
-	_,err := session.Where("tag_id = ?",tagId).Delete(postTag)
+	_,err = session.Where("tag_id = ?",tagId).Delete(postTag)
 	if err != nil {
 		_ = session.Rollback()
 		zgh.ZLog().Error("message","service.DelTagRel","err",err.Error())

@@ -137,6 +137,16 @@ type IndexPost struct {
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 }
 
+type IndexRss struct {
+	Id        int 	`json:"id,omitempty"`
+	Uid       string `json:"uid,omitempty"`
+	Author    string `json:"author,omitempty"`
+	Title     string `json:"title,omitempty"`
+	Summary   string `json:"summary,omitempty"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
+}
+
 type IndexPostDetail struct {
 	Post IndexPost `json:"post,omitempty"`
 	Tags []ConsoleTag `json:"tags,omitempty"`

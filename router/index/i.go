@@ -15,4 +15,6 @@ type Home interface {
 	Detail(*gin.Context)
 	Archives(*gin.Context)
 	NoFound(*gin.Context)
+	Rss(*gin.Context)
+	Atom(*gin.Context)
 }

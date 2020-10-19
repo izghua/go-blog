@@ -42,8 +42,12 @@ func (a *ApiController) Response(httpCode, errCode int, data gin.H) {
 		a.C.HTML(http.StatusOK,"5xx.tmpl",data)
 	} else if errCode == 404 {
 		a.C.HTML(http.StatusOK,"4xx.tmpl",data)
-	} else if errCode == 0  {
-		a.C.HTML(http.StatusOK,"master.tmpl",data)
+	} else if errCode == 0 {
+		a.C.HTML(http.StatusOK, "master.tmpl", data)
+	} else if errCode == 528 {
+		a.C.HTML(http.StatusOK, "rss.tmpl", data)
+	} else if errCode == 633 {
+		a.C.HTML(http.StatusOK, "atom.tmpl", data)
 	} else {
 		a.C.HTML(http.StatusOK,"5xx.tmpl",nil)
 	}

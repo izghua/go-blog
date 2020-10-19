@@ -229,6 +229,8 @@ func CnfInit() {
 		Description : "个人网站,https://github.com/izghua/go-blog",
 		RecordNumber : "000-0000",
 		UserCnt : 2,
+		Author: "叶落山城秋",
+		Email: "",
 		PostIndexKey : "index:all:post:list",
 		TagPostIndexKey : "index:all:tag:post:list",
 		CatePostIndexKey : "index:all:cate:post:list",

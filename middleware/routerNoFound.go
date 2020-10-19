@@ -17,11 +17,11 @@ import (
 func CheckExist() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		path := c.Request.URL.Path
-		zgh.ZLog().Info("message","routerNoFound CheckExist","Path",path)
 		s := strings.Contains(path,"/backend/")
 		c.Next()
 		status := c.Writer.Status()
 		if status == 404 {
+			zgh.ZLog().Info("message","routerNoFound CheckExist","Path",path)
 			if s {
 				c.Redirect(http.StatusMovedPermanently,"/backend/")
 			} else {

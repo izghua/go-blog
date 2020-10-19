@@ -195,6 +195,62 @@ func (w *Web)Archives(c *gin.Context) {
 	return
 }
 
+func (w *Web) Rss(c *gin.Context) {
+	w.C = c
+	h,err := service.CommonData()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Rss","err",err.Error())
+		w.Response(http.StatusOK,404,h)
+		return
+	}
+
+	feed,err := service.CommonRss()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Rss","err",err.Error())
+		w.Response(http.StatusOK,404,h)
+		return
+	}
+
+	rss, err := feed.ToRss()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Rss","err",err.Error())
+		w.Response(http.StatusOK,404,h)
+		return
+	}
+	h["rss"] = rss
+	h["title"] = template.HTML("Rss &nbsp;&nbsp;-&nbsp;&nbsp;" + h["system"].(*entity.ZSystems).Title)
+	w.Response(http.StatusOK,528,h)
+	return
+}
+
+func (w *Web) Atom(c *gin.Context) {
+	w.C = c
+	h,err := service.CommonData()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Atom","err",err.Error())
+		w.Response(http.StatusOK,404,h)
+		return
+	}
+
+	feed,err := service.CommonRss()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Atom","err",err.Error())
+		w.Response(http.StatusOK,404,h)
+		return
+	}
+
+	atom, err := feed.ToAtom()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Atom","err",err.Error())
+		w.Response(http.StatusOK,404,h)
+		return
+	}
+
+	h["atom"] = atom
+	w.Response(http.StatusOK,633,h)
+	return
+}
+
 func (w *Web)NoFound(c *gin.Context)  {
 	w.C = c
 	w.Response(http.StatusOK,404,gin.H{

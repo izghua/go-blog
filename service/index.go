@@ -11,6 +11,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/go-redis/redis"
+	"github.com/gorilla/feeds"
 	"github.com/izghua/go-blog/common"
 	"github.com/izghua/go-blog/conf"
 	"github.com/izghua/go-blog/entity"
@@ -381,6 +382,125 @@ func doCacheArchives(cacheKey string,field string) (archivesList map[string][]*e
 	err = conf.CacheClient.HSet(cacheKey,field,jsonRes).Err()
 	if err != nil {
 		zgh.ZLog().Error("message","service.index.doCacheArchives","err",err.Error())
+		return
+	}
+	return
+}
+
+func PostRss() (rssList []*common.IndexRss,err error) {
+	cacheKey := conf.Cnf.ArchivesKey
+	field := ":rss:"
+
+	cacheRes,err := conf.CacheClient.HGet(cacheKey,field).Result()
+	if err == redis.Nil {
+		// cache key does not exist
+		// set data to the cache what use the cache key
+		rssList,err := doCacheRss(cacheKey,field)
+		if err != nil {
+			zgh.ZLog().Error("message","service.index.PostRss","err",err.Error())
+			return rssList,err
+		}
+		return rssList,nil
+	} else if err != nil {
+		zgh.ZLog().Error("message","service.index.PostRss","err",err.Error())
+		return rssList,err
+	}
+
+	if cacheRes == "" {
+		// Data is  null
+		// set data to the cache what use the cache key
+		rssList,err := doCacheRss(cacheKey,field)
+		if err != nil {
+			zgh.ZLog().Error("message","service.index.PostRss","err",err.Error())
+			return rssList,err
+		}
+		return rssList,nil
+	}
+
+	err = json.Unmarshal([]byte(cacheRes),&rssList)
+	if err != nil {
+		zgh.ZLog().Error("message","service.index.PostRss","err",err.Error())
+		rssList,err := doCacheRss(cacheKey,field)
+		if err != nil {
+			zgh.ZLog().Error("message","service.index.PostRss","err",err.Error())
+			return rssList,err
+		}
+		return rssList,nil
+	}
+	return
+}
+
+func CommonRss() (feed *feeds.Feed,err error) {
+	res,err := PostRss()
+	if err != nil {
+		zgh.ZLog().Error("message","Index.Archives","err",err.Error())
+		return
+	}
+
+	system,err := IndexSystem()
+	if err != nil {
+		zgh.ZLog().Error("message","service.Index.CommonData","err",err.Error())
+		return
+	}
+
+	feed = &feeds.Feed{
+		Title:       system.Title,
+		Link:        &feeds.Link{Href: conf.Cnf.AppUrl},
+		Description: system.Description,
+		Author:      &feeds.Author{Name: conf.Cnf.Author, Email: conf.Cnf.Email},
+	}
+
+	for _,v := range res {
+		idStr := strconv.Itoa(v.Id)
+		feedItem := &feeds.Item{
+			Title:       v.Title,
+			Link:        &feeds.Link{Href: conf.Cnf.AppUrl+"/detail/"+idStr},
+			Author:      &feeds.Author{Name: conf.Cnf.Author, Email: conf.Cnf.Email},
+			Description: v.Summary,
+			Id:          idStr,
+			Updated:     v.UpdatedAt,
+			Created:     v.CreatedAt,
+		}
+		feed.Items = append(feed.Items,feedItem)
+	}
+	return feed,nil
+}
+
+func doCacheRss(cacheKey string,field string) (rssList []*common.IndexRss,err error) {
+	posts := make([]*entity.ZPosts,0)
+	err = conf.SqlServer.Where("deleted_at IS NULL OR deleted_at = ?","0001-01-01 00:00:00").Desc("created_at").Find(&posts)
+	if err != nil {
+		zgh.ZLog().Error("message","service.Index.doCacheRss","err",err.Error())
+		return
+	}
+	//cacheKey = make(map[string][]*entity.ZPosts)
+	for _,v := range posts {
+		user := new(entity.ZUsers)
+		user,err = GetUserById(v.UserId)
+		if err != nil {
+			zgh.ZLog().Error("message","service.Index.doCacheRss","err",err.Error())
+			return
+		}
+		rl := &common.IndexRss{
+			Id:        v.Id,
+			Uid:       v.Uid,
+			Author:    user.Name,
+			Title:     v.Title,
+			Summary:   v.Summary,
+			CreatedAt: v.CreatedAt,
+			UpdatedAt: v.UpdatedAt,
+		}
+		rssList = append(rssList,rl)
+	}
+
+	jsonRes,err := json.Marshal(&rssList)
+	if err != nil {
+		zgh.ZLog().Error("message","service.index.doCacheRss","err",err.Error())
+		return
+	}
+	err = conf.CacheClient.HSet(cacheKey,field,jsonRes).Err()
+	if err != nil {
+		zgh.ZLog().Error("message","service.index.doCacheRss","err",err.Error())
 		return
 	}
 	return
